@@ -43,7 +43,7 @@ export function Footer() {
               Contato
             </p>
             <a
-              href="https://wa.me/5554992181886"
+              href="https://wa.me/5554991379272"
               target="_blank"
               rel="noopener noreferrer"
               className="font-mulish text-sm text-mj-black/70 transition-colors hover:text-mj-black"

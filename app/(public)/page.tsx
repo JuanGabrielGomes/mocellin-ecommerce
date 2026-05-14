@@ -32,7 +32,7 @@ export default async function HomePage() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative flex min-h-screen items-end bg-mj-black pb-20 pt-32">
+      <section className="relative flex min-h-screen items-end bg-mj-black pb-16 pt-32 sm:pb-24">
         {/* Background image */}
         <Image
           src="https://images.unsplash.com/photo-1639660680515-7c76c86b559b?w=1600&fit=crop&q=80"
@@ -46,20 +46,20 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-mj-black/30 via-mj-black/50 to-mj-black/90" />
 
         <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
-          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige mb-5">
+          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige mb-4 sm:mb-5">
             Nova Coleção
           </p>
-          <h1 className="font-julius text-white leading-tight" style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)' }}>
+          <h1 className="font-julius text-white leading-tight" style={{ fontSize: 'clamp(2.2rem, 8vw, 5rem)' }}>
             Peças que ficam<br />
             <span className="italic text-mj-beige">para sempre.</span>
           </h1>
-          <p className="mt-6 font-mulish text-sm font-light leading-relaxed text-white/70 max-w-sm">
+          <p className="mt-5 font-mulish text-sm font-light leading-relaxed text-white/70 max-w-xs sm:max-w-sm">
             Joias e semijoias escolhidas com cuidado para acompanhar cada momento especial.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
             <Link
               href="/catalogo"
-              className="inline-flex items-center gap-2 rounded-none border border-white px-8 py-4 font-mulish text-xs uppercase tracking-[0.2em] text-white transition-all hover:bg-white hover:text-mj-black"
+              className="inline-flex items-center gap-2 border border-white px-7 py-3.5 sm:px-8 sm:py-4 font-mulish text-xs uppercase tracking-[0.2em] text-white transition-all hover:bg-white hover:text-mj-black"
             >
               Ver catálogo
             </Link>
@@ -68,9 +68,9 @@ export default async function HomePage() {
       </section>
 
       {/* ── Categorias ───────────────────────────────────────── */}
-      <section className="bg-mj-white py-20">
+      <section className="bg-mj-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="mb-12 text-center">
+          <div className="mb-10 sm:mb-12 text-center">
             <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-taupe">
               Explorar
             </p>
@@ -79,21 +79,21 @@ export default async function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 sm:grid-cols-6">
             {CATEGORIES.map(({ value, label }) => (
               <Link
                 key={value}
                 href={`/catalogo?categoria=${value}`}
-                className="group flex flex-col items-center gap-3"
+                className="group flex flex-col items-center gap-2 sm:gap-3"
               >
                 <div className="aspect-square w-full overflow-hidden bg-mj-cream transition-all duration-300 group-hover:bg-mj-beige/30">
                   <div className="flex h-full w-full items-center justify-center">
-                    <span className="font-julius text-4xl text-mj-taupe transition-colors group-hover:text-mj-brown">
+                    <span className="font-julius text-3xl sm:text-4xl text-mj-taupe transition-colors group-hover:text-mj-brown">
                       {label[0]}
                     </span>
                   </div>
                 </div>
-                <p className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-black/70 transition-colors group-hover:text-mj-black">
+                <p className="font-mulish text-[10px] sm:text-xs uppercase tracking-[0.15em] text-mj-black/70 transition-colors group-hover:text-mj-black text-center">
                   {label}
                 </p>
               </Link>
@@ -104,9 +104,9 @@ export default async function HomePage() {
 
       {/* ── Produtos em destaque ─────────────────────────────── */}
       {featured && featured.length > 0 && (
-        <section className="bg-mj-cream py-20">
+        <section className="bg-mj-cream py-14 sm:py-20">
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
-            <div className="mb-12 flex items-end justify-between">
+            <div className="mb-10 sm:mb-12 flex items-end justify-between">
               <div>
                 <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-taupe">
                   Seleção
@@ -134,27 +134,42 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Editorial ────────────────────────────────────────── */}
-      <section className="bg-mj-teal">
+      {/* ── Sobre ────────────────────────────────────────────── */}
+      <section className="bg-mj-white">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* Foto placeholder */}
-            <div className="aspect-[4/5] bg-mj-black/20 md:aspect-auto" />
 
-            {/* Copy */}
-            <div className="flex flex-col justify-center px-8 py-16 md:px-16">
+            {/* Foto de Priscila */}
+            <div className="relative aspect-[4/5] overflow-hidden bg-mj-cream md:aspect-auto md:min-h-[600px]">
+              <Image
+                src="/priscila.jpg"
+                alt="Priscila Mocellin — fundadora da Mocellin Joias"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+
+            {/* Texto */}
+            <div className="flex flex-col justify-center bg-mj-black px-8 py-16 sm:px-12 md:px-16">
               <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige/60">
                 A Mocellin
               </p>
               <h2
                 className="mt-4 font-julius text-white leading-tight"
-                style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+                style={{ fontSize: 'clamp(1.8rem, 5vw, 3.2rem)' }}
               >
                 Cada peça conta<br />uma história.
               </h2>
-              <p className="mt-6 font-mulish text-sm font-light leading-relaxed text-white/60 max-w-sm">
-                Joias e semijoias escolhidas com cuidado para acompanhar
-                presentes, rituais e pequenos marcos do cotidiano.
+              <p className="mt-6 font-mulish text-sm font-light leading-relaxed text-white/65 max-w-sm">
+                Fundada por Priscila Mocellin, a Mocellin Joias nasceu do desejo de oferecer
+                peças que vão além da moda — joias e semijoias que marcam momentos,
+                celebram conquistas e acompanham quem as usa por muito tempo.
+              </p>
+              <p className="mt-4 font-mulish text-sm font-light leading-relaxed text-white/65 max-w-sm">
+                Com olhar criterioso e paixão por design atemporal, Priscila seleciona cada
+                peça unindo qualidade de materiais, acabamento impecável e um estilo que
+                equilibra elegância e modernidade.
               </p>
               <Link
                 href="/catalogo"
@@ -163,6 +178,7 @@ export default async function HomePage() {
                 Conhecer seleção
               </Link>
             </div>
+
           </div>
         </div>
       </section>

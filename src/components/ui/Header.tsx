@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ShoppingBag } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
 import { CartDrawer } from '@/components/cart/CartDrawer'
@@ -10,6 +11,7 @@ export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
   const count = useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0))
 
   useEffect(() => {
@@ -20,6 +22,9 @@ export function Header() {
   }, [])
 
   const displayCount = mounted ? count : 0
+
+  // On the homepage, the hero is a full-height dark image — use white text until scroll kicks in
+  const onDark = pathname === '/' && !scrolled
 
   return (
     <>
@@ -35,7 +40,10 @@ export function Header() {
           <Link
             href="/"
             aria-label="Mocellin Joias — página inicial"
-            className="font-julius text-base tracking-[0.25em] text-mj-black sm:text-lg"
+            className={[
+              'font-julius text-base tracking-[0.25em] sm:text-lg transition-colors duration-300',
+              onDark ? 'text-white' : 'text-mj-black',
+            ].join(' ')}
           >
             MOCELLIN JOIAS
           </Link>
@@ -43,7 +51,12 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-8">
             <Link
               href="/catalogo"
-              className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-black/70 transition-colors hover:text-mj-black"
+              className={[
+                'font-mulish text-xs uppercase tracking-[0.15em] transition-colors duration-300',
+                onDark
+                  ? 'text-white/80 hover:text-white'
+                  : 'text-mj-black/70 hover:text-mj-black',
+              ].join(' ')}
             >
               Catálogo
             </Link>
@@ -52,7 +65,10 @@ export function Header() {
           <button
             onClick={() => setDrawerOpen(true)}
             aria-label={`Carrinho${displayCount > 0 ? ` — ${displayCount} ${displayCount === 1 ? 'item' : 'itens'}` : ''}`}
-            className="relative rounded-full p-2 text-mj-black transition-colors hover:text-mj-brown"
+            className={[
+              'relative p-2 transition-colors duration-300',
+              onDark ? 'text-white hover:text-mj-beige' : 'text-mj-black hover:text-mj-brown',
+            ].join(' ')}
           >
             <ShoppingBag size={20} strokeWidth={1.5} />
             {displayCount > 0 && (
