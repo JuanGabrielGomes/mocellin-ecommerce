@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
+@theme {
   --font-family-julius: var(--font-julius), serif;
   --font-family-mulish: var(--font-mulish), sans-serif;
 

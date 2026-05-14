@@ -21,6 +21,15 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
   )
 }
 
+// Regra dos presets dark mode:
+// mj-black  → texto principal (CLARO em dark, ESCURO em light)
+// mj-white  → superfície de card
+// mj-cream  → fundo da página (o mais escuro em dark, o mais claro em light)
+// mj-beige  → destaque/accent visível
+// mj-brown  → cor de ação (botões, CTAs)
+// mj-taupe  → texto secundário/muted
+// mj-border → bordas
+
 const PRESETS = [
   {
     label: 'Dia dos Namorados',
@@ -30,30 +39,30 @@ const PRESETS = [
     hero_title: 'Para quem você ama.',
     hero_subtitle: 'Joias que guardam o momento mais especial — escolhidas com o coração.',
     colors: {
-      'mj-black':  '#080005',
-      'mj-brown':  '#9B1B30',
-      'mj-beige':  '#C0002A',
-      'mj-taupe':  '#7A3045',
-      'mj-cream':  '#100008',
-      'mj-white':  '#1A000D',
-      'mj-border': '#3D0018',
+      'mj-black':  '#F5E0E8',   // texto → rosa-branco (legível no escuro)
+      'mj-white':  '#1A0010',   // card bg → bordo escuro
+      'mj-cream':  '#0D0008',   // page bg → quase preto
+      'mj-beige':  '#FF4466',   // accent → vermelho vivo
+      'mj-brown':  '#E0003A',   // botões → carmesim
+      'mj-taupe':  '#C090A0',   // texto secundário → rosa médio
+      'mj-border': '#3D0018',   // bordas → vinho escuro
     },
   },
   {
     label: 'Black Friday',
     banner_bg: '#050505',
-    banner_text_color: '#F5C518',
+    banner_text_color: '#FFD700',
     hero_label: 'Black Friday',
     hero_title: 'Preços que não voltam.',
     hero_subtitle: 'Peças exclusivas com descontos especiais por tempo limitado.',
     colors: {
-      'mj-black':  '#050505',
-      'mj-brown':  '#C9922A',
-      'mj-beige':  '#F5C518',
-      'mj-taupe':  '#777777',
-      'mj-cream':  '#0F0F0F',
-      'mj-white':  '#181818',
-      'mj-border': '#252525',
+      'mj-black':  '#F5F5F0',   // texto → quase branco
+      'mj-white':  '#141414',   // card bg → cinza escuro
+      'mj-cream':  '#0A0A0A',   // page bg → quase preto
+      'mj-beige':  '#FFD700',   // accent → ouro
+      'mj-brown':  '#C9922A',   // botões → ouro escuro
+      'mj-taupe':  '#888888',   // texto secundário → cinza médio
+      'mj-border': '#2A2A2A',   // bordas → escuro
     },
   },
   {
@@ -64,30 +73,30 @@ const PRESETS = [
     hero_title: 'O presente perfeito.',
     hero_subtitle: 'Joias e semijoias para tornar cada encontro inesquecível.',
     colors: {
-      'mj-black':  '#0D2B1D',
-      'mj-brown':  '#B5451B',
-      'mj-beige':  '#FFE8A3',
-      'mj-taupe':  '#6B8F71',
-      'mj-cream':  '#F4FBF6',
-      'mj-white':  '#FAFFF8',
-      'mj-border': '#C8E6C9',
+      'mj-black':  '#F5F0E0',   // texto → creme quente
+      'mj-white':  '#0D2018',   // card bg → verde escuro
+      'mj-cream':  '#081510',   // page bg → quase preto esverdeado
+      'mj-beige':  '#FFE4A0',   // accent → dourado quente
+      'mj-brown':  '#C84B0C',   // botões → vermelho natal
+      'mj-taupe':  '#8FAF95',   // texto secundário → verde muted
+      'mj-border': '#1A3D28',   // bordas → verde escuro
     },
   },
   {
     label: 'Dia das Mães',
-    banner_bg: '#4A1040',
-    banner_text_color: '#FFD6F0',
+    banner_bg: '#8B2060',
+    banner_text_color: '#FFE8F5',
     hero_label: 'Dia das Mães',
     hero_title: 'Para ela, o melhor.',
     hero_subtitle: 'Uma joia para celebrar quem mais você ama.',
     colors: {
-      'mj-black':  '#1A0018',
-      'mj-brown':  '#8B2060',
-      'mj-beige':  '#D4608A',
-      'mj-taupe':  '#855070',
-      'mj-cream':  '#2A0020',
-      'mj-white':  '#350028',
-      'mj-border': '#5A1048',
+      'mj-black':  '#3D1830',   // texto → malva escuro (legível no claro)
+      'mj-white':  '#FFF5FA',   // card bg → rosa muito suave
+      'mj-cream':  '#FFF0F8',   // page bg → rosa clarinho
+      'mj-beige':  '#D4608A',   // accent → rosa médio
+      'mj-brown':  '#8B2060',   // botões → malva escuro
+      'mj-taupe':  '#A06080',   // texto secundário → rosa muted
+      'mj-border': '#F4C0D8',   // bordas → rosa claro
     },
   },
   {
