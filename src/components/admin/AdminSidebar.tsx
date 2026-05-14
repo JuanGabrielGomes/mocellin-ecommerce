@@ -20,7 +20,7 @@ export function AdminSidebar() {
   async function handleSignOut() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.replace('/admin/login')
+    window.location.href = '/admin/login'
   }
 
   function NavLinks({ onClick }: { onClick?: () => void }) {
