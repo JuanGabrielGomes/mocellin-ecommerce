@@ -11,12 +11,36 @@ export const metadata: Metadata = {
 }
 
 const CATEGORIES = [
-  { value: 'brincos',   label: 'Brincos' },
-  { value: 'aneis',     label: 'Anéis' },
-  { value: 'colares',   label: 'Colares' },
-  { value: 'relogios',  label: 'Relógios' },
-  { value: 'oculos',    label: 'Óculos' },
-  { value: 'masculino', label: 'Masculino' },
+  {
+    value: 'brincos',
+    label: 'Brincos',
+    image: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?w=600&fit=crop&q=80',
+  },
+  {
+    value: 'aneis',
+    label: 'Anéis',
+    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&fit=crop&q=80',
+  },
+  {
+    value: 'colares',
+    label: 'Colares',
+    image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600&fit=crop&q=80',
+  },
+  {
+    value: 'relogios',
+    label: 'Relógios',
+    image: 'https://images.unsplash.com/photo-1600003014755-ba31aa59c4b6?w=600&fit=crop&q=80',
+  },
+  {
+    value: 'oculos',
+    label: 'Óculos',
+    image: 'https://images.unsplash.com/photo-1577803645773-f96470509666?w=600&fit=crop&q=80',
+  },
+  {
+    value: 'masculino',
+    label: 'Masculino',
+    image: 'https://images.unsplash.com/photo-1625055671570-e5de97e4897d?w=600&fit=crop&q=80',
+  },
 ]
 
 export default async function HomePage() {
@@ -80,18 +104,22 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-3 gap-3 sm:gap-4 sm:grid-cols-6">
-            {CATEGORIES.map(({ value, label }) => (
+            {CATEGORIES.map(({ value, label, image }) => (
               <Link
                 key={value}
                 href={`/catalogo?categoria=${value}`}
                 className="group flex flex-col items-center gap-2 sm:gap-3"
               >
-                <div className="aspect-square w-full overflow-hidden bg-mj-cream transition-all duration-300 group-hover:bg-mj-beige/30">
-                  <div className="flex h-full w-full items-center justify-center">
-                    <span className="font-julius text-3xl sm:text-4xl text-mj-taupe transition-colors group-hover:text-mj-brown">
-                      {label[0]}
-                    </span>
-                  </div>
+                <div className="relative aspect-square w-full overflow-hidden bg-mj-cream">
+                  <Image
+                    src={image}
+                    alt={label}
+                    fill
+                    sizes="(max-width: 640px) 33vw, 17vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {/* Overlay sutil no hover */}
+                  <div className="absolute inset-0 bg-mj-black/0 transition-colors duration-300 group-hover:bg-mj-black/10" />
                 </div>
                 <p className="font-mulish text-[10px] sm:text-xs uppercase tracking-[0.15em] text-mj-black/70 transition-colors group-hover:text-mj-black text-center">
                   {label}

@@ -1,6 +1,6 @@
 import type { OrderPayloadType } from '@/types'
 
-const STORE_PHONE = '5554992181886'
+const STORE_PHONE = '5554991379272'
 
 export function buildWhatsAppUrl(order: OrderPayloadType): string {
   const lines: string[] = []

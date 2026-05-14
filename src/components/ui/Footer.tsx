@@ -51,6 +51,12 @@ export function Footer() {
               WhatsApp
             </a>
             <a
+              href="mailto:mocellinjoias@gmail.com"
+              className="font-mulish text-sm text-mj-black/70 transition-colors hover:text-mj-black"
+            >
+              mocellinjoias@gmail.com
+            </a>
+            <a
               href="https://instagram.com/mocellinjoias"
               target="_blank"
               rel="noopener noreferrer"
