@@ -72,13 +72,13 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-mj-overlay/30 via-mj-overlay/50 to-mj-overlay/90" />
 
         <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
-          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige mb-4 sm:mb-5">
+          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-text-accent mb-4 sm:mb-5">
             {campaign?.hero_label ?? 'Nova Coleção'}
           </p>
           <h1 className="font-julius text-white leading-tight" style={{ fontSize: 'clamp(2.2rem, 8vw, 5rem)' }}>
             {campaign?.hero_title
-              ? <span className="italic text-mj-beige">{campaign.hero_title}</span>
-              : <>Peças que ficam<br /><span className="italic text-mj-beige">para sempre.</span></>
+              ? <span className="italic text-mj-text-accent">{campaign.hero_title}</span>
+              : <>Peças que ficam<br /><span className="italic text-mj-text-accent">para sempre.</span></>
             }
           </h1>
           <p className="mt-5 font-mulish text-sm font-light leading-relaxed text-white/70 max-w-xs sm:max-w-sm">
@@ -184,7 +184,7 @@ export default async function HomePage() {
 
             {/* Texto */}
             <div className="flex flex-col justify-center bg-mj-black px-8 py-16 sm:px-12 md:px-16">
-              <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige/60">
+              <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-text-accent/60">
                 A Mocellin
               </p>
               <h2
@@ -205,7 +205,7 @@ export default async function HomePage() {
               </p>
               <Link
                 href="/catalogo"
-                className="mt-10 inline-flex w-fit items-center gap-2 border-b border-mj-beige pb-1 font-mulish text-xs uppercase tracking-[0.2em] text-mj-beige transition-colors hover:text-white hover:border-white"
+                className="mt-10 inline-flex w-fit items-center gap-2 border-b border-mj-text-accent pb-1 font-mulish text-xs uppercase tracking-[0.2em] text-mj-text-accent transition-colors hover:text-white hover:border-white"
               >
                 Conhecer seleção
               </Link>

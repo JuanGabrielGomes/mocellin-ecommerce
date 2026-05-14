@@ -21,13 +21,13 @@ export function ProductGallery({ images, videos }: ProductGalleryProps) {
   const active = media[activeIndex]
 
   if (media.length === 0) {
-    return <div className="aspect-square w-full bg-mj-cream" />
+    return <div className="aspect-square w-full bg-mj-page" />
   }
 
   return (
     <div className="flex flex-col gap-3">
       {/* Principal */}
-      <div className="relative aspect-square w-full overflow-hidden bg-mj-cream">
+      <div className="relative aspect-square w-full overflow-hidden bg-mj-page">
         {active.type === 'image' ? (
           <Image
             src={active.url}
@@ -58,14 +58,14 @@ export function ProductGallery({ images, videos }: ProductGalleryProps) {
               className={[
                 'relative h-16 w-16 shrink-0 overflow-hidden border-2 transition-colors',
                 activeIndex === i
-                  ? 'border-mj-black'
+                  ? 'border-mj-btn'
                   : 'border-transparent hover:border-mj-border',
               ].join(' ')}
             >
               {item.type === 'image' ? (
                 <Image src={item.url} alt="" fill sizes="64px" className="object-cover" />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-mj-black">
+                <div className="flex h-full w-full items-center justify-center bg-mj-overlay">
                   <Play size={18} className="text-white" fill="white" />
                 </div>
               )}
