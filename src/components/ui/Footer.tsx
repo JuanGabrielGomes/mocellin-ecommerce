@@ -46,13 +46,13 @@ export function Footer() {
               href="https://wa.me/5554991379272"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mulish text-sm text-mj-black/70 transition-colors hover:text-mj-black"
+              className="font-mulish text-sm text-mj-text-muted transition-colors hover:text-mj-text-accent"
             >
               WhatsApp
             </a>
             <a
               href="mailto:mocellinjoias@gmail.com"
-              className="font-mulish text-sm text-mj-black/70 transition-colors hover:text-mj-black"
+              className="font-mulish text-sm text-mj-text-muted transition-colors hover:text-mj-text-accent"
             >
               mocellinjoias@gmail.com
             </a>
@@ -60,7 +60,7 @@ export function Footer() {
               href="https://instagram.com/mocellinjoias"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mulish text-sm text-mj-black/70 transition-colors hover:text-mj-black"
+              className="font-mulish text-sm text-mj-text-muted transition-colors hover:text-mj-text-accent"
             >
               Instagram
             </a>
