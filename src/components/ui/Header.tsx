@@ -7,7 +7,7 @@ import { ShoppingBag } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
 import { CartDrawer } from '@/components/cart/CartDrawer'
 
-export function Header() {
+export function Header({ hasBanner = false }: { hasBanner?: boolean }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -29,8 +29,9 @@ export function Header() {
   return (
     <>
       <header
+        style={{ top: hasBanner ? '40px' : '0px' }}
         className={[
-          'fixed inset-x-0 top-0 z-30 transition-all duration-300',
+          'fixed inset-x-0 z-30 transition-all duration-300',
           scrolled
             ? 'bg-mj-white/95 backdrop-blur-sm border-b border-mj-border'
             : 'bg-transparent',

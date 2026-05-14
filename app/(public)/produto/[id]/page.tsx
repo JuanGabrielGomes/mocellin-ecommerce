@@ -95,9 +95,21 @@ export default async function ProdutoPage({ params }: { params: Params }) {
               </h1>
             </div>
 
-            <p className="font-mulish text-2xl font-medium text-mj-black">
-              {brl.format(product.price)}
-            </p>
+            <div className="flex items-baseline gap-3">
+              <p className="font-mulish text-2xl font-medium text-mj-black">
+                {brl.format(product.price)}
+              </p>
+              {product.compare_at_price != null && product.compare_at_price > product.price && (
+                <>
+                  <p className="font-mulish text-base text-mj-taupe line-through">
+                    {brl.format(product.compare_at_price)}
+                  </p>
+                  <span className="bg-mj-brown px-2 py-0.5 font-mulish text-[10px] font-semibold uppercase tracking-wider text-white">
+                    -{Math.round((1 - product.price / product.compare_at_price) * 100)}%
+                  </span>
+                </>
+              )}
+            </div>
 
             {product.code && (
               <p className="font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe">

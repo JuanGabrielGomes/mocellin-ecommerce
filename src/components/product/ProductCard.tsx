@@ -15,6 +15,10 @@ const categoryLabel: Record<ProductType['category'], string> = {
 export function ProductCard({ product }: { product: ProductType }) {
   const addItem = useCartStore((s) => s.addItem)
   const esgotado = product.status === 'esgotado'
+  const hasDiscount = product.compare_at_price != null && product.compare_at_price > product.price
+  const discountPct = hasDiscount
+    ? Math.round((1 - product.price / product.compare_at_price!) * 100)
+    : 0
 
   return (
     <Link href={`/produto/${product.id}`} className="group flex flex-col bg-mj-white">
@@ -36,6 +40,11 @@ export function ProductCard({ product }: { product: ProductType }) {
             Esgotado
           </span>
         )}
+        {!esgotado && hasDiscount && (
+          <span className="absolute top-3 left-3 bg-mj-brown px-2.5 py-1 font-mulish text-[10px] font-semibold uppercase tracking-wider text-white">
+            -{discountPct}%
+          </span>
+        )}
       </div>
 
       {/* Info */}
@@ -46,9 +55,16 @@ export function ProductCard({ product }: { product: ProductType }) {
         <h3 className="font-julius text-base leading-snug text-mj-black">
           {product.name}
         </h3>
-        <p className="mt-auto pt-3 font-mulish text-sm font-medium text-mj-black">
-          {brl.format(product.price)}
-        </p>
+        <div className="mt-auto pt-3 flex items-baseline gap-2">
+          <p className="font-mulish text-sm font-medium text-mj-black">
+            {brl.format(product.price)}
+          </p>
+          {hasDiscount && (
+            <p className="font-mulish text-xs text-mj-taupe line-through">
+              {brl.format(product.compare_at_price!)}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* CTA */}

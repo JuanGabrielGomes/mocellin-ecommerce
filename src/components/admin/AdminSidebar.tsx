@@ -4,11 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Package, PlusCircle, LogOut, Menu, X } from 'lucide-react'
+import { Package, PlusCircle, LogOut, Menu, X, Megaphone } from 'lucide-react'
 
 const NAV_LINKS = [
   { href: '/admin', label: 'Produtos', icon: Package },
   { href: '/admin/produtos/novo', label: 'Adicionar produto', icon: PlusCircle },
+  { href: '/admin/campanhas', label: 'Campanhas', icon: Megaphone },
 ]
 
 export function AdminSidebar() {
@@ -26,7 +27,7 @@ export function AdminSidebar() {
     return (
       <nav className="flex flex-col gap-1">
         {NAV_LINKS.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href
+          const active = href === '/admin' ? pathname === href : pathname.startsWith(href)
           return (
             <Link
               key={href}

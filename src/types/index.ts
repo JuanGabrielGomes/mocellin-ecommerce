@@ -7,6 +7,7 @@ export interface ProductType {
   name: string
   description: string | null
   price: number
+  compare_at_price: number | null
   category: ProductCategory
   status: ProductStatus
   featured: boolean
@@ -15,6 +16,19 @@ export interface ProductType {
   videos: string[] | null
   details: string | null
   related_ids: string[] | null
+  created_at: string
+  updated_at: string
+}
+
+export interface CampaignType {
+  id: string
+  name: string
+  slug: string
+  active: boolean
+  banner_text: string | null
+  banner_bg: string
+  banner_text_color: string
+  colors: Record<string, string>
   created_at: string
   updated_at: string
 }

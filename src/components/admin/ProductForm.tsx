@@ -66,6 +66,9 @@ export function ProductForm({ product, allProducts }: Props) {
   const [description, setDescription] = useState<string>(product?.description ?? '')
   const [details, setDetails] = useState<string>(product?.details ?? '')
   const [price, setPrice] = useState(product ? String(product.price) : '')
+  const [compareAtPrice, setCompareAtPrice] = useState(
+    product?.compare_at_price != null ? String(product.compare_at_price) : '',
+  )
   const [category, setCategory] = useState<ProductCategory>(product?.category ?? 'brincos')
   const [status, setStatus] = useState<ProductStatus>(product?.status ?? 'disponivel')
   const [featured, setFeatured] = useState<boolean>(product?.featured ?? false)
@@ -156,12 +159,17 @@ export function ProductForm({ product, allProducts }: Props) {
       const newVideoUrls = await uploadFiles(newVideoFiles, 'product-videos')
       const videos = [...existingVideos, ...newVideoUrls]
 
+      const parsedCompare = parseFloat(compareAtPrice)
       const payload = {
         name: name.trim(),
         code: code.trim() || null,
         description: description.trim() || null,
         details: details.trim() || null,
         price: parseFloat(price),
+        compare_at_price:
+          compareAtPrice.trim() && !isNaN(parsedCompare) && parsedCompare > 0
+            ? parsedCompare
+            : null,
         category,
         status,
         featured,
@@ -261,7 +269,7 @@ export function ProductForm({ product, allProducts }: Props) {
           />
         </Field>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-3">
           <Field label="Preço (R$)" error={errors.price}>
             <input
               type="number"
@@ -270,6 +278,18 @@ export function ProductForm({ product, allProducts }: Props) {
               min="0.01"
               step="0.01"
               placeholder="0.00"
+              className={inputClass}
+            />
+          </Field>
+
+          <Field label="Preço original (R$)">
+            <input
+              type="number"
+              value={compareAtPrice}
+              onChange={(e) => setCompareAtPrice(e.target.value)}
+              min="0.01"
+              step="0.01"
+              placeholder="Deixe vazio se não houver"
               className={inputClass}
             />
           </Field>
