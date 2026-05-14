@@ -13,6 +13,8 @@ const CATEGORIES: { value: ProductCategory; label: string }[] = [
   { value: 'colares',   label: 'Colares' },
   { value: 'oculos',    label: 'Óculos' },
   { value: 'masculino', label: 'Masculino' },
+  { value: 'pulseiras', label: 'Pulseiras e Braceletes' },
+  { value: 'berloques', label: 'Berloques' },
 ]
 
 export interface RelatedOption {

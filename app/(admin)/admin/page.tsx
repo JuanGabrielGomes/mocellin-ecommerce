@@ -13,6 +13,8 @@ const CATEGORY_LABEL: Record<string, string> = {
   colares: 'Colares',
   oculos: 'Óculos',
   masculino: 'Masculino',
+  pulseiras: 'Pulseiras e Braceletes',
+  berloques: 'Berloques',
 }
 
 const STATUS_STYLE: Record<string, string> = {

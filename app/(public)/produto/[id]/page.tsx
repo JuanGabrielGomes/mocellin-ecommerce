@@ -15,6 +15,8 @@ const categoryLabel: Record<ProductCategory, string> = {
   colares: 'Colares',
   oculos: 'Óculos',
   masculino: 'Masculino',
+  pulseiras: 'Pulseiras e Braceletes',
+  berloques: 'Berloques',
 }
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })

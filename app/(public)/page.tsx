@@ -42,6 +42,16 @@ const CATEGORIES = [
     label: 'Masculino',
     image: 'https://images.unsplash.com/photo-1625055671570-e5de97e4897d?w=600&fit=crop&q=80',
   },
+  {
+    value: 'pulseiras',
+    label: 'Pulseiras',
+    image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&fit=crop&q=80',
+  },
+  {
+    value: 'berloques',
+    label: 'Berloques',
+    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&fit=crop&q=80',
+  },
 ]
 
 export default async function HomePage() {
@@ -107,7 +117,7 @@ export default async function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 sm:gap-4 sm:grid-cols-6">
+          <div className="grid grid-cols-4 gap-3 sm:gap-4 sm:grid-cols-8">
             {CATEGORIES.map(({ value, label, image }) => (
               <Link
                 key={value}
