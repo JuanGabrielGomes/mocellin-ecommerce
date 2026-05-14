@@ -29,6 +29,9 @@ export interface CampaignType {
   banner_bg: string
   banner_text_color: string
   colors: Record<string, string>
+  hero_label: string | null
+  hero_title: string | null
+  hero_subtitle: string | null
   created_at: string
   updated_at: string
 }

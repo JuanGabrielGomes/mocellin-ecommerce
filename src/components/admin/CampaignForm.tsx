@@ -25,35 +25,44 @@ const PRESETS = [
   {
     label: 'Dia dos Namorados',
     banner_bg: '#6B0F1A',
-    banner_text_color: '#FFD6E0',
+    banner_text_color: '#FFB3C6',
+    hero_label: 'Dia dos Namorados',
+    hero_title: 'Para quem você ama.',
+    hero_subtitle: 'Joias que guardam o momento mais especial — escolhidas com o coração.',
     colors: {
-      'mj-black':  '#3D0010',
-      'mj-brown':  '#A8003B',
-      'mj-beige':  '#FFD6E0',
-      'mj-taupe':  '#C06080',
-      'mj-cream':  '#FFF0F5',
-      'mj-white':  '#FFFAFB',
-      'mj-border': '#F4C0CE',
+      'mj-black':  '#080005',
+      'mj-brown':  '#9B1B30',
+      'mj-beige':  '#C0002A',
+      'mj-taupe':  '#7A3045',
+      'mj-cream':  '#100008',
+      'mj-white':  '#1A000D',
+      'mj-border': '#3D0018',
     },
   },
   {
     label: 'Black Friday',
-    banner_bg: '#0a0a0a',
-    banner_text_color: '#F0A855',
+    banner_bg: '#050505',
+    banner_text_color: '#F5C518',
+    hero_label: 'Black Friday',
+    hero_title: 'Preços que não voltam.',
+    hero_subtitle: 'Peças exclusivas com descontos especiais por tempo limitado.',
     colors: {
-      'mj-black':  '#0a0a0a',
-      'mj-brown':  '#c17f24',
-      'mj-beige':  '#F0A855',
-      'mj-taupe':  '#888',
-      'mj-cream':  '#141414',
-      'mj-white':  '#1c1c1c',
-      'mj-border': '#333',
+      'mj-black':  '#050505',
+      'mj-brown':  '#C9922A',
+      'mj-beige':  '#F5C518',
+      'mj-taupe':  '#777777',
+      'mj-cream':  '#0F0F0F',
+      'mj-white':  '#181818',
+      'mj-border': '#252525',
     },
   },
   {
     label: 'Natal',
     banner_bg: '#1B4332',
     banner_text_color: '#FFE8A3',
+    hero_label: 'Coleção Natal',
+    hero_title: 'O presente perfeito.',
+    hero_subtitle: 'Joias e semijoias para tornar cada encontro inesquecível.',
     colors: {
       'mj-black':  '#0D2B1D',
       'mj-brown':  '#B5451B',
@@ -65,9 +74,29 @@ const PRESETS = [
     },
   },
   {
+    label: 'Dia das Mães',
+    banner_bg: '#4A1040',
+    banner_text_color: '#FFD6F0',
+    hero_label: 'Dia das Mães',
+    hero_title: 'Para ela, o melhor.',
+    hero_subtitle: 'Uma joia para celebrar quem mais você ama.',
+    colors: {
+      'mj-black':  '#1A0018',
+      'mj-brown':  '#8B2060',
+      'mj-beige':  '#D4608A',
+      'mj-taupe':  '#855070',
+      'mj-cream':  '#2A0020',
+      'mj-white':  '#350028',
+      'mj-border': '#5A1048',
+    },
+  },
+  {
     label: 'Padrão (sem tema)',
     banner_bg: '#1a0a0a',
     banner_text_color: '#f5e6d3',
+    hero_label: '',
+    hero_title: '',
+    hero_subtitle: '',
     colors: {},
   },
 ]
@@ -86,6 +115,9 @@ export function CampaignForm({ campaign }: Props) {
   const [bannerText, setBannerText] = useState(campaign?.banner_text ?? '')
   const [bannerBg, setBannerBg] = useState(campaign?.banner_bg ?? '#1a0a0a')
   const [bannerTextColor, setBannerTextColor] = useState(campaign?.banner_text_color ?? '#f5e6d3')
+  const [heroLabel, setHeroLabel] = useState(campaign?.hero_label ?? '')
+  const [heroTitle, setHeroTitle] = useState(campaign?.hero_title ?? '')
+  const [heroSubtitle, setHeroSubtitle] = useState(campaign?.hero_subtitle ?? '')
   const [colorsJson, setColorsJson] = useState(
     campaign ? JSON.stringify(campaign.colors, null, 2) : '{}'
   )
@@ -105,6 +137,9 @@ export function CampaignForm({ campaign }: Props) {
     const p = PRESETS[idx]
     setBannerBg(p.banner_bg)
     setBannerTextColor(p.banner_text_color)
+    setHeroLabel(p.hero_label)
+    setHeroTitle(p.hero_title)
+    setHeroSubtitle(p.hero_subtitle)
     setColorsJson(JSON.stringify(p.colors, null, 2))
     setJsonError('')
   }
@@ -139,6 +174,9 @@ export function CampaignForm({ campaign }: Props) {
         banner_text: bannerText.trim() || null,
         banner_bg: bannerBg,
         banner_text_color: bannerTextColor,
+        hero_label: heroLabel.trim() || null,
+        hero_title: heroTitle.trim() || null,
+        hero_subtitle: heroSubtitle.trim() || null,
         colors,
         updated_at: new Date().toISOString(),
       }
@@ -286,6 +324,43 @@ export function CampaignForm({ campaign }: Props) {
               </p>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Texto do Hero */}
+      <section className="border border-mj-border bg-mj-white p-6">
+        <h2 className="mb-2 font-julius text-xl tracking-wider text-mj-black">Texto do Hero</h2>
+        <p className="mb-5 font-mulish text-xs text-mj-taupe">
+          Substitui os textos da seção principal da homepage. Deixe vazio para usar o texto padrão.
+        </p>
+        <div className="space-y-4">
+          <Field label="Etiqueta (ex: Dia dos Namorados)" hint='Pequeno label acima do título — ex: "Nova Coleção"'>
+            <input
+              type="text"
+              value={heroLabel}
+              onChange={(e) => setHeroLabel(e.target.value)}
+              placeholder="Nova Coleção"
+              className={inputClass}
+            />
+          </Field>
+          <Field label="Título principal" hint="Aparece em destaque sobre a imagem do hero">
+            <input
+              type="text"
+              value={heroTitle}
+              onChange={(e) => setHeroTitle(e.target.value)}
+              placeholder="Peças que ficam para sempre."
+              className={inputClass}
+            />
+          </Field>
+          <Field label="Subtítulo">
+            <input
+              type="text"
+              value={heroSubtitle}
+              onChange={(e) => setHeroSubtitle(e.target.value)}
+              placeholder="Joias e semijoias escolhidas com cuidado para acompanhar cada momento especial."
+              className={inputClass}
+            />
+          </Field>
         </div>
       </section>
 

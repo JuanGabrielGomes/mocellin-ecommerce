@@ -1,20 +1,12 @@
 import type { ReactNode } from 'react'
-import { createClient } from '@/lib/supabase/server'
+import { getActiveCampaign } from '@/lib/campaign'
 import { Header } from '@/components/ui/Header'
 import { Footer } from '@/components/ui/Footer'
 import { WhatsAppFloat } from '@/components/ui/WhatsAppFloat'
 import { CampaignBanner } from '@/components/ui/CampaignBanner'
-import type { CampaignType } from '@/types'
 
 export default async function PublicLayout({ children }: { children: ReactNode }) {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('campaigns')
-    .select('*')
-    .eq('active', true)
-    .maybeSingle()
-
-  const campaign = data as CampaignType | null
+  const campaign = await getActiveCampaign()
 
   const colorOverrides = campaign
     ? Object.entries(campaign.colors)

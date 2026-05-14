@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { getActiveCampaign } from '@/lib/campaign'
 import { ProductCard } from '@/components/product/ProductCard'
 import type { ProductType } from '@/types'
 
@@ -44,6 +45,7 @@ const CATEGORIES = [
 ]
 
 export default async function HomePage() {
+  const campaign = await getActiveCampaign()
   const supabase = await createClient()
   const { data: featured } = await supabase
     .from('products')
@@ -71,14 +73,16 @@ export default async function HomePage() {
 
         <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
           <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige mb-4 sm:mb-5">
-            Nova Coleção
+            {campaign?.hero_label ?? 'Nova Coleção'}
           </p>
           <h1 className="font-julius text-white leading-tight" style={{ fontSize: 'clamp(2.2rem, 8vw, 5rem)' }}>
-            Peças que ficam<br />
-            <span className="italic text-mj-beige">para sempre.</span>
+            {campaign?.hero_title
+              ? <span className="italic text-mj-beige">{campaign.hero_title}</span>
+              : <>Peças que ficam<br /><span className="italic text-mj-beige">para sempre.</span></>
+            }
           </h1>
           <p className="mt-5 font-mulish text-sm font-light leading-relaxed text-white/70 max-w-xs sm:max-w-sm">
-            Joias e semijoias escolhidas com cuidado para acompanhar cada momento especial.
+            {campaign?.hero_subtitle ?? 'Joias e semijoias escolhidas com cuidado para acompanhar cada momento especial.'}
           </p>
           <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
             <Link
