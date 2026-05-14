@@ -123,9 +123,9 @@ export default async function ProdutoPage({ params }: { params: Params }) {
                 VOCÊ TAMBÉM PODE GOSTAR
               </h2>
             </div>
-            <ul className="grid grid-cols-2 gap-px bg-mj-border sm:grid-cols-3 lg:grid-cols-4">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-l border-t border-mj-border">
               {related.map((p) => (
-                <li key={p.id} className="bg-mj-cream">
+                <li key={p.id} className="border-r border-b border-mj-border bg-mj-cream">
                   <ProductCard product={p} />
                 </li>
               ))}

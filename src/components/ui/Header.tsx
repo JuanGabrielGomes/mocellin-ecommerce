@@ -10,7 +10,7 @@ export function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const itemCount = useCartStore((s) => s.itemCount)
+  const count = useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0))
 
   useEffect(() => {
     setMounted(true)
@@ -19,7 +19,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const count = mounted ? itemCount() : 0
+  const displayCount = mounted ? count : 0
 
   return (
     <>
@@ -51,16 +51,16 @@ export function Header() {
 
           <button
             onClick={() => setDrawerOpen(true)}
-            aria-label={`Carrinho${count > 0 ? ` — ${count} ${count === 1 ? 'item' : 'itens'}` : ''}`}
+            aria-label={`Carrinho${displayCount > 0 ? ` — ${displayCount} ${displayCount === 1 ? 'item' : 'itens'}` : ''}`}
             className="relative rounded-full p-2 text-mj-black transition-colors hover:text-mj-brown"
           >
             <ShoppingBag size={20} strokeWidth={1.5} />
-            {count > 0 && (
+            {displayCount > 0 && (
               <span
                 aria-hidden="true"
                 className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-mj-brown font-mulish text-[10px] font-medium leading-none text-white"
               >
-                {count > 99 ? '99+' : count}
+                {displayCount > 99 ? '99+' : displayCount}
               </span>
             )}
           </button>

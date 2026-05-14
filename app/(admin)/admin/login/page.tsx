@@ -82,6 +82,15 @@ export default function AdminLoginPage() {
             {loading ? 'Entrando…' : 'Entrar'}
           </button>
         </form>
+
+        <div className="mt-6 text-center">
+          <a
+            href="/"
+            className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-taupe underline-offset-4 hover:underline hover:text-mj-black transition-colors"
+          >
+            ← Voltar à loja
+          </a>
+        </div>
       </div>
     </main>
   )

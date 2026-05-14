@@ -112,9 +112,9 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 border-l border-t border-mj-border">
               {(featured as ProductType[]).map((product) => (
-                <li key={product.id}>
+                <li key={product.id} className="border-r border-b border-mj-border bg-mj-cream">
                   <ProductCard product={product} />
                 </li>
               ))}

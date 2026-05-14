@@ -87,9 +87,9 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
             <p className="font-mulish text-sm text-mj-taupe">Nenhum produto disponível no momento.</p>
           </div>
         ) : (
-          <ul className="grid grid-cols-2 gap-px bg-mj-border sm:grid-cols-3 lg:grid-cols-4">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-l border-t border-mj-border">
             {(products as ProductType[]).map((product) => (
-              <li key={product.id} className="bg-mj-cream">
+              <li key={product.id} className="border-r border-b border-mj-border bg-mj-cream">
                 <ProductCard product={product} />
               </li>
             ))}
