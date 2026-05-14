@@ -9,7 +9,7 @@ const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' 
 
 const categoryLabel: Record<ProductType['category'], string> = {
   brincos: 'Brincos', aneis: 'Anéis', relogios: 'Relógios',
-  colares: 'Colares', oculos: 'Óculos',
+  colares: 'Colares', oculos: 'Óculos', masculino: 'Masculino',
 }
 
 export function ProductCard({ product }: { product: ProductType }) {

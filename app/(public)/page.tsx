@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ProductCard } from '@/components/product/ProductCard'
@@ -10,11 +11,12 @@ export const metadata: Metadata = {
 }
 
 const CATEGORIES = [
-  { value: 'brincos', label: 'Brincos' },
-  { value: 'aneis',   label: 'Anéis' },
-  { value: 'colares', label: 'Colares' },
-  { value: 'relogios',label: 'Relógios' },
-  { value: 'oculos',  label: 'Óculos' },
+  { value: 'brincos',   label: 'Brincos' },
+  { value: 'aneis',     label: 'Anéis' },
+  { value: 'colares',   label: 'Colares' },
+  { value: 'relogios',  label: 'Relógios' },
+  { value: 'oculos',    label: 'Óculos' },
+  { value: 'masculino', label: 'Masculino' },
 ]
 
 export default async function HomePage() {
@@ -31,8 +33,17 @@ export default async function HomePage() {
     <>
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative flex min-h-screen items-end bg-mj-black pb-20 pt-32">
+        {/* Background image */}
+        <Image
+          src="https://images.unsplash.com/photo-1639660680515-7c76c86b559b?w=1600&fit=crop&q=80"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
         {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-mj-black/20 via-mj-black/40 to-mj-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-mj-black/30 via-mj-black/50 to-mj-black/90" />
 
         <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
           <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige mb-5">
@@ -68,7 +79,7 @@ export default async function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 sm:grid-cols-5">
+          <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
             {CATEGORIES.map(({ value, label }) => (
               <Link
                 key={value}

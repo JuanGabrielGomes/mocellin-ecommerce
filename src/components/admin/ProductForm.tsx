@@ -7,11 +7,12 @@ import type { ProductType, ProductCategory, ProductStatus } from '@/types'
 import { X, Upload, Play, CheckCircle2, Loader2, Search, Star } from 'lucide-react'
 
 const CATEGORIES: { value: ProductCategory; label: string }[] = [
-  { value: 'brincos', label: 'Brincos' },
-  { value: 'aneis', label: 'Anéis' },
-  { value: 'relogios', label: 'Relógios' },
-  { value: 'colares', label: 'Colares' },
-  { value: 'oculos', label: 'Óculos' },
+  { value: 'brincos',   label: 'Brincos' },
+  { value: 'aneis',     label: 'Anéis' },
+  { value: 'relogios',  label: 'Relógios' },
+  { value: 'colares',   label: 'Colares' },
+  { value: 'oculos',    label: 'Óculos' },
+  { value: 'masculino', label: 'Masculino' },
 ]
 
 export interface RelatedOption {
@@ -61,6 +62,7 @@ export function ProductForm({ product, allProducts }: Props) {
   const isEditing = Boolean(product)
 
   const [name, setName] = useState(product?.name ?? '')
+  const [code, setCode] = useState(product?.code ?? '')
   const [description, setDescription] = useState<string>(product?.description ?? '')
   const [details, setDetails] = useState<string>(product?.details ?? '')
   const [price, setPrice] = useState(product ? String(product.price) : '')
@@ -156,6 +158,7 @@ export function ProductForm({ product, allProducts }: Props) {
 
       const payload = {
         name: name.trim(),
+        code: code.trim() || null,
         description: description.trim() || null,
         details: details.trim() || null,
         price: parseFloat(price),
@@ -216,15 +219,27 @@ export function ProductForm({ product, allProducts }: Props) {
 
       {/* ── Informações básicas ─────────────────────────────── */}
       <Section title="Informações básicas">
-        <Field label="Nome" error={errors.name}>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Ex: Brinco Dourado Gotas"
-            className={inputClass}
-          />
-        </Field>
+        <div className="grid gap-4 sm:grid-cols-[1fr_200px]">
+          <Field label="Nome" error={errors.name}>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Ex: Brinco Dourado Gotas"
+              className={inputClass}
+            />
+          </Field>
+
+          <Field label="Código (SKU)">
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value.toUpperCase())}
+              placeholder="Ex: MJ-001"
+              className={inputClass}
+            />
+          </Field>
+        </div>
 
         <Field label="Descrição">
           <textarea

@@ -12,6 +12,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   relogios: 'Relógios',
   colares: 'Colares',
   oculos: 'Óculos',
+  masculino: 'Masculino',
 }
 
 const STATUS_STYLE: Record<string, string> = {

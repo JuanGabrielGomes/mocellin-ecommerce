@@ -1,5 +1,5 @@
 // Espelha exatamente o schema do Supabase
-export type ProductCategory = 'brincos' | 'aneis' | 'relogios' | 'colares' | 'oculos'
+export type ProductCategory = 'brincos' | 'aneis' | 'relogios' | 'colares' | 'oculos' | 'masculino'
 export type ProductStatus = 'disponivel' | 'esgotado'
 
 export interface ProductType {
@@ -10,6 +10,7 @@ export interface ProductType {
   category: ProductCategory
   status: ProductStatus
   featured: boolean
+  code: string | null
   images: string[]
   videos: string[] | null
   details: string | null

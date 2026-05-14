@@ -5,11 +5,12 @@ import { ProductCard } from '@/components/product/ProductCard'
 import type { ProductType, ProductCategory } from '@/types'
 
 const CATEGORIES: { value: ProductCategory; label: string }[] = [
-  { value: 'brincos', label: 'Brincos' },
-  { value: 'aneis',   label: 'Anéis' },
-  { value: 'relogios',label: 'Relógios' },
-  { value: 'colares', label: 'Colares' },
-  { value: 'oculos',  label: 'Óculos' },
+  { value: 'brincos',   label: 'Brincos' },
+  { value: 'aneis',     label: 'Anéis' },
+  { value: 'relogios',  label: 'Relógios' },
+  { value: 'colares',   label: 'Colares' },
+  { value: 'oculos',    label: 'Óculos' },
+  { value: 'masculino', label: 'Masculino' },
 ]
 
 const VALID_CATEGORIES = new Set<string>(CATEGORIES.map((c) => c.value))

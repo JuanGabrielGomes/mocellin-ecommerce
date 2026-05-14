@@ -14,6 +14,7 @@ const categoryLabel: Record<ProductCategory, string> = {
   relogios: 'Relógios',
   colares: 'Colares',
   oculos: 'Óculos',
+  masculino: 'Masculino',
 }
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -97,6 +98,12 @@ export default async function ProdutoPage({ params }: { params: Params }) {
             <p className="font-mulish text-2xl font-medium text-mj-black">
               {brl.format(product.price)}
             </p>
+
+            {product.code && (
+              <p className="font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe">
+                Ref. {product.code}
+              </p>
+            )}
 
             {product.description && (
               <p className="font-mulish text-sm leading-relaxed text-mj-taupe">
