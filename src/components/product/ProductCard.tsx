@@ -21,9 +21,9 @@ export function ProductCard({ product }: { product: ProductType }) {
     : 0
 
   return (
-    <Link href={`/produto/${product.id}`} className="group flex flex-col bg-mj-white">
+    <Link href={`/produto/${product.id}`} className="group flex flex-col bg-mj-surface">
       {/* Imagem */}
-      <div className="relative aspect-square w-full overflow-hidden bg-mj-cream">
+      <div className="relative aspect-square w-full overflow-hidden bg-mj-page">
         {product.images[0] ? (
           <Image
             src={product.images[0]}
@@ -33,15 +33,15 @@ export function ProductCard({ product }: { product: ProductType }) {
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="absolute inset-0 bg-mj-beige/30" />
+          <div className="absolute inset-0 bg-mj-text-accent/20" />
         )}
         {esgotado && (
-          <span className="absolute top-3 left-3 bg-mj-black/80 px-2.5 py-1 font-mulish text-[10px] uppercase tracking-wider text-white">
+          <span className="absolute top-3 left-3 bg-mj-overlay/80 px-2.5 py-1 font-mulish text-[10px] uppercase tracking-wider text-white">
             Esgotado
           </span>
         )}
         {!esgotado && hasDiscount && (
-          <span className="absolute top-3 left-3 bg-mj-brown px-2.5 py-1 font-mulish text-[10px] font-semibold uppercase tracking-wider text-white">
+          <span className="absolute top-3 left-3 bg-mj-btn px-2.5 py-1 font-mulish text-[10px] font-semibold uppercase tracking-wider text-mj-btn-text">
             -{discountPct}%
           </span>
         )}
@@ -49,18 +49,18 @@ export function ProductCard({ product }: { product: ProductType }) {
 
       {/* Info */}
       <div className="flex flex-col flex-1 gap-1 p-4">
-        <span className="font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe">
+        <span className="font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-text-muted">
           {categoryLabel[product.category]}
         </span>
-        <h3 className="font-julius text-base leading-snug text-mj-black">
+        <h3 className="font-julius text-base leading-snug text-mj-text">
           {product.name}
         </h3>
         <div className="mt-auto pt-3 flex items-baseline gap-2">
-          <p className="font-mulish text-sm font-medium text-mj-black">
+          <p className="font-mulish text-sm font-medium text-mj-text">
             {brl.format(product.price)}
           </p>
           {hasDiscount && (
-            <p className="font-mulish text-xs text-mj-taupe line-through">
+            <p className="font-mulish text-xs text-mj-text-muted line-through">
               {brl.format(product.compare_at_price!)}
             </p>
           )}
@@ -75,8 +75,8 @@ export function ProductCard({ product }: { product: ProductType }) {
           className={[
             'w-full py-3 font-mulish text-xs uppercase tracking-[0.15em] transition-all',
             esgotado
-              ? 'cursor-not-allowed bg-mj-border text-mj-taupe'
-              : 'bg-mj-black text-white hover:bg-mj-brown active:scale-[.98]',
+              ? 'cursor-not-allowed bg-mj-border text-mj-text-muted'
+              : 'bg-mj-btn text-mj-btn-text hover:bg-mj-btn-hover active:scale-[.98]',
           ].join(' ')}
         >
           {esgotado ? 'Esgotado' : 'Adicionar ao carrinho'}

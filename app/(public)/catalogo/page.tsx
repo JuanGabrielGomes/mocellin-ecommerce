@@ -42,10 +42,10 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
   return (
     <main className="pt-20 sm:pt-24">
       {/* Topo */}
-      <div className="border-b border-mj-border bg-mj-white px-5 py-10 sm:px-8">
+      <div className="border-b border-mj-border bg-mj-surface px-5 py-10 sm:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-taupe">Mocellin Joias</p>
-          <h1 className="mt-2 font-julius text-3xl tracking-wider text-mj-black sm:text-4xl">CATÁLOGO</h1>
+          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-text-muted">Mocellin Joias</p>
+          <h1 className="mt-2 font-julius text-3xl tracking-wider text-mj-text sm:text-4xl">CATÁLOGO</h1>
 
           <nav aria-label="Filtrar por categoria" className="mt-8 flex flex-wrap gap-2">
             <Link
@@ -53,8 +53,8 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
               className={[
                 'px-5 py-2 font-mulish text-[11px] uppercase tracking-[0.15em] transition-colors',
                 !activeCategory
-                  ? 'bg-mj-black text-white'
-                  : 'border border-mj-border text-mj-taupe hover:border-mj-black hover:text-mj-black',
+                  ? 'bg-mj-btn text-mj-btn-text'
+                  : 'border border-mj-border text-mj-text-muted hover:border-mj-btn hover:text-mj-btn',
               ].join(' ')}
             >
               Todos
@@ -66,8 +66,8 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
                 className={[
                   'px-5 py-2 font-mulish text-[11px] uppercase tracking-[0.15em] transition-colors',
                   activeCategory === value
-                    ? 'bg-mj-black text-white'
-                    : 'border border-mj-border text-mj-taupe hover:border-mj-black hover:text-mj-black',
+                    ? 'bg-mj-btn text-mj-btn-text'
+                    : 'border border-mj-border text-mj-text-muted hover:border-mj-btn hover:text-mj-btn',
                 ].join(' ')}
               >
                 {label}
@@ -85,12 +85,12 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
           </p>
         ) : !products || products.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="font-mulish text-sm text-mj-taupe">Nenhum produto disponível no momento.</p>
+            <p className="font-mulish text-sm text-mj-text-muted">Nenhum produto disponível no momento.</p>
           </div>
         ) : (
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-l border-t border-mj-border">
             {(products as ProductType[]).map((product) => (
-              <li key={product.id} className="border-r border-b border-mj-border bg-mj-cream">
+              <li key={product.id} className="border-r border-b border-mj-border bg-mj-page">
                 <ProductCard product={product} />
               </li>
             ))}

@@ -69,7 +69,7 @@ export default async function HomePage() {
           sizes="100vw"
         />
         {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-mj-black/30 via-mj-black/50 to-mj-black/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-mj-overlay/30 via-mj-overlay/50 to-mj-overlay/90" />
 
         <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
           <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-beige mb-4 sm:mb-5">
@@ -96,13 +96,13 @@ export default async function HomePage() {
       </section>
 
       {/* ── Categorias ───────────────────────────────────────── */}
-      <section className="bg-mj-white py-14 sm:py-20">
+      <section className="bg-mj-surface py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="mb-10 sm:mb-12 text-center">
-            <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-taupe">
+            <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-text-muted">
               Explorar
             </p>
-            <h2 className="mt-2 font-julius text-2xl tracking-wider text-mj-black sm:text-3xl">
+            <h2 className="mt-2 font-julius text-2xl tracking-wider text-mj-text sm:text-3xl">
               ESCOLHA POR CATEGORIA
             </h2>
           </div>
@@ -125,7 +125,7 @@ export default async function HomePage() {
                   {/* Overlay sutil no hover */}
                   <div className="absolute inset-0 bg-mj-black/0 transition-colors duration-300 group-hover:bg-mj-black/10" />
                 </div>
-                <p className="font-mulish text-[10px] sm:text-xs uppercase tracking-[0.15em] text-mj-black/70 transition-colors group-hover:text-mj-black text-center">
+                <p className="font-mulish text-[10px] sm:text-xs uppercase tracking-[0.15em] text-mj-text/70 transition-colors group-hover:text-mj-text text-center">
                   {label}
                 </p>
               </Link>
@@ -136,20 +136,20 @@ export default async function HomePage() {
 
       {/* ── Produtos em destaque ─────────────────────────────── */}
       {featured && featured.length > 0 && (
-        <section className="bg-mj-cream py-14 sm:py-20">
+        <section className="bg-mj-page py-14 sm:py-20">
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
             <div className="mb-10 sm:mb-12 flex items-end justify-between">
               <div>
-                <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-taupe">
+                <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-text-muted">
                   Seleção
                 </p>
-                <h2 className="mt-2 font-julius text-2xl tracking-wider text-mj-black sm:text-3xl">
+                <h2 className="mt-2 font-julius text-2xl tracking-wider text-mj-text sm:text-3xl">
                   EM DESTAQUE
                 </h2>
               </div>
               <Link
                 href="/catalogo"
-                className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-taupe underline-offset-4 hover:underline"
+                className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-text-muted underline-offset-4 hover:underline"
               >
                 Ver todos
               </Link>
@@ -157,7 +157,7 @@ export default async function HomePage() {
 
             <ul className="grid grid-cols-2 sm:grid-cols-3 border-l border-t border-mj-border">
               {(featured as ProductType[]).map((product) => (
-                <li key={product.id} className="border-r border-b border-mj-border bg-mj-cream">
+                <li key={product.id} className="border-r border-b border-mj-border bg-mj-page">
                   <ProductCard product={product} />
                 </li>
               ))}
@@ -167,7 +167,7 @@ export default async function HomePage() {
       )}
 
       {/* ── Sobre ────────────────────────────────────────────── */}
-      <section className="bg-mj-white">
+      <section className="bg-mj-surface">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-2">
 

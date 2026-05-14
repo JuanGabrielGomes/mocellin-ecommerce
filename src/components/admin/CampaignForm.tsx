@@ -21,16 +21,77 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
   )
 }
 
-// Regra dos presets dark mode:
-// mj-black  → texto principal (CLARO em dark, ESCURO em light)
-// mj-white  → superfície de card
-// mj-cream  → fundo da página (o mais escuro em dark, o mais claro em light)
-// mj-beige  → destaque/accent visível
-// mj-brown  → cor de ação (botões, CTAs)
-// mj-taupe  → texto secundário/muted
-// mj-border → bordas
+function ColorField({
+  label,
+  hint,
+  value,
+  onChange,
+}: {
+  label: string
+  hint?: string
+  value: string
+  onChange: (v: string) => void
+}) {
+  return (
+    <div>
+      <label className="mb-1.5 block font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe">
+        {label}
+      </label>
+      <div className="flex items-center gap-2">
+        <input
+          type="color"
+          value={value || '#000000'}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-9 w-12 cursor-pointer border border-mj-border bg-transparent p-0.5"
+        />
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="#000000"
+          className="w-28 border border-mj-border bg-mj-cream px-3 py-2 font-mono text-xs text-mj-black focus:border-mj-black focus:outline-none"
+        />
+        {hint && <span className="font-mulish text-[10px] text-mj-taupe/60">{hint}</span>}
+      </div>
+    </div>
+  )
+}
 
-const PRESETS = [
+type SemanticColors = {
+  'mj-text': string
+  'mj-text-muted': string
+  'mj-text-accent': string
+  'mj-surface': string
+  'mj-page': string
+  'mj-overlay': string
+  'mj-btn': string
+  'mj-btn-text': string
+  'mj-btn-hover': string
+  'mj-border': string
+}
+
+const DEFAULT_COLORS: SemanticColors = {
+  'mj-text':        '#000000',
+  'mj-text-muted':  '#968A7A',
+  'mj-text-accent': '#D5B39A',
+  'mj-surface':     '#FFFFFF',
+  'mj-page':        '#FAFAF8',
+  'mj-overlay':     '#000000',
+  'mj-btn':         '#000000',
+  'mj-btn-text':    '#FFFFFF',
+  'mj-btn-hover':   '#7B4A34',
+  'mj-border':      '#E8E0D8',
+}
+
+const PRESETS: {
+  label: string
+  banner_bg: string
+  banner_text_color: string
+  hero_label: string
+  hero_title: string
+  hero_subtitle: string
+  colors: SemanticColors
+}[] = [
   {
     label: 'Dia dos Namorados',
     banner_bg: '#6B0F1A',
@@ -39,13 +100,16 @@ const PRESETS = [
     hero_title: 'Para quem você ama.',
     hero_subtitle: 'Joias que guardam o momento mais especial — escolhidas com o coração.',
     colors: {
-      'mj-black':  '#F5E0E8',   // texto → rosa-branco (legível no escuro)
-      'mj-white':  '#1A0010',   // card bg → bordo escuro
-      'mj-cream':  '#0D0008',   // page bg → quase preto
-      'mj-beige':  '#FF4466',   // accent → vermelho vivo
-      'mj-brown':  '#E0003A',   // botões → carmesim
-      'mj-taupe':  '#C090A0',   // texto secundário → rosa médio
-      'mj-border': '#3D0018',   // bordas → vinho escuro
+      'mj-text':        '#F5E0E8',
+      'mj-text-muted':  '#C090A0',
+      'mj-text-accent': '#FF4466',
+      'mj-surface':     '#1A0010',
+      'mj-page':        '#0D0008',
+      'mj-overlay':     '#0D0008',
+      'mj-btn':         '#E0003A',
+      'mj-btn-text':    '#FFFFFF',
+      'mj-btn-hover':   '#FF4466',
+      'mj-border':      '#3D0018',
     },
   },
   {
@@ -56,13 +120,16 @@ const PRESETS = [
     hero_title: 'Preços que não voltam.',
     hero_subtitle: 'Peças exclusivas com descontos especiais por tempo limitado.',
     colors: {
-      'mj-black':  '#F5F5F0',   // texto → quase branco
-      'mj-white':  '#141414',   // card bg → cinza escuro
-      'mj-cream':  '#0A0A0A',   // page bg → quase preto
-      'mj-beige':  '#FFD700',   // accent → ouro
-      'mj-brown':  '#C9922A',   // botões → ouro escuro
-      'mj-taupe':  '#888888',   // texto secundário → cinza médio
-      'mj-border': '#2A2A2A',   // bordas → escuro
+      'mj-text':        '#F5F5F0',
+      'mj-text-muted':  '#888888',
+      'mj-text-accent': '#FFD700',
+      'mj-surface':     '#141414',
+      'mj-page':        '#0A0A0A',
+      'mj-overlay':     '#0A0A0A',
+      'mj-btn':         '#C9922A',
+      'mj-btn-text':    '#111111',
+      'mj-btn-hover':   '#FFD700',
+      'mj-border':      '#2A2A2A',
     },
   },
   {
@@ -73,13 +140,16 @@ const PRESETS = [
     hero_title: 'O presente perfeito.',
     hero_subtitle: 'Joias e semijoias para tornar cada encontro inesquecível.',
     colors: {
-      'mj-black':  '#F5F0E0',   // texto → creme quente
-      'mj-white':  '#0D2018',   // card bg → verde escuro
-      'mj-cream':  '#081510',   // page bg → quase preto esverdeado
-      'mj-beige':  '#FFE4A0',   // accent → dourado quente
-      'mj-brown':  '#C84B0C',   // botões → vermelho natal
-      'mj-taupe':  '#8FAF95',   // texto secundário → verde muted
-      'mj-border': '#1A3D28',   // bordas → verde escuro
+      'mj-text':        '#F5F0E0',
+      'mj-text-muted':  '#8FAF95',
+      'mj-text-accent': '#FFE4A0',
+      'mj-surface':     '#0D2018',
+      'mj-page':        '#081510',
+      'mj-overlay':     '#081510',
+      'mj-btn':         '#C84B0C',
+      'mj-btn-text':    '#FFFFFF',
+      'mj-btn-hover':   '#E0600F',
+      'mj-border':      '#1A3D28',
     },
   },
   {
@@ -90,13 +160,16 @@ const PRESETS = [
     hero_title: 'Para ela, o melhor.',
     hero_subtitle: 'Uma joia para celebrar quem mais você ama.',
     colors: {
-      'mj-black':  '#3D1830',   // texto → malva escuro (legível no claro)
-      'mj-white':  '#FFF5FA',   // card bg → rosa muito suave
-      'mj-cream':  '#FFF0F8',   // page bg → rosa clarinho
-      'mj-beige':  '#D4608A',   // accent → rosa médio
-      'mj-brown':  '#8B2060',   // botões → malva escuro
-      'mj-taupe':  '#A06080',   // texto secundário → rosa muted
-      'mj-border': '#F4C0D8',   // bordas → rosa claro
+      'mj-text':        '#3D1830',
+      'mj-text-muted':  '#A06080',
+      'mj-text-accent': '#D4608A',
+      'mj-surface':     '#FFF5FA',
+      'mj-page':        '#FFF0F8',
+      'mj-overlay':     '#1A0010',
+      'mj-btn':         '#8B2060',
+      'mj-btn-text':    '#FFFFFF',
+      'mj-btn-hover':   '#B82880',
+      'mj-border':      '#F4C0D8',
     },
   },
   {
@@ -106,9 +179,25 @@ const PRESETS = [
     hero_label: '',
     hero_title: '',
     hero_subtitle: '',
-    colors: {},
+    colors: { ...DEFAULT_COLORS },
   },
 ]
+
+function colorsFromCampaign(c: CampaignType | undefined): SemanticColors {
+  if (!c?.colors) return { ...DEFAULT_COLORS }
+  return {
+    'mj-text':        String(c.colors['mj-text']        ?? DEFAULT_COLORS['mj-text']),
+    'mj-text-muted':  String(c.colors['mj-text-muted']  ?? DEFAULT_COLORS['mj-text-muted']),
+    'mj-text-accent': String(c.colors['mj-text-accent'] ?? DEFAULT_COLORS['mj-text-accent']),
+    'mj-surface':     String(c.colors['mj-surface']     ?? DEFAULT_COLORS['mj-surface']),
+    'mj-page':        String(c.colors['mj-page']        ?? DEFAULT_COLORS['mj-page']),
+    'mj-overlay':     String(c.colors['mj-overlay']     ?? DEFAULT_COLORS['mj-overlay']),
+    'mj-btn':         String(c.colors['mj-btn']         ?? DEFAULT_COLORS['mj-btn']),
+    'mj-btn-text':    String(c.colors['mj-btn-text']    ?? DEFAULT_COLORS['mj-btn-text']),
+    'mj-btn-hover':   String(c.colors['mj-btn-hover']   ?? DEFAULT_COLORS['mj-btn-hover']),
+    'mj-border':      String(c.colors['mj-border']      ?? DEFAULT_COLORS['mj-border']),
+  }
+}
 
 interface Props {
   campaign?: CampaignType
@@ -130,10 +219,7 @@ export function CampaignForm({ campaign }: Props) {
   const [heroLabel, setHeroLabel] = useState(campaign?.hero_label ?? '')
   const [heroTitle, setHeroTitle] = useState(campaign?.hero_title ?? '')
   const [heroSubtitle, setHeroSubtitle] = useState(campaign?.hero_subtitle ?? '')
-  const [colorsJson, setColorsJson] = useState(
-    campaign ? JSON.stringify(campaign.colors, null, 2) : '{}'
-  )
-  const [jsonError, setJsonError] = useState('')
+  const [colors, setColors] = useState<SemanticColors>(() => colorsFromCampaign(campaign))
 
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -144,6 +230,10 @@ export function CampaignForm({ campaign }: Props) {
     const t = setTimeout(() => router.replace('/admin/campanhas'), 1500)
     return () => clearTimeout(t)
   }, [success, router])
+
+  function setColor(key: keyof SemanticColors, value: string) {
+    setColors((prev) => ({ ...prev, [key]: value }))
+  }
 
   async function handleHeroImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -174,8 +264,7 @@ export function CampaignForm({ campaign }: Props) {
     setHeroLabel(p.hero_label)
     setHeroTitle(p.hero_title)
     setHeroSubtitle(p.hero_subtitle)
-    setColorsJson(JSON.stringify(p.colors, null, 2))
-    setJsonError('')
+    setColors(p.colors)
   }
 
   function autoSlug(value: string) {
@@ -189,15 +278,6 @@ export function CampaignForm({ campaign }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-
-    let colors: Record<string, string> = {}
-    try {
-      colors = JSON.parse(colorsJson)
-    } catch {
-      setJsonError('JSON de cores inválido.')
-      return
-    }
-
     setLoading(true)
     try {
       const supabase = createClient()
@@ -217,7 +297,6 @@ export function CampaignForm({ campaign }: Props) {
       }
 
       if (active) {
-        // Only one campaign can be active at a time
         await supabase
           .from('campaigns')
           .update({ active: false })
@@ -315,38 +394,8 @@ export function CampaignForm({ campaign }: Props) {
           </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Cor de fundo">
-              <div className="flex items-center gap-3">
-                <input
-                  type="color"
-                  value={bannerBg}
-                  onChange={(e) => setBannerBg(e.target.value)}
-                  className="h-10 w-14 cursor-pointer border border-mj-border bg-transparent p-1"
-                />
-                <input
-                  type="text"
-                  value={bannerBg}
-                  onChange={(e) => setBannerBg(e.target.value)}
-                  className={`${inputClass} flex-1`}
-                />
-              </div>
-            </Field>
-            <Field label="Cor do texto">
-              <div className="flex items-center gap-3">
-                <input
-                  type="color"
-                  value={bannerTextColor}
-                  onChange={(e) => setBannerTextColor(e.target.value)}
-                  className="h-10 w-14 cursor-pointer border border-mj-border bg-transparent p-1"
-                />
-                <input
-                  type="text"
-                  value={bannerTextColor}
-                  onChange={(e) => setBannerTextColor(e.target.value)}
-                  className={`${inputClass} flex-1`}
-                />
-              </div>
-            </Field>
+            <ColorField label="Fundo do banner" value={bannerBg} onChange={setBannerBg} />
+            <ColorField label="Texto do banner" value={bannerTextColor} onChange={setBannerTextColor} />
           </div>
 
           {bannerText && (
@@ -362,7 +411,7 @@ export function CampaignForm({ campaign }: Props) {
         </div>
       </section>
 
-      {/* Texto do Hero */}
+      {/* Hero */}
       <section className="border border-mj-border bg-mj-white p-6">
         <h2 className="mb-2 font-julius text-xl tracking-wider text-mj-black">Hero</h2>
         <p className="mb-5 font-mulish text-xs text-mj-taupe">
@@ -371,7 +420,6 @@ export function CampaignForm({ campaign }: Props) {
         <div className="space-y-4">
           <Field label="Imagem de fundo" hint="Faça upload ou cole uma URL (JPG, PNG, WEBP)">
             <div className="space-y-3">
-              {/* Preview */}
               {heroImage && (
                 <div className="relative h-32 w-full overflow-hidden border border-mj-border bg-mj-cream">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -385,7 +433,6 @@ export function CampaignForm({ campaign }: Props) {
                   </button>
                 </div>
               )}
-              {/* Upload */}
               <label className="flex cursor-pointer items-center gap-3 border border-dashed border-mj-border bg-mj-cream/40 px-4 py-3 transition-colors hover:border-mj-black hover:bg-mj-cream">
                 {heroImageUploading
                   ? <Loader2 size={16} className="animate-spin text-mj-taupe" />
@@ -403,7 +450,6 @@ export function CampaignForm({ campaign }: Props) {
                   disabled={heroImageUploading}
                 />
               </label>
-              {/* URL manual */}
               <input
                 type="url"
                 value={heroImage}
@@ -413,7 +459,7 @@ export function CampaignForm({ campaign }: Props) {
               />
             </div>
           </Field>
-          <Field label="Etiqueta (ex: Dia dos Namorados)" hint='Pequeno label acima do título — ex: "Nova Coleção"'>
+          <Field label='Etiqueta' hint='Pequeno label acima do título — ex: "Nova Coleção"'>
             <input
               type="text"
               value={heroLabel}
@@ -446,11 +492,11 @@ export function CampaignForm({ campaign }: Props) {
       {/* Tema de cores */}
       <section className="border border-mj-border bg-mj-white p-6">
         <h2 className="mb-2 font-julius text-xl tracking-wider text-mj-black">Tema de cores</h2>
-        <p className="mb-5 font-mulish text-xs text-mj-taupe">
-          Substitui as cores do site durante a campanha. Use os atalhos abaixo ou edite o JSON manualmente.
+        <p className="mb-4 font-mulish text-xs text-mj-taupe">
+          Define as cores do site durante a campanha. Use um atalho ou personalize abaixo.
         </p>
 
-        <div className="mb-4 flex flex-wrap gap-2">
+        <div className="mb-6 flex flex-wrap gap-2">
           {PRESETS.map((p, i) => (
             <button
               key={p.label}
@@ -463,16 +509,46 @@ export function CampaignForm({ campaign }: Props) {
           ))}
         </div>
 
-        <Field label="Cores (JSON)" hint='Chaves: "mj-black", "mj-brown", "mj-beige", "mj-taupe", "mj-cream", "mj-white", "mj-border"'>
-          <textarea
-            value={colorsJson}
-            onChange={(e) => { setColorsJson(e.target.value); setJsonError('') }}
-            rows={10}
-            spellCheck={false}
-            className={`${inputClass} resize-none font-mono text-xs`}
-          />
-          {jsonError && <p className="mt-1 font-mulish text-xs text-red-500">{jsonError}</p>}
-        </Field>
+        {/* Preview */}
+        <div
+          className="mb-6 flex items-center justify-between border px-5 py-4"
+          style={{
+            backgroundColor: colors['mj-surface'],
+            borderColor: colors['mj-border'],
+          }}
+        >
+          <div className="flex flex-col gap-1">
+            <span className="font-julius text-sm" style={{ color: colors['mj-text'] }}>
+              MOCELLIN JOIAS
+            </span>
+            <span className="font-mulish text-[10px] uppercase tracking-widest" style={{ color: colors['mj-text-muted'] }}>
+              Preview do tema
+            </span>
+          </div>
+          <button
+            type="button"
+            className="px-4 py-2 font-mulish text-xs uppercase tracking-widest"
+            style={{
+              backgroundColor: colors['mj-btn'],
+              color: colors['mj-btn-text'],
+            }}
+          >
+            Adicionar
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+          <ColorField label="Texto principal" value={colors['mj-text']} onChange={(v) => setColor('mj-text', v)} hint="títulos, preços" />
+          <ColorField label="Texto secundário" value={colors['mj-text-muted']} onChange={(v) => setColor('mj-text-muted', v)} hint="categorias, legendas" />
+          <ColorField label="Texto destaque" value={colors['mj-text-accent']} onChange={(v) => setColor('mj-text-accent', v)} hint="accent, italic" />
+          <ColorField label="Superfície" value={colors['mj-surface']} onChange={(v) => setColor('mj-surface', v)} hint="fundo de cards" />
+          <ColorField label="Fundo da página" value={colors['mj-page']} onChange={(v) => setColor('mj-page', v)} hint="fundo geral do site" />
+          <ColorField label="Overlay do hero" value={colors['mj-overlay']} onChange={(v) => setColor('mj-overlay', v)} hint="gradiente sobre a foto" />
+          <ColorField label="Botão — fundo" value={colors['mj-btn']} onChange={(v) => setColor('mj-btn', v)} />
+          <ColorField label="Botão — texto" value={colors['mj-btn-text']} onChange={(v) => setColor('mj-btn-text', v)} />
+          <ColorField label="Botão — hover" value={colors['mj-btn-hover']} onChange={(v) => setColor('mj-btn-hover', v)} />
+          <ColorField label="Bordas" value={colors['mj-border']} onChange={(v) => setColor('mj-border', v)} />
+        </div>
       </section>
 
       <div className="flex justify-end">

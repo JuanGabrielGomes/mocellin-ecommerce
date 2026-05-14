@@ -4,23 +4,31 @@
   --font-family-julius: var(--font-julius), serif;
   --font-family-mulish: var(--font-mulish), sans-serif;
 
-  /* Paleta oficial Mocellin Joias */
+  /* Paleta base Mocellin Joias */
   --color-mj-black:       #000000;
   --color-mj-beige:       #D5B39A;
   --color-mj-brown:       #7B4A34;
   --color-mj-brown-light: #8B5A44;
   --color-mj-teal:        #003430;
   --color-mj-taupe:       #968A7A;
-
-  /* Neutros de suporte */
   --color-mj-cream:       #FAFAF8;
   --color-mj-white:       #FFFFFF;
   --color-mj-border:      #E8E0D8;
-  --color-mj-muted:       #968A7A;
+
+  /* Variáveis semânticas — sobrescritas por campanhas */
+  --color-mj-text:        #000000;   /* texto principal */
+  --color-mj-text-muted:  #968A7A;   /* texto secundário */
+  --color-mj-text-accent: #D5B39A;   /* destaque/italic */
+  --color-mj-surface:     #FFFFFF;   /* fundo de cards e inputs */
+  --color-mj-page:        #FAFAF8;   /* fundo da página */
+  --color-mj-overlay:     #000000;   /* gradiente hero / backdrop */
+  --color-mj-btn:         #000000;   /* fundo do botão primário */
+  --color-mj-btn-text:    #FFFFFF;   /* texto do botão */
+  --color-mj-btn-hover:   #7B4A34;   /* hover do botão */
 }
 
 body {
-  background: var(--color-mj-cream);
-  color: var(--color-mj-black);
+  background: var(--color-mj-page);
+  color: var(--color-mj-text);
   font-family: var(--font-mulish), sans-serif;
 }

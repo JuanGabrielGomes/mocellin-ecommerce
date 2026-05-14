@@ -28,10 +28,10 @@ const INITIAL_FORM: CheckoutFormType = {
 type FormErrors = Partial<Record<keyof CheckoutFormType | 'frete', string>>
 
 const inputClass =
-  'w-full border border-mj-border bg-mj-white px-4 py-3 font-mulish text-sm text-mj-black placeholder:text-mj-taupe/50 focus:border-mj-black focus:outline-none transition-colors'
+  'w-full border border-mj-border bg-mj-surface px-4 py-3 font-mulish text-sm text-mj-text placeholder:text-mj-text-muted/50 focus:border-mj-btn focus:outline-none transition-colors'
 
 const labelClass =
-  'font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe'
+  'font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-text-muted'
 
 function PillGroup<T extends string>({
   options,
@@ -52,8 +52,8 @@ function PillGroup<T extends string>({
           className={[
             'flex-1 border py-3 font-mulish text-xs uppercase tracking-[0.1em] transition-colors',
             value === opt.value
-              ? 'border-mj-black bg-mj-black text-white'
-              : 'border-mj-border text-mj-taupe hover:border-mj-black hover:text-mj-black',
+              ? 'border-mj-btn bg-mj-btn text-mj-btn-text'
+              : 'border-mj-border text-mj-text-muted hover:border-mj-btn hover:text-mj-btn',
           ].join(' ')}
         >
           {opt.label}
@@ -154,10 +154,10 @@ export default function CheckoutPage() {
   return (
     <main className="pt-20 sm:pt-24">
       {/* Topo */}
-      <div className="border-b border-mj-border bg-mj-white px-5 py-10 sm:px-8">
+      <div className="border-b border-mj-border bg-mj-surface px-5 py-10 sm:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-taupe">Mocellin Joias</p>
-          <h1 className="mt-2 font-julius text-3xl tracking-wider text-mj-black sm:text-4xl">CHECKOUT</h1>
+          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-text-muted">Mocellin Joias</p>
+          <h1 className="mt-2 font-julius text-3xl tracking-wider text-mj-text sm:text-4xl">CHECKOUT</h1>
         </div>
       </div>
 
@@ -167,7 +167,7 @@ export default function CheckoutPage() {
           {/* ── Formulário ── */}
           <section className="flex flex-col gap-6">
             <div>
-              <h2 className="font-julius text-lg tracking-wider text-mj-black">DADOS DE CONTATO</h2>
+              <h2 className="font-julius text-lg tracking-wider text-mj-text">DADOS DE CONTATO</h2>
               <div className="mt-5 flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
                   <label className={labelClass}>Nome completo</label>
@@ -196,7 +196,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="border-t border-mj-border pt-6">
-              <h2 className="font-julius text-lg tracking-wider text-mj-black">ENTREGA</h2>
+              <h2 className="font-julius text-lg tracking-wider text-mj-text">ENTREGA</h2>
               <div className="mt-5 flex flex-col gap-4">
                 <PillGroup
                   options={[
@@ -322,14 +322,14 @@ export default function CheckoutPage() {
                     <span className={labelClass}>Opções de frete</span>
 
                     {freteLoading && (
-                      <div className="flex items-center gap-2 text-mj-taupe">
+                      <div className="flex items-center gap-2 text-mj-text-muted">
                         <Loader2 size={16} className="animate-spin" />
                         <span className="font-mulish text-sm">Calculando frete…</span>
                       </div>
                     )}
 
                     {!freteLoading && !freteError && opcoes.length === 0 && (
-                      <p className="font-mulish text-sm text-mj-taupe">
+                      <p className="font-mulish text-sm text-mj-text-muted">
                         Nenhuma transportadora disponível para este CEP.
                       </p>
                     )}
@@ -344,8 +344,8 @@ export default function CheckoutPage() {
                                 className={[
                                   'flex cursor-pointer items-center justify-between border p-4 transition-colors',
                                   selected
-                                    ? 'border-mj-black bg-mj-black/5'
-                                    : 'border-mj-border hover:border-mj-black',
+                                    ? 'border-mj-btn bg-mj-btn/5'
+                                    : 'border-mj-border hover:border-mj-btn',
                                 ].join(' ')}
                               >
                                 <div className="flex items-center gap-3">
@@ -357,13 +357,13 @@ export default function CheckoutPage() {
                                       setSelectedFreteId(opcao.id)
                                       setErrors((e) => ({ ...e, frete: undefined }))
                                     }}
-                                    className="accent-mj-black"
+                                    className="accent-mj-btn"
                                   />
                                   <div>
-                                    <p className="font-mulish text-sm font-medium text-mj-black">
+                                    <p className="font-mulish text-sm font-medium text-mj-text">
                                       {opcao.name} — {opcao.company}
                                     </p>
-                                    <p className="font-mulish text-xs text-mj-taupe">
+                                    <p className="font-mulish text-xs text-mj-text-muted">
                                       {opcao.delivery_time} {opcao.delivery_time === 1 ? 'dia útil' : 'dias úteis'}
                                     </p>
                                   </div>
@@ -387,7 +387,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="border-t border-mj-border pt-6">
-              <h2 className="font-julius text-lg tracking-wider text-mj-black">PAGAMENTO</h2>
+              <h2 className="font-julius text-lg tracking-wider text-mj-text">PAGAMENTO</h2>
               <div className="mt-5">
                 <PillGroup
                   options={[
@@ -403,17 +403,17 @@ export default function CheckoutPage() {
           </section>
 
           {/* ── Resumo ── */}
-          <section className="flex flex-col gap-4 border border-mj-border bg-mj-white p-6 h-fit lg:sticky lg:top-28">
-            <h2 className="font-julius text-lg tracking-wider text-mj-black">RESUMO DO PEDIDO</h2>
+          <section className="flex flex-col gap-4 border border-mj-border bg-mj-surface p-6 h-fit lg:sticky lg:top-28">
+            <h2 className="font-julius text-lg tracking-wider text-mj-text">RESUMO DO PEDIDO</h2>
 
             <ul className="flex flex-col divide-y divide-mj-border">
               {items.map(({ product, quantity }) => (
                 <li key={product.id} className="flex items-start justify-between gap-4 py-3">
-                  <span className="font-mulish text-sm leading-snug text-mj-black">
+                  <span className="font-mulish text-sm leading-snug text-mj-text">
                     {product.name}{' '}
-                    <span className="text-mj-taupe">×{quantity}</span>
+                    <span className="text-mj-text-muted">×{quantity}</span>
                   </span>
-                  <span className="shrink-0 font-mulish text-sm font-medium text-mj-black">
+                  <span className="shrink-0 font-mulish text-sm font-medium text-mj-text">
                     {brl.format(product.price * quantity)}
                   </span>
                 </li>
@@ -421,11 +421,11 @@ export default function CheckoutPage() {
             </ul>
 
             <div className="flex flex-col gap-2 border-t border-mj-border pt-4">
-              <div className="flex justify-between font-mulish text-sm text-mj-taupe">
+              <div className="flex justify-between font-mulish text-sm text-mj-text-muted">
                 <span>Subtotal</span>
                 <span>{brl.format(sub)}</span>
               </div>
-              <div className="flex justify-between font-mulish text-sm text-mj-taupe">
+              <div className="flex justify-between font-mulish text-sm text-mj-text-muted">
                 <span>Frete</span>
                 <span>
                   {shipping === null && form.delivery === 'retirada' && 'Retirada no local'}
@@ -433,7 +433,7 @@ export default function CheckoutPage() {
                   {shipping !== null && brl.format(shipping)}
                 </span>
               </div>
-              <div className="flex justify-between font-mulish text-base font-semibold text-mj-black">
+              <div className="flex justify-between font-mulish text-base font-semibold text-mj-text">
                 <span>Total</span>
                 <span>{brl.format(total)}</span>
               </div>
@@ -441,12 +441,12 @@ export default function CheckoutPage() {
 
             <button
               type="submit"
-              className="mt-2 w-full bg-mj-black py-4 font-mulish text-xs uppercase tracking-[0.2em] text-white transition-all hover:bg-mj-brown active:scale-[.98]"
+              className="mt-2 w-full bg-mj-btn py-4 font-mulish text-xs uppercase tracking-[0.2em] text-mj-btn-text transition-all hover:bg-mj-btn-hover active:scale-[.98]"
             >
               Confirmar via WhatsApp
             </button>
 
-            <p className="text-center font-mulish text-[11px] text-mj-taupe">
+            <p className="text-center font-mulish text-[11px] text-mj-text-muted">
               Você será redirecionado para o WhatsApp para finalizar.
             </p>
           </section>

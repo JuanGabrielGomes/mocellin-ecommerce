@@ -26,8 +26,8 @@ export function ProductActions({ product }: ProductActionsProps) {
         className={[
           'w-full py-4 font-mulish text-xs uppercase tracking-[0.15em] transition-all',
           esgotado
-            ? 'cursor-not-allowed bg-mj-border text-mj-taupe'
-            : 'bg-mj-black text-white hover:bg-mj-brown active:scale-[.98]',
+            ? 'cursor-not-allowed bg-mj-border text-mj-text-muted'
+            : 'bg-mj-btn text-mj-btn-text hover:bg-mj-btn-hover active:scale-[.98]',
         ].join(' ')}
       >
         {esgotado ? 'Esgotado' : 'Adicionar ao carrinho'}
@@ -36,7 +36,7 @@ export function ProductActions({ product }: ProductActionsProps) {
       {!esgotado && (
         <button
           onClick={handleBuyNow}
-          className="w-full border border-mj-black py-4 font-mulish text-xs uppercase tracking-[0.15em] text-mj-black transition-all hover:bg-mj-black hover:text-white active:scale-[.98]"
+          className="w-full border border-mj-btn py-4 font-mulish text-xs uppercase tracking-[0.15em] text-mj-btn transition-all hover:bg-mj-btn hover:text-mj-btn-text active:scale-[.98]"
         >
           Comprar agora
         </button>
