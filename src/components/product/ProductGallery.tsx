@@ -21,13 +21,13 @@ export function ProductGallery({ images, videos }: ProductGalleryProps) {
   const active = media[activeIndex]
 
   if (media.length === 0) {
-    return <div className="aspect-square w-full rounded-2xl bg-mocellin-beige" />
+    return <div className="aspect-square w-full bg-mj-cream" />
   }
 
   return (
     <div className="flex flex-col gap-3">
       {/* Principal */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-mocellin-cream">
+      <div className="relative aspect-square w-full overflow-hidden bg-mj-cream">
         {active.type === 'image' ? (
           <Image
             src={active.url}
@@ -56,16 +56,16 @@ export function ProductGallery({ images, videos }: ProductGalleryProps) {
               onClick={() => setActiveIndex(i)}
               aria-label={`Ver ${item.type === 'image' ? 'foto' : 'vídeo'} ${i + 1}`}
               className={[
-                'relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors',
+                'relative h-16 w-16 shrink-0 overflow-hidden border-2 transition-colors',
                 activeIndex === i
-                  ? 'border-mocellin-gold'
-                  : 'border-transparent hover:border-mocellin-beige',
+                  ? 'border-mj-black'
+                  : 'border-transparent hover:border-mj-border',
               ].join(' ')}
             >
               {item.type === 'image' ? (
                 <Image src={item.url} alt="" fill sizes="64px" className="object-cover" />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-mocellin-dark">
+                <div className="flex h-full w-full items-center justify-center bg-mj-black">
                   <Play size={18} className="text-white" fill="white" />
                 </div>
               )}

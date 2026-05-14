@@ -9,6 +9,7 @@ export interface ProductType {
   price: number
   category: ProductCategory
   status: ProductStatus
+  featured: boolean
   images: string[]
   videos: string[] | null
   details: string | null

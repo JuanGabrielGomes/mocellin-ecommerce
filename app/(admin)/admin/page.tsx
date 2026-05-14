@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { DeleteProductButton } from '@/components/admin/DeleteProductButton'
+import { FeaturedToggle } from '@/components/admin/FeaturedToggle'
 import type { ProductType } from '@/types'
 import { PlusCircle, Pencil } from 'lucide-react'
 
@@ -35,7 +36,7 @@ export default async function AdminProductsPage() {
 
   if (error) {
     return (
-      <p className="font-dm-sans text-sm text-red-500">
+      <p className="font-mulish text-sm text-red-500">
         Erro ao carregar produtos: {error.message}
       </p>
     )
@@ -46,14 +47,14 @@ export default async function AdminProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-cormorant text-3xl font-semibold text-mocellin-dark">Produtos</h1>
-          <p className="mt-1 font-dm-sans text-sm text-mocellin-dark/50">
+          <h1 className="font-julius text-3xl tracking-wider text-mj-black">Produtos</h1>
+          <p className="mt-1 font-mulish text-sm text-mj-taupe">
             {products.length} {products.length === 1 ? 'produto cadastrado' : 'produtos cadastrados'}
           </p>
         </div>
         <Link
           href="/admin/produtos/novo"
-          className="flex items-center gap-2 rounded-xl bg-mocellin-gold px-4 py-2.5 font-dm-sans text-sm font-medium text-white transition-all hover:bg-mocellin-gold-light active:scale-[.98]"
+          className="flex items-center gap-2 bg-mj-black px-4 py-2.5 font-mulish text-sm text-white transition-all hover:bg-mj-brown active:scale-[.98]"
         >
           <PlusCircle size={16} />
           Adicionar produto
@@ -62,39 +63,42 @@ export default async function AdminProductsPage() {
 
       {/* Table */}
       {products.length === 0 ? (
-        <div className="rounded-2xl border border-mocellin-beige bg-mocellin-white py-16 text-center">
-          <p className="font-dm-sans text-sm text-mocellin-dark/40">Nenhum produto cadastrado.</p>
+        <div className="border border-mj-border bg-mj-white py-16 text-center">
+          <p className="font-mulish text-sm text-mj-taupe">Nenhum produto cadastrado.</p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-mocellin-beige bg-mocellin-white">
+        <div className="overflow-hidden border border-mj-border bg-mj-white">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-mocellin-beige">
-                  <th className="px-4 py-3 font-dm-sans text-xs font-medium uppercase tracking-wider text-mocellin-dark/40">
+                <tr className="border-b border-mj-border">
+                  <th className="px-4 py-3 font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe">
                     Produto
                   </th>
-                  <th className="px-4 py-3 font-dm-sans text-xs font-medium uppercase tracking-wider text-mocellin-dark/40">
+                  <th className="px-4 py-3 font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe">
                     Categoria
                   </th>
-                  <th className="px-4 py-3 font-dm-sans text-xs font-medium uppercase tracking-wider text-mocellin-dark/40">
+                  <th className="px-4 py-3 font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe">
                     Preço
                   </th>
-                  <th className="px-4 py-3 font-dm-sans text-xs font-medium uppercase tracking-wider text-mocellin-dark/40">
+                  <th className="px-4 py-3 font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe">
                     Status
                   </th>
-                  <th className="px-4 py-3 font-dm-sans text-xs font-medium uppercase tracking-wider text-mocellin-dark/40">
+                  <th className="px-4 py-3 font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe">
+                    Destaque
+                  </th>
+                  <th className="px-4 py-3 font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe">
                     Ações
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-mocellin-beige">
+              <tbody className="divide-y divide-mj-border">
                 {products.map((product) => (
-                  <tr key={product.id} className="group transition-colors hover:bg-mocellin-cream/50">
+                  <tr key={product.id} className="transition-colors hover:bg-mj-cream/50">
                     {/* Imagem + nome */}
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-mocellin-beige">
+                        <div className="relative h-12 w-12 shrink-0 overflow-hidden bg-mj-beige/30">
                           {product.images[0] ? (
                             <Image
                               src={product.images[0]}
@@ -107,29 +111,34 @@ export default async function AdminProductsPage() {
                             <div className="h-full w-full" />
                           )}
                         </div>
-                        <span className="font-dm-sans text-sm font-medium text-mocellin-dark line-clamp-2 max-w-[200px]">
+                        <span className="font-mulish text-sm font-medium text-mj-black line-clamp-2 max-w-[200px]">
                           {product.name}
                         </span>
                       </div>
                     </td>
 
                     {/* Categoria */}
-                    <td className="px-4 py-3 font-dm-sans text-sm text-mocellin-dark/70">
+                    <td className="px-4 py-3 font-mulish text-sm text-mj-taupe">
                       {CATEGORY_LABEL[product.category] ?? product.category}
                     </td>
 
                     {/* Preço */}
-                    <td className="px-4 py-3 font-dm-sans text-sm text-mocellin-dark">
+                    <td className="px-4 py-3 font-mulish text-sm text-mj-black">
                       {product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </td>
 
                     {/* Status */}
                     <td className="px-4 py-3">
                       <span
-                        className={`inline-flex rounded-full px-2.5 py-1 font-dm-sans text-xs font-medium ${STATUS_STYLE[product.status] ?? ''}`}
+                        className={`inline-flex px-2.5 py-1 font-mulish text-xs font-medium ${STATUS_STYLE[product.status] ?? ''}`}
                       >
                         {STATUS_LABEL[product.status] ?? product.status}
                       </span>
+                    </td>
+
+                    {/* Destaque */}
+                    <td className="px-4 py-3">
+                      <FeaturedToggle id={product.id} featured={product.featured} />
                     </td>
 
                     {/* Ações */}
@@ -138,7 +147,7 @@ export default async function AdminProductsPage() {
                         <Link
                           href={`/admin/produtos/${product.id}`}
                           aria-label={`Editar ${product.name}`}
-                          className="rounded-lg p-2 text-mocellin-dark/40 transition-colors hover:bg-mocellin-beige hover:text-mocellin-dark"
+                          className="p-2 text-mj-taupe transition-colors hover:bg-mj-border hover:text-mj-black"
                         >
                           <Pencil size={16} />
                         </Link>

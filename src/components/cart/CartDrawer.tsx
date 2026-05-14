@@ -4,108 +4,72 @@ import Link from 'next/link'
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
 
-interface CartDrawerProps {
-  open: boolean
-  onClose: () => void
-}
-
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
-export function CartDrawer({ open, onClose }: CartDrawerProps) {
+export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { items, addItem, removeItem, updateQuantity, subtotal } = useCartStore()
 
   return (
     <>
       {open && (
-        <div
-          className="fixed inset-0 z-40 bg-mocellin-dark/50"
-          onClick={onClose}
-          aria-hidden="true"
-        />
+        <div className="fixed inset-0 z-40 bg-mj-black/40 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
       )}
 
       <aside
         aria-label="Carrinho"
         className={[
-          'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-mocellin-white shadow-xl',
-          'transition-transform duration-300 ease-in-out',
-          'sm:max-w-md',
+          'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-mj-white shadow-2xl',
+          'transition-transform duration-300 ease-in-out sm:max-w-md',
           open ? 'translate-x-0' : 'translate-x-full',
         ].join(' ')}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-mocellin-beige px-4 py-4">
-          <h2 className="font-cormorant text-2xl font-semibold text-mocellin-dark">
-            Carrinho
-          </h2>
-          <button
-            onClick={onClose}
-            aria-label="Fechar carrinho"
-            className="rounded-full p-1 text-mocellin-dark/50 transition-colors hover:text-mocellin-dark"
-          >
-            <X size={22} />
+        <div className="flex items-center justify-between border-b border-mj-border px-6 py-5">
+          <h2 className="font-julius text-lg tracking-wider text-mj-black">CARRINHO</h2>
+          <button onClick={onClose} aria-label="Fechar carrinho" className="p-1 text-mj-taupe transition-colors hover:text-mj-black">
+            <X size={20} strokeWidth={1.5} />
           </button>
         </div>
 
         {/* Conteúdo */}
         {items.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-mocellin-dark/30">
-            <ShoppingBag size={48} strokeWidth={1.25} />
-            <p className="font-dm-sans text-sm">Seu carrinho está vazio</p>
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 text-mj-taupe">
+            <ShoppingBag size={44} strokeWidth={1} />
+            <p className="font-mulish text-sm">Seu carrinho está vazio</p>
+            <button onClick={onClose} className="font-mulish text-xs uppercase tracking-[0.15em] underline underline-offset-4">
+              Continuar comprando
+            </button>
           </div>
         ) : (
           <>
-            <ul className="flex-1 divide-y divide-mocellin-beige overflow-y-auto px-4">
+            <ul className="flex-1 divide-y divide-mj-border overflow-y-auto px-6">
               {items.map(({ product, quantity }) => (
-                <li key={product.id} className="flex gap-3 py-4">
+                <li key={product.id} className="flex gap-4 py-5">
                   {product.images[0] ? (
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="h-20 w-20 shrink-0 rounded-xl object-cover"
-                    />
+                    <img src={product.images[0]} alt={product.name} className="h-20 w-20 shrink-0 bg-mj-cream object-cover" />
                   ) : (
-                    <div className="h-20 w-20 shrink-0 rounded-xl bg-mocellin-beige" />
+                    <div className="h-20 w-20 shrink-0 bg-mj-beige/30" />
                   )}
 
                   <div className="flex flex-1 flex-col justify-between">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="font-dm-sans text-sm font-medium leading-snug text-mocellin-dark">
-                        {product.name}
-                      </p>
-                      <button
-                        onClick={() => removeItem(product.id)}
-                        aria-label={`Remover ${product.name}`}
-                        className="shrink-0 rounded p-0.5 text-mocellin-dark/30 transition-colors hover:text-red-400"
-                      >
-                        <Trash2 size={15} />
+                      <p className="font-mulish text-sm font-medium leading-snug text-mj-black">{product.name}</p>
+                      <button onClick={() => removeItem(product.id)} aria-label={`Remover ${product.name}`} className="shrink-0 p-0.5 text-mj-taupe transition-colors hover:text-red-500">
+                        <Trash2 size={14} strokeWidth={1.5} />
                       </button>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 rounded-full border border-mocellin-beige px-2 py-1">
-                        <button
-                          onClick={() => updateQuantity(product.id, quantity - 1)}
-                          aria-label="Diminuir quantidade"
-                          className="text-mocellin-dark/50 transition-colors hover:text-mocellin-dark"
-                        >
-                          <Minus size={14} />
+                      <div className="flex items-center gap-3 border border-mj-border px-3 py-1.5">
+                        <button onClick={() => updateQuantity(product.id, quantity - 1)} aria-label="Diminuir" className="text-mj-taupe hover:text-mj-black">
+                          <Minus size={13} />
                         </button>
-                        <span className="w-5 text-center font-dm-sans text-sm tabular-nums text-mocellin-dark">
-                          {quantity}
-                        </span>
-                        <button
-                          onClick={() => addItem(product)}
-                          aria-label="Aumentar quantidade"
-                          className="text-mocellin-dark/50 transition-colors hover:text-mocellin-dark"
-                        >
-                          <Plus size={14} />
+                        <span className="w-4 text-center font-mulish text-sm tabular-nums">{quantity}</span>
+                        <button onClick={() => addItem(product)} aria-label="Aumentar" className="text-mj-taupe hover:text-mj-black">
+                          <Plus size={13} />
                         </button>
                       </div>
-
-                      <p className="font-dm-sans text-sm font-semibold text-mocellin-dark">
-                        {brl.format(product.price * quantity)}
-                      </p>
+                      <p className="font-mulish text-sm font-medium text-mj-black">{brl.format(product.price * quantity)}</p>
                     </div>
                   </div>
                 </li>
@@ -113,20 +77,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             </ul>
 
             {/* Footer */}
-            <div className="space-y-4 border-t border-mocellin-beige px-4 py-5">
+            <div className="space-y-4 border-t border-mj-border px-6 py-6">
               <div className="flex justify-between">
-                <span className="font-dm-sans text-sm text-mocellin-dark/50">Subtotal</span>
-                <span className="font-dm-sans text-sm font-semibold text-mocellin-dark">
-                  {brl.format(subtotal())}
-                </span>
+                <span className="font-mulish text-xs uppercase tracking-[0.1em] text-mj-taupe">Subtotal</span>
+                <span className="font-mulish text-sm font-medium text-mj-black">{brl.format(subtotal())}</span>
               </div>
-              <p className="font-dm-sans text-xs text-mocellin-dark/40">
-                Frete e forma de pagamento calculados no próximo passo.
-              </p>
+              <p className="font-mulish text-[11px] text-mj-taupe">Frete calculado no próximo passo.</p>
               <Link
                 href="/checkout"
                 onClick={onClose}
-                className="block w-full rounded-xl bg-mocellin-gold py-3 text-center font-dm-sans text-sm font-medium text-white transition-all hover:bg-mocellin-gold-light active:scale-[.98]"
+                className="block w-full bg-mj-black py-4 text-center font-mulish text-xs uppercase tracking-[0.2em] text-white transition-all hover:bg-mj-brown active:scale-[.98]"
               >
                 Finalizar pedido
               </Link>

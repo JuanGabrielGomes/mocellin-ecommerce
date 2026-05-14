@@ -14,25 +14,25 @@ export function Accordion({ title, children, defaultOpen = false }: AccordionPro
   const [open, setOpen] = useState(defaultOpen)
 
   return (
-    <div className="border-b border-mocellin-beige">
+    <div className="border-b border-mj-border">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         className="flex w-full items-center justify-between py-4 text-left"
       >
-        <span className="font-dm-sans text-sm font-medium text-mocellin-dark">{title}</span>
+        <span className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-black">{title}</span>
         <ChevronDown
-          size={18}
+          size={16}
           aria-hidden="true"
           className={[
-            'shrink-0 text-mocellin-dark/50 transition-transform duration-200',
+            'shrink-0 text-mj-taupe transition-transform duration-200',
             open ? 'rotate-180' : '',
           ].join(' ')}
         />
       </button>
 
-      {/* Grid trick: anima grid-template-rows de 0fr → 1fr sem JS de medição */}
+      {/* Grid trick: animates grid-template-rows from 0fr → 1fr without JS measurement */}
       <div
         className={[
           'grid transition-[grid-template-rows] duration-200 ease-in-out',
@@ -40,7 +40,7 @@ export function Accordion({ title, children, defaultOpen = false }: AccordionPro
         ].join(' ')}
       >
         <div className="overflow-hidden">
-          <div className="pb-4 font-dm-sans text-sm leading-relaxed text-mocellin-dark/70">
+          <div className="pb-4 font-mulish text-sm leading-relaxed text-mj-taupe">
             {children}
           </div>
         </div>

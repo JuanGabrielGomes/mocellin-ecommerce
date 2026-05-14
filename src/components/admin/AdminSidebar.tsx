@@ -32,10 +32,10 @@ export function AdminSidebar() {
               key={href}
               href={href}
               onClick={onClick}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 font-dm-sans text-sm transition-colors ${
+              className={`flex items-center gap-3 px-3 py-2.5 font-mulish text-sm transition-colors ${
                 active
-                  ? 'bg-mocellin-gold/10 text-mocellin-gold font-medium'
-                  : 'text-mocellin-dark/60 hover:bg-mocellin-beige hover:text-mocellin-dark'
+                  ? 'bg-mj-black text-white'
+                  : 'text-mj-taupe hover:bg-mj-border hover:text-mj-black'
               }`}
             >
               <Icon size={16} />
@@ -50,7 +50,7 @@ export function AdminSidebar() {
   const SignOutButton = ({ onClick }: { onClick?: () => void }) => (
     <button
       onClick={() => { onClick?.(); handleSignOut() }}
-      className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 font-dm-sans text-sm text-mocellin-dark/50 transition-colors hover:bg-mocellin-beige hover:text-mocellin-dark"
+      className="flex w-full items-center gap-3 px-3 py-2.5 font-mulish text-sm text-mj-taupe transition-colors hover:bg-mj-border hover:text-mj-black"
     >
       <LogOut size={16} />
       Sair
@@ -60,12 +60,10 @@ export function AdminSidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex h-screen w-56 shrink-0 flex-col border-r border-mocellin-beige bg-mocellin-white px-4 py-6 sticky top-0">
+      <aside className="hidden md:flex h-screen w-56 shrink-0 flex-col border-r border-mj-border bg-mj-white px-4 py-6 sticky top-0">
         <div className="mb-8 px-3">
-          <p className="font-cormorant text-xl font-semibold tracking-widest text-mocellin-dark">
-            MOCELLIN JOIAS
-          </p>
-          <p className="mt-0.5 font-dm-sans text-[10px] uppercase tracking-widest text-mocellin-dark/40">
+          <p className="font-julius text-lg tracking-[0.2em] text-mj-black">MOCELLIN JOIAS</p>
+          <p className="mt-0.5 font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe">
             Painel admin
           </p>
         </div>
@@ -78,14 +76,12 @@ export function AdminSidebar() {
       </aside>
 
       {/* Mobile top bar */}
-      <header className="md:hidden sticky top-0 z-40 flex items-center justify-between border-b border-mocellin-beige bg-mocellin-white px-4 py-3">
-        <p className="font-cormorant text-lg font-semibold tracking-widest text-mocellin-dark">
-          MOCELLIN JOIAS
-        </p>
+      <header className="md:hidden sticky top-0 z-40 flex items-center justify-between border-b border-mj-border bg-mj-white px-4 py-3">
+        <p className="font-julius text-base tracking-[0.2em] text-mj-black">MOCELLIN JOIAS</p>
         <button
           onClick={() => setMobileOpen((v) => !v)}
           aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
-          className="rounded-lg p-1.5 text-mocellin-dark/60 transition-colors hover:bg-mocellin-beige"
+          className="p-1.5 text-mj-taupe transition-colors hover:text-mj-black"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -93,9 +89,9 @@ export function AdminSidebar() {
 
       {/* Mobile dropdown menu */}
       {mobileOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[49px] z-30 border-b border-mocellin-beige bg-mocellin-white px-4 py-4 shadow-md">
+        <div className="md:hidden fixed inset-x-0 top-[49px] z-30 border-b border-mj-border bg-mj-white px-4 py-4 shadow-md">
           <NavLinks onClick={() => setMobileOpen(false)} />
-          <div className="mt-4 border-t border-mocellin-beige pt-4">
+          <div className="mt-4 border-t border-mj-border pt-4">
             <SignOutButton onClick={() => setMobileOpen(false)} />
           </div>
         </div>

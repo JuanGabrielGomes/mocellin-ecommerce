@@ -1,37 +1,35 @@
-import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Julius_Sans_One, Mulish } from 'next/font/google'
+import './globals.css'
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400", "600"],
-});
+const julius = Julius_Sans_One({
+  variable: '--font-julius',
+  subsets: ['latin'],
+  weight: '400',
+})
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-});
+const mulish = Mulish({
+  variable: '--font-mulish',
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600'],
+})
 
 export const metadata: Metadata = {
-  title: "Mocellin Joias",
-  description: "Joias exclusivas com design atemporal.",
-};
+  title: 'Mocellin Joias',
+  description: 'Joias e semijoias com design atemporal.',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="pt-BR"
-      className={`${cormorant.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${julius.variable} ${mulish.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-mocellin-cream font-dm-sans">
+      <body className="min-h-full flex flex-col bg-mj-cream font-mulish">
         {children}
       </body>
     </html>
-  );
+  )
 }

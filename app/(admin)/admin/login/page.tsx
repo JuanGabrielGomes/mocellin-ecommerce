@@ -27,23 +27,21 @@ export default function AdminLoginPage() {
   }
 
   const inputClass =
-    'w-full rounded-lg border border-mocellin-beige bg-mocellin-cream px-4 py-3 font-dm-sans text-sm text-mocellin-dark placeholder:text-mocellin-dark/30 focus:border-mocellin-gold focus:outline-none transition-colors'
+    'w-full border border-mj-border bg-mj-cream px-4 py-3 font-mulish text-sm text-mj-black placeholder:text-mj-taupe/50 focus:border-mj-black focus:outline-none transition-colors'
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-mocellin-cream px-4">
-      <div className="w-full max-w-sm rounded-2xl bg-mocellin-white p-8 shadow-sm">
+    <main className="flex min-h-screen items-center justify-center bg-mj-cream px-4">
+      <div className="w-full max-w-sm border border-mj-border bg-mj-white p-8">
         <div className="mb-8 text-center">
-          <p className="font-cormorant text-2xl font-semibold tracking-widest text-mocellin-dark">
-            MOCELLIN JOIAS
-          </p>
-          <p className="mt-1 font-dm-sans text-xs uppercase tracking-widest text-mocellin-dark/40">
+          <p className="font-julius text-xl tracking-[0.25em] text-mj-black">MOCELLIN JOIAS</p>
+          <p className="mt-1 font-mulish text-[10px] uppercase tracking-[0.25em] text-mj-taupe">
             Área restrita
           </p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="font-dm-sans text-xs uppercase tracking-widest text-mocellin-dark/50">
+            <label className="font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe">
               E-mail
             </label>
             <input
@@ -58,7 +56,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="font-dm-sans text-xs uppercase tracking-widest text-mocellin-dark/50">
+            <label className="font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe">
               Senha
             </label>
             <input
@@ -73,13 +71,13 @@ export default function AdminLoginPage() {
           </div>
 
           {error && (
-            <p className="font-dm-sans text-sm text-red-500">{error}</p>
+            <p className="font-mulish text-sm text-red-500">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 w-full rounded-xl bg-mocellin-gold py-3.5 font-dm-sans text-sm font-medium text-white transition-all hover:bg-mocellin-gold-light active:scale-[.98] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="mt-2 w-full bg-mj-black py-3.5 font-mulish text-xs uppercase tracking-[0.2em] text-white transition-all hover:bg-mj-brown active:scale-[.98] disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? 'Entrando…' : 'Entrar'}
           </button>

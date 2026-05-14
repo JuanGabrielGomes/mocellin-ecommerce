@@ -1,27 +1,26 @@
 @import "tailwindcss";
 
-:root {
-  --background: #FAF6F1;
-  --foreground: #1A1A1A;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --font-family-julius: var(--font-julius), serif;
+  --font-family-mulish: var(--font-mulish), sans-serif;
 
-  --font-family-cormorant: var(--font-cormorant), serif;
-  --font-family-dm-sans: var(--font-dm-sans), sans-serif;
+  /* Paleta oficial Mocellin Joias */
+  --color-mj-black:       #000000;
+  --color-mj-beige:       #D5B39A;
+  --color-mj-brown:       #7B4A34;
+  --color-mj-brown-light: #8B5A44;
+  --color-mj-teal:        #003430;
+  --color-mj-taupe:       #968A7A;
 
-  --color-mocellin-cream: #FAF6F1;
-  --color-mocellin-beige: #F0E8DC;
-  --color-mocellin-gold: #C9A84C;
-  --color-mocellin-gold-light: #D4AF6A;
-  --color-mocellin-dark: #1A1A1A;
-  --color-mocellin-white: #FDFAF7;
+  /* Neutros de suporte */
+  --color-mj-cream:       #FAFAF8;
+  --color-mj-white:       #FFFFFF;
+  --color-mj-border:      #E8E0D8;
+  --color-mj-muted:       #968A7A;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-dm-sans), sans-serif;
+  background: var(--color-mj-cream);
+  color: var(--color-mj-black);
+  font-family: var(--font-mulish), sans-serif;
 }

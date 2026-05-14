@@ -27,13 +27,11 @@ const INITIAL_FORM: CheckoutFormType = {
 
 type FormErrors = Partial<Record<keyof CheckoutFormType | 'frete', string>>
 
-// ── helpers ────────────────────────────────────────────────────────────────
-
 const inputClass =
-  'w-full rounded-lg border border-mocellin-beige bg-mocellin-white px-4 py-3 font-dm-sans text-sm text-mocellin-dark placeholder:text-mocellin-dark/30 focus:border-mocellin-gold focus:outline-none transition-colors'
+  'w-full border border-mj-border bg-mj-white px-4 py-3 font-mulish text-sm text-mj-black placeholder:text-mj-taupe/50 focus:border-mj-black focus:outline-none transition-colors'
 
 const labelClass =
-  'font-dm-sans text-xs uppercase tracking-widest text-mocellin-dark/50'
+  'font-mulish text-[10px] uppercase tracking-[0.2em] text-mj-taupe'
 
 function PillGroup<T extends string>({
   options,
@@ -52,10 +50,10 @@ function PillGroup<T extends string>({
           type="button"
           onClick={() => onChange(opt.value)}
           className={[
-            'flex-1 rounded-xl border py-3 font-dm-sans text-sm font-medium transition-colors',
+            'flex-1 border py-3 font-mulish text-xs uppercase tracking-[0.1em] transition-colors',
             value === opt.value
-              ? 'border-mocellin-gold bg-mocellin-gold text-white'
-              : 'border-mocellin-beige text-mocellin-dark hover:border-mocellin-gold',
+              ? 'border-mj-black bg-mj-black text-white'
+              : 'border-mj-border text-mj-taupe hover:border-mj-black hover:text-mj-black',
           ].join(' ')}
         >
           {opt.label}
@@ -64,8 +62,6 @@ function PillGroup<T extends string>({
     </div>
   )
 }
-
-// ── page ───────────────────────────────────────────────────────────────────
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -83,7 +79,6 @@ export default function CheckoutPage() {
 
   useEffect(() => setMounted(true), [])
 
-  // Auto-fill address when ViaCEP responds
   useEffect(() => {
     if (cepLoading || cepError) return
     if (!street && !neighborhood && !city && !state) return
@@ -100,7 +95,6 @@ export default function CheckoutPage() {
     if (mounted && items.length === 0) router.replace('/catalogo')
   }, [mounted, items.length, router])
 
-  // Limpa frete e endereço sempre que o CEP ou modalidade muda
   useEffect(() => {
     setSelectedFreteId(null)
     setErrors((e) => ({ ...e, frete: undefined }))
@@ -158,294 +152,305 @@ export default function CheckoutPage() {
   const showFreteSection = form.delivery === 'envio' && cepDigits.length === 8
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="font-cormorant text-4xl font-semibold text-mocellin-dark">Checkout</h1>
+    <main className="pt-20 sm:pt-24">
+      {/* Topo */}
+      <div className="border-b border-mj-border bg-mj-white px-5 py-10 sm:px-8">
+        <div className="mx-auto max-w-7xl">
+          <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-taupe">Mocellin Joias</p>
+          <h1 className="mt-2 font-julius text-3xl tracking-wider text-mj-black sm:text-4xl">CHECKOUT</h1>
+        </div>
+      </div>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <form onSubmit={handleSubmit} noValidate className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_380px]">
 
-        {/* ── Formulário ── */}
-        <section className="flex flex-col gap-5">
-
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass}>Nome completo</label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={(e) => setField('name', e.target.value)}
-              placeholder="Seu nome"
-              className={inputClass}
-            />
-            {errors.name && <p className="font-dm-sans text-xs text-red-500">{errors.name}</p>}
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass}>Telefone / WhatsApp</label>
-            <input
-              type="tel"
-              value={form.phone}
-              onChange={(e) => setField('phone', e.target.value)}
-              placeholder="(00) 00000-0000"
-              className={inputClass}
-            />
-            {errors.phone && <p className="font-dm-sans text-xs text-red-500">{errors.phone}</p>}
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <span className={labelClass}>Entrega</span>
-            <PillGroup
-              options={[
-                { value: 'envio', label: 'Envio' },
-                { value: 'retirada', label: 'Retirada no local' },
-              ]}
-              value={form.delivery}
-              onChange={(v) => setField('delivery', v)}
-            />
-          </div>
-
-          {form.delivery === 'envio' && (
-            <>
-              <div className="flex flex-col gap-1.5">
-                <label className={labelClass}>CEP</label>
-                <input
-                  type="text"
-                  value={form.cep}
-                  onChange={(e) => setField('cep', e.target.value)}
-                  placeholder="00000-000"
-                  maxLength={9}
-                  className={inputClass}
-                />
-                {errors.cep && <p className="font-dm-sans text-xs text-red-500">{errors.cep}</p>}
-                {cepError && !errors.cep && (
-                  <p className="font-dm-sans text-xs text-red-500">{cepError}</p>
-                )}
-                {freteError && !errors.cep && !cepError && (
-                  <p className="font-dm-sans text-xs text-red-500">{freteError}</p>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className={labelClass}>
-                  Rua
-                  {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
-                </label>
-                <input
-                  type="text"
-                  value={form.street}
-                  onChange={(e) => setField('street', e.target.value)}
-                  placeholder="Nome da rua"
-                  className={cepLoading ? `${inputClass} opacity-50` : inputClass}
-                />
-                {errors.street && <p className="font-dm-sans text-xs text-red-500">{errors.street}</p>}
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+          {/* ── Formulário ── */}
+          <section className="flex flex-col gap-6">
+            <div>
+              <h2 className="font-julius text-lg tracking-wider text-mj-black">DADOS DE CONTATO</h2>
+              <div className="mt-5 flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className={labelClass}>Número</label>
+                  <label className={labelClass}>Nome completo</label>
                   <input
                     type="text"
-                    value={form.number}
-                    onChange={(e) => setField('number', e.target.value)}
-                    placeholder="123"
+                    value={form.name}
+                    onChange={(e) => setField('name', e.target.value)}
+                    placeholder="Seu nome"
                     className={inputClass}
                   />
-                  {errors.number && <p className="font-dm-sans text-xs text-red-500">{errors.number}</p>}
+                  {errors.name && <p className="font-mulish text-xs text-red-500">{errors.name}</p>}
                 </div>
+
                 <div className="flex flex-col gap-1.5">
-                  <label className={labelClass}>Complemento</label>
+                  <label className={labelClass}>Telefone / WhatsApp</label>
                   <input
-                    type="text"
-                    value={form.complement}
-                    onChange={(e) => setField('complement', e.target.value)}
-                    placeholder="Apto, bloco…"
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => setField('phone', e.target.value)}
+                    placeholder="(00) 00000-0000"
                     className={inputClass}
                   />
+                  {errors.phone && <p className="font-mulish text-xs text-red-500">{errors.phone}</p>}
                 </div>
               </div>
+            </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className={labelClass}>
-                  Bairro
-                  {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
-                </label>
-                <input
-                  type="text"
-                  value={form.neighborhood}
-                  onChange={(e) => setField('neighborhood', e.target.value)}
-                  placeholder="Nome do bairro"
-                  className={cepLoading ? `${inputClass} opacity-50` : inputClass}
+            <div className="border-t border-mj-border pt-6">
+              <h2 className="font-julius text-lg tracking-wider text-mj-black">ENTREGA</h2>
+              <div className="mt-5 flex flex-col gap-4">
+                <PillGroup
+                  options={[
+                    { value: 'envio', label: 'Envio' },
+                    { value: 'retirada', label: 'Retirada no local' },
+                  ]}
+                  value={form.delivery}
+                  onChange={(v) => setField('delivery', v)}
                 />
-                {errors.neighborhood && <p className="font-dm-sans text-xs text-red-500">{errors.neighborhood}</p>}
-              </div>
 
-              <div className="grid grid-cols-3 gap-3">
-                <div className="col-span-2 flex flex-col gap-1.5">
-                  <label className={labelClass}>
-                    Cidade
-                    {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
-                  </label>
-                  <input
-                    type="text"
-                    value={form.city}
-                    onChange={(e) => setField('city', e.target.value)}
-                    placeholder="Cidade"
-                    className={cepLoading ? `${inputClass} opacity-50` : inputClass}
-                  />
-                  {errors.city && <p className="font-dm-sans text-xs text-red-500">{errors.city}</p>}
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className={labelClass}>
-                    UF
-                    {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
-                  </label>
-                  <input
-                    type="text"
-                    value={form.state}
-                    onChange={(e) => setField('state', e.target.value)}
-                    placeholder="RS"
-                    maxLength={2}
-                    className={cepLoading ? `${inputClass} opacity-50` : inputClass}
-                  />
-                  {errors.state && <p className="font-dm-sans text-xs text-red-500">{errors.state}</p>}
-                </div>
-              </div>
-            </>
-          )}
+                {form.delivery === 'envio' && (
+                  <>
+                    <div className="flex flex-col gap-1.5">
+                      <label className={labelClass}>CEP</label>
+                      <input
+                        type="text"
+                        value={form.cep}
+                        onChange={(e) => setField('cep', e.target.value)}
+                        placeholder="00000-000"
+                        maxLength={9}
+                        className={inputClass}
+                      />
+                      {errors.cep && <p className="font-mulish text-xs text-red-500">{errors.cep}</p>}
+                      {cepError && !errors.cep && (
+                        <p className="font-mulish text-xs text-red-500">{cepError}</p>
+                      )}
+                      {freteError && !errors.cep && !cepError && (
+                        <p className="font-mulish text-xs text-red-500">{freteError}</p>
+                      )}
+                    </div>
 
-          {/* ── Opções de frete ── */}
-          {showFreteSection && (
-            <div className="flex flex-col gap-2">
-              <span className={labelClass}>Opções de frete</span>
+                    <div className="flex flex-col gap-1.5">
+                      <label className={labelClass}>
+                        Rua
+                        {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
+                      </label>
+                      <input
+                        type="text"
+                        value={form.street}
+                        onChange={(e) => setField('street', e.target.value)}
+                        placeholder="Nome da rua"
+                        className={cepLoading ? `${inputClass} opacity-50` : inputClass}
+                      />
+                      {errors.street && <p className="font-mulish text-xs text-red-500">{errors.street}</p>}
+                    </div>
 
-              {freteLoading && (
-                <div className="flex items-center gap-2 text-mocellin-dark/50">
-                  <Loader2 size={16} className="animate-spin" />
-                  <span className="font-dm-sans text-sm">Calculando frete…</span>
-                </div>
-              )}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="flex flex-col gap-1.5">
+                        <label className={labelClass}>Número</label>
+                        <input
+                          type="text"
+                          value={form.number}
+                          onChange={(e) => setField('number', e.target.value)}
+                          placeholder="123"
+                          className={inputClass}
+                        />
+                        {errors.number && <p className="font-mulish text-xs text-red-500">{errors.number}</p>}
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className={labelClass}>Complemento</label>
+                        <input
+                          type="text"
+                          value={form.complement}
+                          onChange={(e) => setField('complement', e.target.value)}
+                          placeholder="Apto, bloco…"
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
 
-              {!freteLoading && !freteError && opcoes.length === 0 && (
-                <p className="font-dm-sans text-sm text-mocellin-dark/50">
-                  Nenhuma transportadora disponível para este CEP.
-                </p>
-              )}
+                    <div className="flex flex-col gap-1.5">
+                      <label className={labelClass}>
+                        Bairro
+                        {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
+                      </label>
+                      <input
+                        type="text"
+                        value={form.neighborhood}
+                        onChange={(e) => setField('neighborhood', e.target.value)}
+                        placeholder="Nome do bairro"
+                        className={cepLoading ? `${inputClass} opacity-50` : inputClass}
+                      />
+                      {errors.neighborhood && <p className="font-mulish text-xs text-red-500">{errors.neighborhood}</p>}
+                    </div>
 
-              {!freteLoading && opcoes.length > 0 && (
-                <ul className="flex flex-col gap-2">
-                  {opcoes.map((opcao) => {
-                    const selected = selectedFreteId === opcao.id
-                    return (
-                      <li key={String(opcao.id)}>
-                        <label
-                          className={[
-                            'flex cursor-pointer items-center justify-between rounded-xl border p-4 transition-colors',
-                            selected
-                              ? 'border-mocellin-gold bg-mocellin-gold/5'
-                              : 'border-mocellin-beige hover:border-mocellin-gold/50',
-                          ].join(' ')}
-                        >
-                          <div className="flex items-center gap-3">
-                            <input
-                              type="radio"
-                              name="frete"
-                              checked={selected}
-                              onChange={() => {
-                                setSelectedFreteId(opcao.id)
-                                setErrors((e) => ({ ...e, frete: undefined }))
-                              }}
-                              className="accent-mocellin-gold"
-                            />
-                            <div>
-                              <p className="font-dm-sans text-sm font-medium text-mocellin-dark">
-                                {opcao.name} — {opcao.company}
-                              </p>
-                              <p className="font-dm-sans text-xs text-mocellin-dark/50">
-                                {opcao.delivery_time} {opcao.delivery_time === 1 ? 'dia útil' : 'dias úteis'}
-                              </p>
-                            </div>
-                          </div>
-                          <span className="font-dm-sans text-sm font-semibold text-mocellin-dark">
-                            {brl.format(opcao.price)}
-                          </span>
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="col-span-2 flex flex-col gap-1.5">
+                        <label className={labelClass}>
+                          Cidade
+                          {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
                         </label>
-                      </li>
-                    )
-                  })}
-                </ul>
-              )}
+                        <input
+                          type="text"
+                          value={form.city}
+                          onChange={(e) => setField('city', e.target.value)}
+                          placeholder="Cidade"
+                          className={cepLoading ? `${inputClass} opacity-50` : inputClass}
+                        />
+                        {errors.city && <p className="font-mulish text-xs text-red-500">{errors.city}</p>}
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className={labelClass}>
+                          UF
+                          {cepLoading && <Loader2 size={11} className="ml-1.5 inline animate-spin" />}
+                        </label>
+                        <input
+                          type="text"
+                          value={form.state}
+                          onChange={(e) => setField('state', e.target.value)}
+                          placeholder="RS"
+                          maxLength={2}
+                          className={cepLoading ? `${inputClass} opacity-50` : inputClass}
+                        />
+                        {errors.state && <p className="font-mulish text-xs text-red-500">{errors.state}</p>}
+                      </div>
+                    </div>
+                  </>
+                )}
 
-              {errors.frete && (
-                <p className="font-dm-sans text-xs text-red-500">{errors.frete}</p>
-              )}
+                {/* Opções de frete */}
+                {showFreteSection && (
+                  <div className="flex flex-col gap-2">
+                    <span className={labelClass}>Opções de frete</span>
+
+                    {freteLoading && (
+                      <div className="flex items-center gap-2 text-mj-taupe">
+                        <Loader2 size={16} className="animate-spin" />
+                        <span className="font-mulish text-sm">Calculando frete…</span>
+                      </div>
+                    )}
+
+                    {!freteLoading && !freteError && opcoes.length === 0 && (
+                      <p className="font-mulish text-sm text-mj-taupe">
+                        Nenhuma transportadora disponível para este CEP.
+                      </p>
+                    )}
+
+                    {!freteLoading && opcoes.length > 0 && (
+                      <ul className="flex flex-col gap-2">
+                        {opcoes.map((opcao) => {
+                          const selected = selectedFreteId === opcao.id
+                          return (
+                            <li key={String(opcao.id)}>
+                              <label
+                                className={[
+                                  'flex cursor-pointer items-center justify-between border p-4 transition-colors',
+                                  selected
+                                    ? 'border-mj-black bg-mj-black/5'
+                                    : 'border-mj-border hover:border-mj-black',
+                                ].join(' ')}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <input
+                                    type="radio"
+                                    name="frete"
+                                    checked={selected}
+                                    onChange={() => {
+                                      setSelectedFreteId(opcao.id)
+                                      setErrors((e) => ({ ...e, frete: undefined }))
+                                    }}
+                                    className="accent-mj-black"
+                                  />
+                                  <div>
+                                    <p className="font-mulish text-sm font-medium text-mj-black">
+                                      {opcao.name} — {opcao.company}
+                                    </p>
+                                    <p className="font-mulish text-xs text-mj-taupe">
+                                      {opcao.delivery_time} {opcao.delivery_time === 1 ? 'dia útil' : 'dias úteis'}
+                                    </p>
+                                  </div>
+                                </div>
+                                <span className="font-mulish text-sm font-medium text-mj-black">
+                                  {brl.format(opcao.price)}
+                                </span>
+                              </label>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    )}
+
+                    {errors.frete && (
+                      <p className="font-mulish text-xs text-red-500">{errors.frete}</p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-          )}
 
-          <div className="flex flex-col gap-2">
-            <span className={labelClass}>Pagamento</span>
-            <PillGroup
-              options={[
-                { value: 'pix', label: 'Pix' },
-                { value: 'cartao', label: 'Cartão' },
-                { value: 'dinheiro', label: 'Dinheiro' },
-              ]}
-              value={form.payment}
-              onChange={(v) => setField('payment', v)}
-            />
-          </div>
+            <div className="border-t border-mj-border pt-6">
+              <h2 className="font-julius text-lg tracking-wider text-mj-black">PAGAMENTO</h2>
+              <div className="mt-5">
+                <PillGroup
+                  options={[
+                    { value: 'pix', label: 'Pix' },
+                    { value: 'cartao', label: 'Cartão' },
+                    { value: 'dinheiro', label: 'Dinheiro' },
+                  ]}
+                  value={form.payment}
+                  onChange={(v) => setField('payment', v)}
+                />
+              </div>
+            </div>
+          </section>
 
-        </section>
+          {/* ── Resumo ── */}
+          <section className="flex flex-col gap-4 border border-mj-border bg-mj-white p-6 h-fit lg:sticky lg:top-28">
+            <h2 className="font-julius text-lg tracking-wider text-mj-black">RESUMO DO PEDIDO</h2>
 
-        {/* ── Resumo ── */}
-        <section className="flex flex-col gap-4 rounded-2xl bg-mocellin-white p-6 h-fit lg:sticky lg:top-24">
+            <ul className="flex flex-col divide-y divide-mj-border">
+              {items.map(({ product, quantity }) => (
+                <li key={product.id} className="flex items-start justify-between gap-4 py-3">
+                  <span className="font-mulish text-sm leading-snug text-mj-black">
+                    {product.name}{' '}
+                    <span className="text-mj-taupe">×{quantity}</span>
+                  </span>
+                  <span className="shrink-0 font-mulish text-sm font-medium text-mj-black">
+                    {brl.format(product.price * quantity)}
+                  </span>
+                </li>
+              ))}
+            </ul>
 
-          <h2 className="font-cormorant text-2xl font-semibold text-mocellin-dark">
-            Resumo do pedido
-          </h2>
-
-          <ul className="flex flex-col divide-y divide-mocellin-beige">
-            {items.map(({ product, quantity }) => (
-              <li key={product.id} className="flex items-start justify-between gap-4 py-3">
-                <span className="font-dm-sans text-sm leading-snug text-mocellin-dark">
-                  {product.name}{' '}
-                  <span className="text-mocellin-dark/40">×{quantity}</span>
+            <div className="flex flex-col gap-2 border-t border-mj-border pt-4">
+              <div className="flex justify-between font-mulish text-sm text-mj-taupe">
+                <span>Subtotal</span>
+                <span>{brl.format(sub)}</span>
+              </div>
+              <div className="flex justify-between font-mulish text-sm text-mj-taupe">
+                <span>Frete</span>
+                <span>
+                  {shipping === null && form.delivery === 'retirada' && 'Retirada no local'}
+                  {shipping === null && form.delivery === 'envio' && 'Selecione uma opção'}
+                  {shipping !== null && brl.format(shipping)}
                 </span>
-                <span className="shrink-0 font-dm-sans text-sm font-medium text-mocellin-dark">
-                  {brl.format(product.price * quantity)}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex flex-col gap-2 border-t border-mocellin-beige pt-4">
-            <div className="flex justify-between font-dm-sans text-sm text-mocellin-dark/60">
-              <span>Subtotal</span>
-              <span>{brl.format(sub)}</span>
+              </div>
+              <div className="flex justify-between font-mulish text-base font-semibold text-mj-black">
+                <span>Total</span>
+                <span>{brl.format(total)}</span>
+              </div>
             </div>
-            <div className="flex justify-between font-dm-sans text-sm text-mocellin-dark/60">
-              <span>Frete</span>
-              <span>
-                {shipping === null && form.delivery === 'retirada' && 'Retirada no local'}
-                {shipping === null && form.delivery === 'envio' && 'Selecione uma opção'}
-                {shipping !== null && brl.format(shipping)}
-              </span>
-            </div>
-            <div className="flex justify-between font-dm-sans text-base font-semibold text-mocellin-dark">
-              <span>Total</span>
-              <span>{brl.format(total)}</span>
-            </div>
-          </div>
 
-          <button
-            type="submit"
-            className="mt-2 w-full rounded-xl bg-mocellin-gold py-3.5 font-dm-sans text-sm font-medium text-white transition-all hover:bg-mocellin-gold-light active:scale-[.98]"
-          >
-            Confirmar pedido via WhatsApp
-          </button>
+            <button
+              type="submit"
+              className="mt-2 w-full bg-mj-black py-4 font-mulish text-xs uppercase tracking-[0.2em] text-white transition-all hover:bg-mj-brown active:scale-[.98]"
+            >
+              Confirmar via WhatsApp
+            </button>
 
-          <p className="text-center font-dm-sans text-xs text-mocellin-dark/40">
-            Você será redirecionado para o WhatsApp para finalizar o pedido.
-          </p>
-
-        </section>
+            <p className="text-center font-mulish text-[11px] text-mj-taupe">
+              Você será redirecionado para o WhatsApp para finalizar.
+            </p>
+          </section>
+        </div>
       </form>
     </main>
   )

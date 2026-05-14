@@ -30,7 +30,7 @@ export function DeleteProductButton({ id, name }: { id: string; name: string }) 
       onClick={handleDelete}
       disabled={loading}
       aria-label={`Excluir ${name}`}
-      className="rounded-lg p-2 text-mocellin-dark/40 transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-40 disabled:cursor-not-allowed"
+      className="p-2 text-mj-taupe transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-40 disabled:cursor-not-allowed"
     >
       <Trash2 size={16} />
     </button>
