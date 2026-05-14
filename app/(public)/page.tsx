@@ -61,7 +61,7 @@ export default async function HomePage() {
       <section className="relative flex min-h-screen items-end bg-mj-black pb-16 pt-32 sm:pb-24">
         {/* Background image */}
         <Image
-          src="https://images.unsplash.com/photo-1639660680515-7c76c86b559b?w=1600&fit=crop&q=80"
+          src={campaign?.hero_image ?? "https://images.unsplash.com/photo-1639660680515-7c76c86b559b?w=1600&fit=crop&q=80"}
           alt=""
           fill
           priority

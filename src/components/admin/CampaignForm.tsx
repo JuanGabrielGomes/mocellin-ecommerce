@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { CampaignType } from '@/types'
-import { CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2, Upload, X } from 'lucide-react'
 
 const inputClass =
   'w-full border border-mj-border bg-mj-cream px-4 py-3 font-mulish text-sm text-mj-black placeholder:text-mj-taupe/50 focus:border-mj-black focus:outline-none transition-colors'
@@ -115,6 +115,9 @@ export function CampaignForm({ campaign }: Props) {
   const [bannerText, setBannerText] = useState(campaign?.banner_text ?? '')
   const [bannerBg, setBannerBg] = useState(campaign?.banner_bg ?? '#1a0a0a')
   const [bannerTextColor, setBannerTextColor] = useState(campaign?.banner_text_color ?? '#f5e6d3')
+  const [heroImage, setHeroImage] = useState(campaign?.hero_image ?? '')
+  const [heroImageUploading, setHeroImageUploading] = useState(false)
+  const heroImageRef = useRef<HTMLInputElement>(null)
   const [heroLabel, setHeroLabel] = useState(campaign?.hero_label ?? '')
   const [heroTitle, setHeroTitle] = useState(campaign?.hero_title ?? '')
   const [heroSubtitle, setHeroSubtitle] = useState(campaign?.hero_subtitle ?? '')
@@ -132,6 +135,28 @@ export function CampaignForm({ campaign }: Props) {
     const t = setTimeout(() => router.replace('/admin/campanhas'), 1500)
     return () => clearTimeout(t)
   }, [success, router])
+
+  async function handleHeroImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setHeroImageUploading(true)
+    try {
+      const supabase = createClient()
+      const ext = file.name.split('.').pop() ?? 'jpg'
+      const path = `hero-${Date.now()}.${ext}`
+      const { data, error } = await supabase.storage
+        .from('campaign-images')
+        .upload(path, file, { contentType: file.type, upsert: true })
+      if (error) throw error
+      const { data: { publicUrl } } = supabase.storage.from('campaign-images').getPublicUrl(data.path)
+      setHeroImage(publicUrl)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro ao enviar imagem.')
+    } finally {
+      setHeroImageUploading(false)
+      e.target.value = ''
+    }
+  }
 
   function applyPreset(idx: number) {
     const p = PRESETS[idx]
@@ -174,6 +199,7 @@ export function CampaignForm({ campaign }: Props) {
         banner_text: bannerText.trim() || null,
         banner_bg: bannerBg,
         banner_text_color: bannerTextColor,
+        hero_image: heroImage.trim() || null,
         hero_label: heroLabel.trim() || null,
         hero_title: heroTitle.trim() || null,
         hero_subtitle: heroSubtitle.trim() || null,
@@ -329,11 +355,55 @@ export function CampaignForm({ campaign }: Props) {
 
       {/* Texto do Hero */}
       <section className="border border-mj-border bg-mj-white p-6">
-        <h2 className="mb-2 font-julius text-xl tracking-wider text-mj-black">Texto do Hero</h2>
+        <h2 className="mb-2 font-julius text-xl tracking-wider text-mj-black">Hero</h2>
         <p className="mb-5 font-mulish text-xs text-mj-taupe">
-          Substitui os textos da seção principal da homepage. Deixe vazio para usar o texto padrão.
+          Imagem de fundo e textos da seção principal da homepage. Deixe vazio para usar o padrão.
         </p>
         <div className="space-y-4">
+          <Field label="Imagem de fundo" hint="Faça upload ou cole uma URL (JPG, PNG, WEBP)">
+            <div className="space-y-3">
+              {/* Preview */}
+              {heroImage && (
+                <div className="relative h-32 w-full overflow-hidden border border-mj-border bg-mj-cream">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={heroImage} alt="Preview hero" className="h-full w-full object-cover object-center" />
+                  <button
+                    type="button"
+                    onClick={() => setHeroImage('')}
+                    className="absolute right-2 top-2 bg-black/60 p-1 text-white transition-colors hover:bg-black"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+              {/* Upload */}
+              <label className="flex cursor-pointer items-center gap-3 border border-dashed border-mj-border bg-mj-cream/40 px-4 py-3 transition-colors hover:border-mj-black hover:bg-mj-cream">
+                {heroImageUploading
+                  ? <Loader2 size={16} className="animate-spin text-mj-taupe" />
+                  : <Upload size={16} className="text-mj-taupe/60" />
+                }
+                <span className="font-mulish text-sm text-mj-taupe">
+                  {heroImageUploading ? 'Enviando…' : 'Clique para fazer upload'}
+                </span>
+                <input
+                  ref={heroImageRef}
+                  type="file"
+                  className="sr-only"
+                  accept=".jpg,.jpeg,.png,.webp"
+                  onChange={handleHeroImageUpload}
+                  disabled={heroImageUploading}
+                />
+              </label>
+              {/* URL manual */}
+              <input
+                type="url"
+                value={heroImage}
+                onChange={(e) => setHeroImage(e.target.value)}
+                placeholder="Ou cole uma URL de imagem aqui"
+                className={inputClass}
+              />
+            </div>
+          </Field>
           <Field label="Etiqueta (ex: Dia dos Namorados)" hint='Pequeno label acima do título — ex: "Nova Coleção"'>
             <input
               type="text"
