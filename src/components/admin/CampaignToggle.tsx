@@ -21,6 +21,7 @@ export function CampaignToggle({ id, active }: { id: string; active: boolean }) 
       .update({ active: !active, updated_at: new Date().toISOString() })
       .eq('id', id)
     router.refresh()
+    setLoading(false)
   }
 
   return (
