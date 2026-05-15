@@ -78,8 +78,20 @@ export default async function HomePage() {
           className="object-cover object-center"
           sizes="100vw"
         />
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-mj-overlay/30 via-mj-overlay/50 to-mj-overlay/90" />
+        {/* Overlay gradient — multi-stop to avoid banding */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to bottom,
+              color-mix(in srgb, var(--color-mj-overlay)  0%, transparent)   0%,
+              color-mix(in srgb, var(--color-mj-overlay) 10%, transparent)  15%,
+              color-mix(in srgb, var(--color-mj-overlay) 25%, transparent)  30%,
+              color-mix(in srgb, var(--color-mj-overlay) 45%, transparent)  50%,
+              color-mix(in srgb, var(--color-mj-overlay) 65%, transparent)  68%,
+              color-mix(in srgb, var(--color-mj-overlay) 82%, transparent)  84%,
+              color-mix(in srgb, var(--color-mj-overlay) 92%, transparent) 100%)`
+          }}
+        />
 
         <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
           <p className="font-mulish text-[10px] uppercase tracking-[0.3em] text-mj-text-accent mb-4 sm:mb-5">
