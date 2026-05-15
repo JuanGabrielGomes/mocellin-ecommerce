@@ -22,7 +22,7 @@ export function ProductCard({ product }: { product: ProductType }) {
     : 0
 
   return (
-    <Link href={`/produto/${product.id}`} className="group flex flex-col bg-mj-surface">
+    <Link href={`/produto/${product.id}`} className="group flex h-full flex-col bg-mj-surface">
       {/* Imagem */}
       <div className="relative aspect-square w-full overflow-hidden bg-mj-page">
         {product.images[0] ? (
@@ -54,7 +54,7 @@ export function ProductCard({ product }: { product: ProductType }) {
         <span className="font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-text-muted">
           {categoryLabel[product.category]}
         </span>
-        <h3 className="font-julius text-base leading-snug text-mj-text">
+        <h3 className="h-[2.75rem] line-clamp-2 font-julius text-base leading-snug text-mj-text">
           {product.name}
         </h3>
         <div className="mt-auto pt-3 flex items-baseline gap-2">
