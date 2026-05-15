@@ -13,6 +13,7 @@ export interface ProductType {
   featured: boolean
   code: string | null
   images: string[]
+  image_positions: string[] | null
   videos: string[] | null
   details: string | null
   related_ids: string[] | null

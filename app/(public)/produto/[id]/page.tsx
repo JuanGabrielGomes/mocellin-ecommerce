@@ -83,7 +83,11 @@ export default async function ProdutoPage({ params }: { params: Params }) {
         <div className="flex flex-col gap-10 lg:flex-row lg:gap-16">
           {/* Galeria */}
           <div className="w-full lg:w-1/2 lg:sticky lg:top-28 lg:self-start">
-            <ProductGallery images={product.images ?? []} videos={product.videos ?? []} />
+            <ProductGallery
+              images={product.images ?? []}
+              videos={product.videos ?? []}
+              imagePositions={product.image_positions}
+            />
           </div>
 
           {/* Detalhes */}

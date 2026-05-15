@@ -32,6 +32,7 @@ export function ProductCard({ product }: { product: ProductType }) {
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
+            style={{ objectPosition: product.image_positions?.[0] ?? 'center' }}
           />
         ) : (
           <div className="absolute inset-0 bg-mj-text-accent/20" />

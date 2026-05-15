@@ -59,6 +59,31 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   )
 }
 
+// Ponto focal — grade 3x3 para escolher o recorte da imagem
+const FOCAL_POSITIONS = [
+  'top left',    'top center',    'top right',
+  'center left', 'center',        'center right',
+  'bottom left', 'bottom center', 'bottom right',
+] as const
+
+function FocalPoint({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  return (
+    <div title="Ponto focal do corte" className="grid grid-cols-3 gap-0.5 p-0.5 bg-mj-border/30 w-fit">
+      {FOCAL_POSITIONS.map((pos) => (
+        <button
+          key={pos}
+          type="button"
+          title={pos}
+          onClick={() => onChange(pos)}
+          className={`h-3 w-3 transition-colors ${
+            value === pos ? 'bg-mj-brown' : 'bg-mj-border hover:bg-mj-taupe/60'
+          }`}
+        />
+      ))}
+    </div>
+  )
+}
+
 export function ProductForm({ product, allProducts }: Props) {
   const router = useRouter()
   const isEditing = Boolean(product)
@@ -76,8 +101,12 @@ export function ProductForm({ product, allProducts }: Props) {
   const [featured, setFeatured] = useState<boolean>(product?.featured ?? false)
 
   const [existingImages, setExistingImages] = useState<string[]>(product?.images ?? [])
+  const [existingPositions, setExistingPositions] = useState<string[]>(
+    product?.images?.map((_, i) => product?.image_positions?.[i] ?? 'center') ?? [],
+  )
   const [newImageFiles, setNewImageFiles] = useState<File[]>([])
   const [newImagePreviews, setNewImagePreviews] = useState<string[]>([])
+  const [newImagePositions, setNewImagePositions] = useState<string[]>([])
   const imageInputRef = useRef<HTMLInputElement>(null)
 
   const [existingVideos, setExistingVideos] = useState<string[]>(product?.videos ?? [])
@@ -113,6 +142,7 @@ export function ProductForm({ product, allProducts }: Props) {
     const previews = files.map((f) => URL.createObjectURL(f))
     setNewImageFiles((prev) => [...prev, ...files])
     setNewImagePreviews((prev) => [...prev, ...previews])
+    setNewImagePositions((prev) => [...prev, ...files.map(() => 'center')])
     e.target.value = ''
   }
 
@@ -120,6 +150,12 @@ export function ProductForm({ product, allProducts }: Props) {
     URL.revokeObjectURL(newImagePreviews[i])
     setNewImageFiles((prev) => prev.filter((_, idx) => idx !== i))
     setNewImagePreviews((prev) => prev.filter((_, idx) => idx !== i))
+    setNewImagePositions((prev) => prev.filter((_, idx) => idx !== i))
+  }
+
+  function removeExistingImage(i: number) {
+    setExistingImages((prev) => prev.filter((_, idx) => idx !== i))
+    setExistingPositions((prev) => prev.filter((_, idx) => idx !== i))
   }
 
   function handleVideoChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -157,6 +193,7 @@ export function ProductForm({ product, allProducts }: Props) {
 
       const newImageUrls = await uploadFiles(newImageFiles, 'product-images')
       const images = [...existingImages, ...newImageUrls]
+      const image_positions = [...existingPositions, ...newImagePositions]
 
       const newVideoUrls = await uploadFiles(newVideoFiles, 'product-videos')
       const videos = [...existingVideos, ...newVideoUrls]
@@ -176,6 +213,7 @@ export function ProductForm({ product, allProducts }: Props) {
         status,
         featured,
         images,
+        image_positions: image_positions.length > 0 ? image_positions : null,
         videos: videos.length > 0 ? videos : null,
         related_ids: relatedIds.length > 0 ? relatedIds : null,
         updated_at: new Date().toISOString(),
@@ -351,42 +389,62 @@ export function ProductForm({ product, allProducts }: Props) {
       {/* ── Imagens ─────────────────────────────────────────── */}
       <Section title="Imagens">
         {existingImages.length > 0 && (
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             {existingImages.map((url, i) => (
-              <div
-                key={url}
-                className="relative h-24 w-24 overflow-hidden border border-mj-border bg-mj-cream"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt="" className="h-full w-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => setExistingImages((prev) => prev.filter((_, idx) => idx !== i))}
-                  className="absolute right-1 top-1 bg-black/50 p-0.5 text-white transition-colors hover:bg-black/70"
-                >
-                  <X size={12} />
-                </button>
+              <div key={url} className="flex flex-col items-center gap-1.5">
+                <div className="relative h-24 w-24 overflow-hidden border border-mj-border bg-mj-cream">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    style={{ objectPosition: existingPositions[i] ?? 'center' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeExistingImage(i)}
+                    className="absolute right-1 top-1 bg-black/50 p-0.5 text-white transition-colors hover:bg-black/70"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+                <FocalPoint
+                  value={existingPositions[i] ?? 'center'}
+                  onChange={(pos) =>
+                    setExistingPositions((prev) => prev.map((p, idx) => (idx === i ? pos : p)))
+                  }
+                />
               </div>
             ))}
           </div>
         )}
 
         {newImagePreviews.length > 0 && (
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             {newImagePreviews.map((src, i) => (
-              <div
-                key={src}
-                className="relative h-24 w-24 overflow-hidden border-2 border-dashed border-mj-brown/50 bg-mj-cream"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" className="h-full w-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => removeNewImage(i)}
-                  className="absolute right-1 top-1 bg-black/50 p-0.5 text-white transition-colors hover:bg-black/70"
-                >
-                  <X size={12} />
-                </button>
+              <div key={src} className="flex flex-col items-center gap-1.5">
+                <div className="relative h-24 w-24 overflow-hidden border-2 border-dashed border-mj-brown/50 bg-mj-cream">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={src}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    style={{ objectPosition: newImagePositions[i] ?? 'center' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeNewImage(i)}
+                    className="absolute right-1 top-1 bg-black/50 p-0.5 text-white transition-colors hover:bg-black/70"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+                <FocalPoint
+                  value={newImagePositions[i] ?? 'center'}
+                  onChange={(pos) =>
+                    setNewImagePositions((prev) => prev.map((p, idx) => (idx === i ? pos : p)))
+                  }
+                />
               </div>
             ))}
           </div>
