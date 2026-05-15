@@ -124,14 +124,14 @@ export default async function ProdutoPage({ params }: { params: Params }) {
               </p>
             )}
 
-            <ProductActions product={product as ProductType} />
-
             {product.description && (
               <RichText
                 text={product.description}
                 className="font-mulish text-sm leading-relaxed text-mj-text-muted"
               />
             )}
+
+            <ProductActions product={product as ProductType} />
 
             {product.details && (
               <Accordion title="Detalhes do produto">
