@@ -19,7 +19,7 @@ export function ProductCard({ product }: { product: ProductType }) {
   const [hovered, setHovered] = useState(false)
 
   const esgotado = product.status === 'esgotado'
-  const hasSizes = product.sizes && product.sizes.length > 0
+  const hasSizes = !!(product.sizes && product.sizes.length > 0)
   const hasDiscount = product.compare_at_price != null && product.compare_at_price > product.price
   const discountPct = hasDiscount
     ? Math.round((1 - product.price / product.compare_at_price!) * 100)

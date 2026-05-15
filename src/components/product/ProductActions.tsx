@@ -13,7 +13,7 @@ export function ProductActions({ product }: ProductActionsProps) {
   const addItem = useCartStore((s) => s.addItem)
   const router = useRouter()
   const esgotado = product.status === 'esgotado'
-  const hasSizes = product.sizes && product.sizes.length > 0
+  const hasSizes = !!(product.sizes && product.sizes.length > 0)
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const sizeRequired = hasSizes && !selectedSize
