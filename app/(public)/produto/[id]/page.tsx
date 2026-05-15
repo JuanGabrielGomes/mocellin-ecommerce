@@ -6,6 +6,7 @@ import { ProductGallery } from '@/components/product/ProductGallery'
 import { ProductActions } from '@/components/product/ProductActions'
 import { ProductCard } from '@/components/product/ProductCard'
 import { Accordion } from '@/components/ui/Accordion'
+import { RichText } from '@/components/ui/RichText'
 import type { ProductType, ProductCategory } from '@/types'
 
 const categoryLabel: Record<ProductCategory, string> = {
@@ -124,15 +125,18 @@ export default async function ProdutoPage({ params }: { params: Params }) {
             )}
 
             {product.description && (
-              <p className="font-mulish text-sm leading-relaxed text-mj-text-muted">
-                {product.description}
-              </p>
+              <RichText
+                text={product.description}
+                className="font-mulish text-sm leading-relaxed text-mj-text-muted"
+              />
             )}
 
             <ProductActions product={product as ProductType} />
 
             {product.details && (
-              <Accordion title="Detalhes do produto">{product.details}</Accordion>
+              <Accordion title="Detalhes do produto">
+                <RichText text={product.details} />
+              </Accordion>
             )}
           </div>
         </div>

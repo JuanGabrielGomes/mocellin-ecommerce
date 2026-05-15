@@ -84,6 +84,28 @@ function FocalPoint({ value, onChange }: { value: string; onChange: (v: string) 
   )
 }
 
+// Preview inline de rich text (mesma lógica do RichText público)
+function parseInline(line: string) {
+  return line.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
+    part.startsWith('**') && part.endsWith('**')
+      ? <strong key={i} className="font-semibold text-mj-black">{part.slice(2, -2)}</strong>
+      : part,
+  )
+}
+function RichPreview({ text }: { text: string }) {
+  return (
+    <div className="font-mulish text-sm leading-relaxed text-mj-taupe">
+      {text.split(/\n{2,}/).map((para, pi) => (
+        <p key={pi} className={pi > 0 ? 'mt-2' : ''}>
+          {para.split('\n').map((line, li) => (
+            <span key={li}>{li > 0 && <br />}{parseInline(line)}</span>
+          ))}
+        </p>
+      ))}
+    </div>
+  )
+}
+
 export function ProductForm({ product, allProducts }: Props) {
   const router = useRouter()
   const isEditing = Boolean(product)
@@ -297,6 +319,15 @@ export function ProductForm({ product, allProducts }: Props) {
             placeholder="Descrição breve do produto…"
             className={`${inputClass} resize-none`}
           />
+          <p className="mt-1.5 font-mulish text-[10px] text-mj-taupe/60">
+            Formatação: <code className="bg-mj-border/40 px-1">**negrito**</code> · linha em branco = novo parágrafo
+          </p>
+          {description.trim() && (
+            <div className="mt-2 border border-dashed border-mj-border bg-mj-cream/30 px-4 py-3">
+              <p className="mb-1.5 font-mulish text-[9px] uppercase tracking-[0.2em] text-mj-taupe/50">Prévia</p>
+              <RichPreview text={description} />
+            </div>
+          )}
         </Field>
 
         <Field label="Detalhes (materiais, cuidados)">
@@ -307,6 +338,15 @@ export function ProductForm({ product, allProducts }: Props) {
             placeholder="Ex: Banhado a ouro 18k. Evite contato com água e perfumes…"
             className={`${inputClass} resize-none`}
           />
+          <p className="mt-1.5 font-mulish text-[10px] text-mj-taupe/60">
+            Formatação: <code className="bg-mj-border/40 px-1">**negrito**</code> · linha em branco = novo parágrafo
+          </p>
+          {details.trim() && (
+            <div className="mt-2 border border-dashed border-mj-border bg-mj-cream/30 px-4 py-3">
+              <p className="mb-1.5 font-mulish text-[9px] uppercase tracking-[0.2em] text-mj-taupe/50">Prévia</p>
+              <RichPreview text={details} />
+            </div>
+          )}
         </Field>
 
         <div className="grid gap-4 sm:grid-cols-3">
