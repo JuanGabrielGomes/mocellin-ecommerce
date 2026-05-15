@@ -4,12 +4,16 @@ import type { CartItemType, ProductType } from '@/types'
 
 interface CartStoreType {
   items: CartItemType[]
-  addItem: (product: ProductType) => void
-  removeItem: (productId: string) => void
-  updateQuantity: (productId: string, quantity: number) => void
+  addItem: (product: ProductType, size?: string) => void
+  removeItem: (productId: string, size?: string) => void
+  updateQuantity: (productId: string, quantity: number, size?: string) => void
   clearCart: () => void
   subtotal: () => number
   itemCount: () => number
+}
+
+function sameItem(item: CartItemType, productId: string, size?: string) {
+  return item.product.id === productId && item.size === size
 }
 
 export const useCartStore = create<CartStoreType>()(
@@ -17,30 +21,32 @@ export const useCartStore = create<CartStoreType>()(
     (set, get) => ({
       items: [],
 
-      addItem: (product) => {
-        const existing = get().items.find(i => i.product.id === product.id)
+      addItem: (product, size) => {
+        const existing = get().items.find(i => sameItem(i, product.id, size))
         if (existing) {
-          set({ items: get().items.map(i =>
-            i.product.id === product.id
-              ? { ...i, quantity: i.quantity + 1 }
-              : i
-          )})
+          set({
+            items: get().items.map(i =>
+              sameItem(i, product.id, size) ? { ...i, quantity: i.quantity + 1 } : i,
+            ),
+          })
         } else {
-          set({ items: [...get().items, { product, quantity: 1 }] })
+          set({ items: [...get().items, { product, quantity: 1, size }] })
         }
       },
 
-      removeItem: (productId) =>
-        set({ items: get().items.filter(i => i.product.id !== productId) }),
+      removeItem: (productId, size) =>
+        set({ items: get().items.filter(i => !sameItem(i, productId, size)) }),
 
-      updateQuantity: (productId, quantity) => {
+      updateQuantity: (productId, quantity, size) => {
         if (quantity <= 0) {
-          get().removeItem(productId)
+          get().removeItem(productId, size)
           return
         }
-        set({ items: get().items.map(i =>
-          i.product.id === productId ? { ...i, quantity } : i
-        )})
+        set({
+          items: get().items.map(i =>
+            sameItem(i, productId, size) ? { ...i, quantity } : i,
+          ),
+        })
       },
 
       clearCart: () => set({ items: [] }),
@@ -51,8 +57,6 @@ export const useCartStore = create<CartStoreType>()(
       itemCount: () =>
         get().items.reduce((acc, i) => acc + i.quantity, 0),
     }),
-    {
-      name: 'mocellin-cart',
-    }
-  )
+    { name: 'mocellin-cart' },
+  ),
 )

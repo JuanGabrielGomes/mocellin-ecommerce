@@ -19,6 +19,7 @@ export function ProductCard({ product }: { product: ProductType }) {
   const [hovered, setHovered] = useState(false)
 
   const esgotado = product.status === 'esgotado'
+  const hasSizes = product.sizes && product.sizes.length > 0
   const hasDiscount = product.compare_at_price != null && product.compare_at_price > product.price
   const discountPct = hasDiscount
     ? Math.round((1 - product.price / product.compare_at_price!) * 100)
@@ -104,18 +105,27 @@ export function ProductCard({ product }: { product: ProductType }) {
 
       {/* CTA */}
       <div className="px-4 pb-4">
-        <button
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (!esgotado) addItem(product) }}
-          disabled={esgotado}
-          className={[
-            'w-full py-3 font-mulish text-xs uppercase tracking-[0.15em] transition-all',
-            esgotado
-              ? 'cursor-not-allowed bg-mj-border text-mj-text-muted'
-              : 'bg-mj-btn text-mj-btn-text hover:bg-mj-btn-hover active:scale-[.98]',
-          ].join(' ')}
-        >
-          {esgotado ? 'Esgotado' : 'Adicionar ao carrinho'}
-        </button>
+        {hasSizes ? (
+          // Produto com tamanhos → leva para a PDP escolher
+          <span
+            className="block w-full bg-mj-btn py-3 text-center font-mulish text-xs uppercase tracking-[0.15em] text-mj-btn-text transition-all group-hover:bg-mj-btn-hover"
+          >
+            Escolher tamanho
+          </span>
+        ) : (
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (!esgotado) addItem(product) }}
+            disabled={esgotado}
+            className={[
+              'w-full py-3 font-mulish text-xs uppercase tracking-[0.15em] transition-all',
+              esgotado
+                ? 'cursor-not-allowed bg-mj-border text-mj-text-muted'
+                : 'bg-mj-btn text-mj-btn-text hover:bg-mj-btn-hover active:scale-[.98]',
+            ].join(' ')}
+          >
+            {esgotado ? 'Esgotado' : 'Adicionar ao carrinho'}
+          </button>
+        )}
       </div>
     </Link>
   )

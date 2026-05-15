@@ -10,7 +10,8 @@ export function buildWhatsAppUrl(order: OrderPayloadType): string {
   lines.push('*Itens:*')
   for (const item of order.items) {
     const subtotal = (item.product.price * item.quantity).toFixed(2)
-    lines.push(`• ${item.product.name} x${item.quantity} — R$ ${subtotal}`)
+    const sizeLabel = item.size ? ` (Tam. ${item.size})` : ''
+    lines.push(`• ${item.product.name}${sizeLabel} x${item.quantity} — R$ ${subtotal}`)
   }
 
   lines.push(`\n*Subtotal:* R$ ${order.subtotal.toFixed(2)}`)

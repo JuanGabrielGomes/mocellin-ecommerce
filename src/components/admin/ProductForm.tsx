@@ -135,6 +135,9 @@ export function ProductForm({ product, allProducts }: Props) {
   const [newVideoFiles, setNewVideoFiles] = useState<File[]>([])
   const videoInputRef = useRef<HTMLInputElement>(null)
 
+  const [sizes, setSizes] = useState<string[]>(product?.sizes ?? [])
+  const [sizeInput, setSizeInput] = useState('')
+
   const [relatedIds, setRelatedIds] = useState<string[]>(product?.related_ids ?? [])
   const [relatedSearch, setRelatedSearch] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
@@ -237,6 +240,7 @@ export function ProductForm({ product, allProducts }: Props) {
         images,
         image_positions: image_positions.length > 0 ? image_positions : null,
         videos: videos.length > 0 ? videos : null,
+        sizes: sizes.length > 0 ? sizes : null,
         related_ids: relatedIds.length > 0 ? relatedIds : null,
         updated_at: new Date().toISOString(),
       }
@@ -583,6 +587,83 @@ export function ProductForm({ product, allProducts }: Props) {
             onChange={handleVideoChange}
           />
         </label>
+      </Section>
+
+      {/* ── Tamanhos ────────────────────────────────────────── */}
+      <Section title="Tamanhos">
+        {/* Tamanhos adicionados */}
+        {sizes.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {sizes.map((s) => (
+              <span
+                key={s}
+                className="flex items-center gap-1.5 border border-mj-border bg-mj-cream px-3 py-1.5 font-mulish text-xs text-mj-black"
+              >
+                {s}
+                <button
+                  type="button"
+                  onClick={() => setSizes((prev) => prev.filter((x) => x !== s))}
+                  className="text-mj-taupe/50 transition-colors hover:text-mj-black"
+                >
+                  <X size={11} />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Input livre */}
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={sizeInput}
+            onChange={(e) => setSizeInput(e.target.value)}
+            onKeyDown={(e) => {
+              if ((e.key === 'Enter' || e.key === ',') && sizeInput.trim()) {
+                e.preventDefault()
+                const val = sizeInput.trim()
+                if (!sizes.includes(val)) setSizes((prev) => [...prev, val])
+                setSizeInput('')
+              }
+            }}
+            placeholder="Digite e pressione Enter…"
+            className={`${inputClass} flex-1`}
+          />
+          <button
+            type="button"
+            onClick={() => {
+              const val = sizeInput.trim()
+              if (val && !sizes.includes(val)) setSizes((prev) => [...prev, val])
+              setSizeInput('')
+            }}
+            className="border border-mj-border px-4 font-mulish text-xs text-mj-taupe transition-colors hover:border-mj-black hover:text-mj-black"
+          >
+            Adicionar
+          </button>
+        </div>
+
+        {/* Atalhos — numeração brasileira de anéis */}
+        <div>
+          <p className="mb-2 font-mulish text-[10px] uppercase tracking-[0.15em] text-mj-taupe/60">
+            Atalhos — Anéis (numeração brasileira)
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {['10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'].map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => { if (!sizes.includes(n)) setSizes((prev) => [...prev, n]) }}
+                className={`px-2.5 py-1 font-mulish text-xs transition-colors ${
+                  sizes.includes(n)
+                    ? 'bg-mj-black text-white cursor-default'
+                    : 'border border-mj-border text-mj-taupe hover:border-mj-black hover:text-mj-black'
+                }`}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+        </div>
       </Section>
 
       {/* ── Produtos relacionados ────────────────────────────── */}

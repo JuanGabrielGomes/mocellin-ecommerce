@@ -14,6 +14,7 @@ export interface ProductType {
   code: string | null
   images: string[]
   image_positions: string[] | null
+  sizes: string[] | null
   videos: string[] | null
   details: string | null
   related_ids: string[] | null
@@ -38,10 +39,11 @@ export interface CampaignType {
   updated_at: string
 }
 
-// O que fica no carrinho — produto resolvido + quantidade
+// O que fica no carrinho — produto resolvido + quantidade + tamanho (opcional)
 export interface CartItemType {
   product: ProductType
   quantity: number
+  size?: string
 }
 
 // Dados do comprador coletados no checkout

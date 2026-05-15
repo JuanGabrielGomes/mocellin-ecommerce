@@ -43,8 +43,8 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
         ) : (
           <>
             <ul className="flex-1 divide-y divide-mj-border overflow-y-auto px-6">
-              {items.map(({ product, quantity }) => (
-                <li key={product.id} className="flex gap-4 py-5">
+              {items.map(({ product, quantity, size }) => (
+                <li key={product.id + (size ?? '')} className="flex gap-4 py-5">
                   {product.images[0] ? (
                     <img src={product.images[0]} alt={product.name} className="h-20 w-20 shrink-0 bg-mj-cream object-cover" />
                   ) : (
@@ -53,19 +53,24 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
 
                   <div className="flex flex-1 flex-col justify-between">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="font-mulish text-sm font-medium leading-snug text-mj-text">{product.name}</p>
-                      <button onClick={() => removeItem(product.id)} aria-label={`Remover ${product.name}`} className="shrink-0 p-0.5 text-mj-text-muted transition-colors hover:text-red-500">
+                      <div>
+                        <p className="font-mulish text-sm font-medium leading-snug text-mj-text">{product.name}</p>
+                        {size && (
+                          <p className="mt-0.5 font-mulish text-xs text-mj-text-muted">Tamanho: {size}</p>
+                        )}
+                      </div>
+                      <button onClick={() => removeItem(product.id, size)} aria-label={`Remover ${product.name}`} className="shrink-0 p-0.5 text-mj-text-muted transition-colors hover:text-red-500">
                         <Trash2 size={14} strokeWidth={1.5} />
                       </button>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 border border-mj-border px-3 py-1.5">
-                        <button onClick={() => updateQuantity(product.id, quantity - 1)} aria-label="Diminuir" className="text-mj-text-muted hover:text-mj-text">
+                        <button onClick={() => updateQuantity(product.id, quantity - 1, size)} aria-label="Diminuir" className="text-mj-text-muted hover:text-mj-text">
                           <Minus size={13} />
                         </button>
                         <span className="w-4 text-center font-mulish text-sm tabular-nums">{quantity}</span>
-                        <button onClick={() => addItem(product)} aria-label="Aumentar" className="text-mj-text-muted hover:text-mj-text">
+                        <button onClick={() => addItem(product, size)} aria-label="Aumentar" className="text-mj-text-muted hover:text-mj-text">
                           <Plus size={13} />
                         </button>
                       </div>
