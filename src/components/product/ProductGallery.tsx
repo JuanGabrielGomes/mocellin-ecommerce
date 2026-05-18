@@ -126,55 +126,59 @@ export function ProductGallery({ images, videos, imagePositions }: ProductGaller
           )}
         </div>
 
-        {/* ── Dots — mobile ─────────────────────────────────── */}
+        {/* ── Miniaturas circulares — mobile e desktop ─────── */}
         {total > 1 && (
-          <div className="flex justify-center gap-1.5 sm:hidden">
-            {media.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Mídia ${i + 1}`}
-                onClick={() => setActiveIndex(i)}
-                className={`h-1.5 rounded-full transition-all duration-200 ${
-                  i === activeIndex ? 'w-4 bg-mj-btn' : 'w-1.5 bg-mj-border'
-                }`}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* ── Miniaturas — desktop ──────────────────────────── */}
-        {total > 1 && (
-          <div className="hidden w-full gap-2 overflow-x-auto pb-1 sm:flex">
-            {media.map((item, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`${item.type === 'image' ? 'Foto' : 'Vídeo'} ${i + 1}`}
-                onClick={() => setActiveIndex(i)}
-                className={[
-                  'relative h-16 w-16 shrink-0 overflow-hidden border-2 transition-colors',
-                  i === activeIndex
-                    ? 'border-mj-btn'
-                    : 'border-transparent hover:border-mj-border',
-                ].join(' ')}
-              >
-                {item.type === 'image' ? (
+          <div className="flex w-full justify-center gap-2.5 overflow-x-auto pb-1">
+            {media.map((item, i) =>
+              item.type === 'image' ? (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Foto ${i + 1}`}
+                  onClick={() => setActiveIndex(i)}
+                  className={[
+                    'relative h-14 w-14 shrink-0 rounded-full overflow-hidden border-2 transition-all duration-200',
+                    i === activeIndex
+                      ? 'border-mj-btn scale-105'
+                      : 'border-transparent hover:border-mj-border',
+                  ].join(' ')}
+                >
                   <Image
                     src={item.url}
                     alt=""
                     fill
-                    sizes="64px"
+                    sizes="56px"
                     className="object-cover"
                     style={{ objectPosition: item.position }}
                   />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-mj-overlay">
-                    <Play size={18} className="text-white" fill="white" />
-                  </div>
-                )}
-              </button>
-            ))}
+                </button>
+              ) : (
+                /* thumb de vídeo com anel giratório */
+                <div key={i} className="relative h-14 w-14 shrink-0">
+                  <span
+                    className="pointer-events-none absolute -inset-[3px] z-10 animate-spin rounded-full"
+                    style={{
+                      border: '2px solid transparent',
+                      borderTopColor: 'var(--color-mj-btn)',
+                      borderRightColor: 'rgba(0,0,0,0.18)',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    aria-label="Vídeo do produto"
+                    onClick={() => setActiveIndex(i)}
+                    className={[
+                      'relative h-full w-full rounded-full overflow-hidden border-2 transition-colors',
+                      i === activeIndex ? 'border-mj-btn' : 'border-transparent hover:border-mj-border',
+                    ].join(' ')}
+                  >
+                    <div className="flex h-full w-full items-center justify-center bg-mj-overlay">
+                      <Play size={14} className="text-white" fill="white" />
+                    </div>
+                  </button>
+                </div>
+              )
+            )}
           </div>
         )}
       </div>

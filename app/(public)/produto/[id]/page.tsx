@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -7,6 +8,8 @@ import { ProductActions } from '@/components/product/ProductActions'
 import { ProductCard } from '@/components/product/ProductCard'
 import { Accordion } from '@/components/ui/Accordion'
 import { RichText } from '@/components/ui/RichText'
+import { RingSizeGuide } from '@/components/product/RingSizeGuide'
+import { STORE } from '@/lib/config'
 import type { ProductType, ProductCategory } from '@/types'
 
 const categoryLabel: Record<ProductCategory, string> = {
@@ -24,42 +27,65 @@ const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' 
 
 type Params = Promise<{ id: string }>
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { id } = await params
+/**
+ * React cache() deduplicates this call within a single request —
+ * generateMetadata and the page component share the same DB query.
+ */
+const getProduct = cache(async (id: string) => {
   const supabase = await createClient()
   const { data } = await supabase
     .from('products')
-    .select('name, description')
+    .select('*')
     .eq('id', id)
     .single()
+  return data
+})
 
-  if (!data) return { title: 'Produto | Mocellin Joias' }
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { id } = await params
+  const product = await getProduct(id)
+
+  if (!product) return { title: 'Produto | Mocellin Joias' }
+
+  const image = product.images?.[0] ?? null
 
   return {
-    title: `${data.name} | Mocellin Joias`,
-    description: data.description ?? undefined,
+    title: product.name,
+    description: product.description ?? STORE.description,
+    openGraph: {
+      title: `${product.name} | ${STORE.name}`,
+      description: product.description ?? STORE.description,
+      url: `${STORE.url}/produto/${id}`,
+      siteName: STORE.name,
+      images: image
+        ? [{ url: image, width: 1200, height: 1200, alt: product.name }]
+        : [],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} | ${STORE.name}`,
+      description: product.description ?? STORE.description,
+      images: image ? [image] : [],
+    },
   }
 }
 
 export default async function ProdutoPage({ params }: { params: Params }) {
   const { id } = await params
-  const supabase = await createClient()
-
-  const { data: product } = await supabase
-    .from('products')
-    .select('*')
-    .eq('id', id)
-    .single()
+  const product = await getProduct(id)
 
   if (!product) notFound()
 
   const related: ProductType[] =
     product.related_ids?.length
-      ? ((await supabase
-          .from('products')
-          .select('*')
-          .in('id', product.related_ids)
-          .eq('status', 'disponivel')).data ?? [])
+      ? ((await createClient().then((sb) =>
+          sb
+            .from('products')
+            .select('*')
+            .in('id', product.related_ids)
+            .eq('status', 'disponivel')
+        )).data ?? [])
       : []
 
   return (
@@ -130,6 +156,8 @@ export default async function ProdutoPage({ params }: { params: Params }) {
                 className="font-mulish text-sm leading-relaxed text-mj-text-muted"
               />
             )}
+
+            {product.category === 'aneis' && <RingSizeGuide />}
 
             <ProductActions product={product as ProductType} />
 
