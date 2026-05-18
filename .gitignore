@@ -45,4 +45,5 @@ next-env.d.ts
 .claude/
 
 # prototype artifacts
+/prototype/
 /prototype.zip
