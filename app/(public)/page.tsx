@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getActiveCampaign } from '@/lib/campaign'
 import { ProductCard } from '@/components/product/ProductCard'
+import { CategoryCarousel } from '@/components/ui/CategoryCarousel'
 import type { ProductType } from '@/types'
 
 export const metadata: Metadata = {
@@ -142,30 +143,7 @@ export default async function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-4 gap-3 sm:gap-4 sm:grid-cols-8">
-            {CATEGORIES.map(({ value, label, image }) => (
-              <Link
-                key={value}
-                href={`/catalogo?categoria=${value}`}
-                className="group flex flex-col items-center gap-2 sm:gap-3"
-              >
-                <div className="relative aspect-square w-full overflow-hidden bg-mj-cream">
-                  <Image
-                    src={image}
-                    alt={label}
-                    fill
-                    sizes="(max-width: 640px) 33vw, 17vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Overlay sutil no hover */}
-                  <div className="absolute inset-0 bg-mj-black/0 transition-colors duration-300 group-hover:bg-mj-black/10" />
-                </div>
-                <p className="font-mulish text-[10px] sm:text-xs uppercase tracking-[0.15em] text-mj-text/70 transition-colors group-hover:text-mj-text text-center">
-                  {label}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <CategoryCarousel categories={CATEGORIES} />
         </div>
       </section>
 
