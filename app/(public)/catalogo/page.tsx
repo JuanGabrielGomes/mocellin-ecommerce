@@ -13,6 +13,7 @@ const CATEGORIES: { value: ProductCategory; label: string }[] = [
   { value: 'masculino', label: 'Masculino' },
   { value: 'pulseiras', label: 'Pulseiras e Braceletes' },
   { value: 'berloques', label: 'Berloques' },
+  { value: 'conjuntos', label: 'Conjuntos' },
 ]
 
 const VALID_CATEGORIES = new Set<string>(CATEGORIES.map((c) => c.value))

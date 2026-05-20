@@ -52,6 +52,11 @@ const CATEGORIES = [
     label: 'Berloques',
     image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&fit=crop&q=80',
   },
+  {
+    value: 'conjuntos',
+    label: 'Conjuntos',
+    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&fit=crop&q=80',
+  },
 ]
 
 export default async function HomePage() {
