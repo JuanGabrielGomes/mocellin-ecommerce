@@ -12,6 +12,7 @@ const categoryLabel: Record<ProductType['category'], string> = {
   brincos: 'Brincos', aneis: 'Anéis', relogios: 'Relógios',
   colares: 'Colares', oculos: 'Óculos', masculino: 'Masculino',
   pulseiras: 'Pulseiras e Braceletes', berloques: 'Berloques',
+  conjuntos: 'Conjuntos',
 }
 
 export function ProductCard({ product }: { product: ProductType }) {
