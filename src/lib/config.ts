@@ -1,3 +1,6 @@
+/** Valor mínimo para frete grátis (em BRL). */
+export const FREE_SHIPPING_THRESHOLD = 350
+
 /** Constantes globais da loja — fonte única da verdade. */
 export const STORE = {
   name: 'Mocellin Joias',

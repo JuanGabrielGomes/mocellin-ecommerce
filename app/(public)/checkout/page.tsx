@@ -7,6 +7,7 @@ import { useCartStore } from '@/lib/cart/store'
 import { buildWhatsAppUrl } from '@/lib/cart/whatsapp'
 import { useFreteSimulator } from '@/hooks/useFreteSimulator'
 import { useCepLookup } from '@/hooks/useCepLookup'
+import { FREE_SHIPPING_THRESHOLD } from '@/lib/config'
 import type { CheckoutFormType, OrderPayloadType } from '@/types'
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -105,7 +106,8 @@ export default function CheckoutPage() {
 
   const selectedFrete = opcoes.find((o) => o.id === selectedFreteId) ?? null
   const sub = subtotal()
-  const shipping = form.delivery === 'retirada' ? null : (selectedFrete?.price ?? null)
+  const freeShipping = form.delivery === 'envio' && sub >= FREE_SHIPPING_THRESHOLD
+  const shipping = form.delivery === 'retirada' ? null : freeShipping ? 0 : (selectedFrete?.price ?? null)
   const total = sub + (shipping ?? 0)
 
   function setField(key: keyof CheckoutFormType, value: string) {
@@ -121,7 +123,7 @@ export default function CheckoutPage() {
       const digits = form.cep.replace(/\D/g, '')
       if (!digits) errs.cep = 'CEP obrigatório para envio'
       else if (digits.length !== 8) errs.cep = 'CEP inválido'
-      else if (!selectedFrete) errs.frete = 'Selecione uma opção de entrega'
+      else if (!freeShipping && !selectedFrete) errs.frete = 'Selecione uma opção de entrega'
       if (!form.street.trim()) errs.street = 'Rua obrigatória'
       if (!form.number.trim()) errs.number = 'Número obrigatório'
       if (!form.neighborhood.trim()) errs.neighborhood = 'Bairro obrigatório'
@@ -139,6 +141,8 @@ export default function CheckoutPage() {
     const shippingName =
       form.delivery === 'retirada'
         ? 'Retirada no local'
+        : freeShipping
+        ? 'Frete Grátis'
         : selectedFrete ? `${selectedFrete.name} — ${selectedFrete.company}` : ''
     const payload: OrderPayloadType = { items, form, subtotal: sub, shipping, shippingName, total }
     const url = buildWhatsAppUrl(payload)
@@ -316,8 +320,23 @@ export default function CheckoutPage() {
                   </>
                 )}
 
+                {/* Frete grátis */}
+                {freeShipping && (
+                  <div className="flex items-center gap-3 border border-emerald-200 bg-emerald-50 px-4 py-3">
+                    <span className="text-emerald-600">✓</span>
+                    <div>
+                      <p className="font-mulish text-xs font-semibold uppercase tracking-[0.1em] text-emerald-800">
+                        Frete Grátis
+                      </p>
+                      <p className="font-mulish text-[11px] text-emerald-700">
+                        Pedidos acima de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(FREE_SHIPPING_THRESHOLD)} têm frete grátis.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Opções de frete */}
-                {showFreteSection && (
+                {!freeShipping && showFreteSection && (
                   <div className="flex flex-col gap-2">
                     <span className={labelClass}>Opções de frete</span>
 
@@ -430,10 +449,11 @@ export default function CheckoutPage() {
               </div>
               <div className="flex justify-between font-mulish text-sm text-mj-text-muted">
                 <span>Frete</span>
-                <span>
-                  {shipping === null && form.delivery === 'retirada' && 'Retirada no local'}
-                  {shipping === null && form.delivery === 'envio' && 'Selecione uma opção'}
-                  {shipping !== null && brl.format(shipping)}
+                <span className={freeShipping ? 'font-semibold text-emerald-600' : ''}>
+                  {form.delivery === 'retirada' && 'Retirada no local'}
+                  {form.delivery === 'envio' && freeShipping && 'Grátis'}
+                  {form.delivery === 'envio' && !freeShipping && shipping === null && 'Selecione uma opção'}
+                  {form.delivery === 'envio' && !freeShipping && shipping !== null && brl.format(shipping)}
                 </span>
               </div>
               <div className="flex justify-between font-mulish text-base font-semibold text-mj-text">

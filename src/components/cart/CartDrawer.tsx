@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
+import { FREE_SHIPPING_THRESHOLD } from '@/lib/config'
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -90,11 +91,36 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
 
             {/* Footer */}
             <div className="space-y-4 border-t border-mj-border px-6 py-6">
+              {/* Barra de progresso — frete grátis */}
+              {(() => {
+                const sub = subtotal()
+                const remaining = FREE_SHIPPING_THRESHOLD - sub
+                const progress = Math.min(100, (sub / FREE_SHIPPING_THRESHOLD) * 100)
+                return remaining > 0 ? (
+                  <div className="space-y-2">
+                    <p className="font-mulish text-[11px] text-mj-text-muted">
+                      Faltam{' '}
+                      <span className="font-semibold text-mj-text">{brl.format(remaining)}</span>
+                      {' '}para frete grátis
+                    </p>
+                    <div className="h-1 w-full overflow-hidden rounded-full bg-mj-border">
+                      <div
+                        className="h-full rounded-full bg-mj-btn transition-all duration-500"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <p className="font-mulish text-[11px] font-semibold text-emerald-600">
+                    ✓ Frete grátis aplicado ao seu pedido!
+                  </p>
+                )
+              })()}
+
               <div className="flex justify-between">
                 <span className="font-mulish text-xs uppercase tracking-[0.1em] text-mj-text-muted">Subtotal</span>
                 <span className="font-mulish text-sm font-medium text-mj-text">{brl.format(subtotal())}</span>
               </div>
-              <p className="font-mulish text-[11px] text-mj-text-muted">Frete calculado no próximo passo.</p>
               <Link
                 href="/checkout"
                 onClick={onClose}
