@@ -10,6 +10,57 @@ interface ProductGalleryProps {
   imagePositions?: string[] | null
 }
 
+// ── Miniatura circular de vídeo ───────────────────────────────────
+// Usa <video preload="metadata"> para capturar um frame real do vídeo.
+// A ring giratória fica DENTRO do wrapper (inset-0) para não criar overflow.
+function VideoThumb({ url, onClick }: { url: string; onClick: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  function handleLoadedMetadata() {
+    const v = videoRef.current
+    if (!v) return
+    // Busca ~20% da duração como thumbnail (mínimo 0.5s)
+    v.currentTime = v.duration ? Math.min(v.duration * 0.2, v.duration - 0.1) : 0.5
+  }
+
+  return (
+    // h-16 w-16 contém ring + botão sem overflow → sem scrollbar
+    <div className="relative h-16 w-16 shrink-0">
+      {/* Ring giratória — inset-0, não vaza fora do container */}
+      <span
+        className="pointer-events-none absolute inset-0 z-10 animate-spin rounded-full"
+        style={{
+          border: '2px solid transparent',
+          borderTopColor: 'var(--color-mj-btn)',
+          borderRightColor: 'rgba(0,0,0,0.18)',
+        }}
+      />
+      {/* Botão com margem de 3px para não sobrepor a ring */}
+      <button
+        type="button"
+        aria-label="Vídeo do produto"
+        onClick={onClick}
+        className="absolute inset-[3px] rounded-full overflow-hidden hover:opacity-85 transition-opacity"
+      >
+        {/* Frame do vídeo como preview */}
+        <video
+          ref={videoRef}
+          src={url}
+          preload="metadata"
+          muted
+          playsInline
+          onLoadedMetadata={handleLoadedMetadata}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Overlay semitransparente + ícone play */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+          <Play size={12} className="text-white drop-shadow-sm" fill="white" />
+        </div>
+      </button>
+    </div>
+  )
+}
+
 export function ProductGallery({ images, videos, imagePositions }: ProductGalleryProps) {
   const [activeImage, setActiveImage] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -122,29 +173,9 @@ export function ProductGallery({ images, videos, imagePositions }: ProductGaller
 
         {/* ── Miniaturas circulares — somente vídeos ───────── */}
         {videos.length > 0 && (
-          <div className="flex w-full justify-center gap-2.5 overflow-x-auto pb-1">
+          <div className="flex w-full justify-center gap-3">
             {videos.map((url, i) => (
-              <div key={i} className="relative h-14 w-14 shrink-0">
-                {/* Anel giratório */}
-                <span
-                  className="pointer-events-none absolute -inset-[3px] z-10 animate-spin rounded-full"
-                  style={{
-                    border: '2px solid transparent',
-                    borderTopColor: 'var(--color-mj-btn)',
-                    borderRightColor: 'rgba(0,0,0,0.18)',
-                  }}
-                />
-                <button
-                  type="button"
-                  aria-label={`Vídeo ${i + 1}`}
-                  onClick={() => setVideoModal(url)}
-                  className="relative h-full w-full rounded-full overflow-hidden border-2 border-transparent hover:border-mj-border transition-colors"
-                >
-                  <div className="flex h-full w-full items-center justify-center bg-mj-overlay">
-                    <Play size={14} className="text-white" fill="white" />
-                  </div>
-                </button>
-              </div>
+              <VideoThumb key={i} url={url} onClick={() => setVideoModal(url)} />
             ))}
           </div>
         )}
