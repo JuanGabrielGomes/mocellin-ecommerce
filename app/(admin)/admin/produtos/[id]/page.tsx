@@ -26,10 +26,10 @@ export default async function EditProductPage({
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="font-cormorant text-3xl font-semibold text-mocellin-dark">
-          Editar produto
+        <h1 className="font-julius text-2xl tracking-wider text-mj-text">
+          EDITAR PRODUTO
         </h1>
-        <p className="mt-1 font-dm-sans text-sm text-mocellin-dark/50 line-clamp-1">
+        <p className="mt-1 font-mulish text-sm text-mj-text-muted line-clamp-1">
           {product.name}
         </p>
       </div>

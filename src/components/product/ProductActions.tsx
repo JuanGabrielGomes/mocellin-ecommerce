@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Clock } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
 import type { ProductType } from '@/types'
 
@@ -13,6 +14,7 @@ export function ProductActions({ product }: ProductActionsProps) {
   const addItem = useCartStore((s) => s.addItem)
   const router = useRouter()
   const esgotado = product.status === 'esgotado'
+  const preVenda = product.status === 'pre_venda'
   const hasSizes = !!(product.sizes && product.sizes.length > 0)
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
@@ -29,6 +31,21 @@ export function ProductActions({ product }: ProductActionsProps) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Aviso de pré-venda */}
+      {preVenda && (
+        <div className="flex items-start gap-3 border border-amber-200 bg-amber-50 px-4 py-3">
+          <Clock size={14} className="mt-0.5 shrink-0 text-amber-600" />
+          <div>
+            <p className="font-mulish text-xs font-semibold uppercase tracking-[0.1em] text-amber-800">
+              Produto em Pré-venda
+            </p>
+            <p className="mt-1 font-mulish text-xs leading-relaxed text-amber-700">
+              O prazo de entrega especial será informado diretamente via WhatsApp após a confirmação do pedido.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Seletor de tamanho */}
       {hasSizes && (
         <div className="flex flex-col gap-2">
@@ -81,7 +98,11 @@ export function ProductActions({ product }: ProductActionsProps) {
               : 'bg-mj-btn text-mj-btn-text hover:bg-mj-btn-hover active:scale-[.98]',
           ].join(' ')}
         >
-          {esgotado ? 'Esgotado' : 'Adicionar ao carrinho'}
+          {esgotado
+            ? 'Esgotado'
+            : preVenda
+            ? 'Reservar — Pré-venda'
+            : 'Adicionar ao carrinho'}
         </button>
 
         {!esgotado && (
@@ -95,7 +116,7 @@ export function ProductActions({ product }: ProductActionsProps) {
                 : 'border-mj-btn text-mj-btn hover:bg-mj-btn hover:text-mj-btn-text active:scale-[.98]',
             ].join(' ')}
           >
-            Comprar agora
+            {preVenda ? 'Finalizar reserva' : 'Comprar agora'}
           </button>
         )}
       </div>

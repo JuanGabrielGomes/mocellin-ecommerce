@@ -55,15 +55,23 @@ const CATEGORIES = [
 ]
 
 export default async function HomePage() {
-  const campaign = await getActiveCampaign()
   const supabase = await createClient()
-  const { data: featured } = await supabase
-    .from('products')
-    .select('*')
-    .eq('status', 'disponivel')
-    .eq('featured', true)
-    .order('created_at', { ascending: false })
-    .limit(6)
+  const [campaign, { data: featured }, { data: preVendaProducts }] = await Promise.all([
+    getActiveCampaign(),
+    supabase
+      .from('products')
+      .select('*')
+      .eq('status', 'disponivel')
+      .eq('featured', true)
+      .order('created_at', { ascending: false })
+      .limit(6),
+    supabase
+      .from('products')
+      .select('*')
+      .eq('status', 'pre_venda')
+      .order('created_at', { ascending: false })
+      .limit(6),
+  ])
 
   return (
     <>
@@ -155,6 +163,44 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Seleção especial de campanha (pré-venda) ─────────── */}
+      {campaign && preVendaProducts && preVendaProducts.length > 0 && (
+        <section className="py-14 sm:py-20" style={{ background: campaign.colors?.sectionBg ?? 'var(--color-mj-surface)' }}>
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div className="mb-10 sm:mb-12 flex items-end justify-between">
+              <div>
+                <p
+                  className="font-mulish text-[10px] uppercase tracking-[0.3em]"
+                  style={{ color: campaign.colors?.accent ?? 'var(--color-mj-text-muted)' }}
+                >
+                  {campaign.name}
+                </p>
+                <h2 className="mt-2 font-julius text-2xl tracking-wider text-mj-text sm:text-3xl">
+                  SELEÇÃO ESPECIAL
+                </h2>
+                <p className="mt-2 font-mulish text-xs text-mj-text-muted">
+                  Peças exclusivas · Prazo especial combinado via WhatsApp
+                </p>
+              </div>
+              <Link
+                href="/catalogo"
+                className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-text-muted underline-offset-4 hover:underline"
+              >
+                Ver todos
+              </Link>
+            </div>
+
+            <ul className="grid grid-cols-2 sm:grid-cols-3 border-l border-t border-mj-border">
+              {(preVendaProducts as ProductType[]).map((product) => (
+                <li key={product.id} className="border-r border-b border-mj-border bg-mj-surface">
+                  <ProductCard product={product} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* ── Produtos em destaque ─────────────────────────────── */}
       {featured && featured.length > 0 && (

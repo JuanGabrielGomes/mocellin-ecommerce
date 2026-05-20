@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Clock } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
 import { buildWhatsAppUrl } from '@/lib/cart/whatsapp'
 import { useFreteSimulator } from '@/hooks/useFreteSimulator'
@@ -70,7 +70,7 @@ export default function CheckoutPage() {
   const [mounted, setMounted] = useState(false)
   const [form, setForm] = useState<CheckoutFormType>(INITIAL_FORM)
   const [errors, setErrors] = useState<FormErrors>({})
-  const [selectedFreteId, setSelectedFreteId] = useState<unknown>(null)
+  const [selectedFreteId, setSelectedFreteId] = useState<string | number | null>(null)
 
   const { opcoes, loading: freteLoading, error: freteError } = useFreteSimulator(form.cep)
   const { street, neighborhood, city, state, loading: cepLoading, error: cepError } = useCepLookup(
@@ -407,10 +407,13 @@ export default function CheckoutPage() {
             <h2 className="font-julius text-lg tracking-wider text-mj-text">RESUMO DO PEDIDO</h2>
 
             <ul className="flex flex-col divide-y divide-mj-border">
-              {items.map(({ product, quantity }) => (
-                <li key={product.id} className="flex items-start justify-between gap-4 py-3">
+              {items.map(({ product, quantity, size }) => (
+                <li key={product.id + (size ?? '')} className="flex items-start justify-between gap-4 py-3">
                   <span className="font-mulish text-sm leading-snug text-mj-text">
-                    {product.name}{' '}
+                    {product.name}
+                    {size && (
+                      <span className="text-mj-text-muted"> — {size}</span>
+                    )}{' '}
                     <span className="text-mj-text-muted">×{quantity}</span>
                   </span>
                   <span className="shrink-0 font-mulish text-sm font-medium text-mj-text">
@@ -438,6 +441,21 @@ export default function CheckoutPage() {
                 <span>{brl.format(total)}</span>
               </div>
             </div>
+
+            {/* Aviso de pré-venda */}
+            {items.some((i) => i.product.status === 'pre_venda') && (
+              <div className="flex items-start gap-3 border border-amber-200 bg-amber-50 px-4 py-3">
+                <Clock size={13} className="mt-0.5 shrink-0 text-amber-600" />
+                <div>
+                  <p className="font-mulish text-xs font-semibold uppercase tracking-[0.1em] text-amber-800">
+                    Itens em Pré-venda
+                  </p>
+                  <p className="mt-0.5 font-mulish text-[11px] leading-relaxed text-amber-700">
+                    {items.filter((i) => i.product.status === 'pre_venda').map((i) => i.product.name).join(', ')} — o prazo de entrega especial será combinado diretamente via WhatsApp.
+                  </p>
+                </div>
+              </div>
+            )}
 
             <button
               type="submit"

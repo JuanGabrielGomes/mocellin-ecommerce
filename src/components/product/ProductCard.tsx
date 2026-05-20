@@ -19,6 +19,7 @@ export function ProductCard({ product }: { product: ProductType }) {
   const [hovered, setHovered] = useState(false)
 
   const esgotado = product.status === 'esgotado'
+  const preVenda = product.status === 'pre_venda'
   const hasSizes = !!(product.sizes && product.sizes.length > 0)
   const hasDiscount = product.compare_at_price != null && product.compare_at_price > product.price
   const discountPct = hasDiscount
@@ -76,7 +77,12 @@ export function ProductCard({ product }: { product: ProductType }) {
             Esgotado
           </span>
         )}
-        {!esgotado && hasDiscount && (
+        {preVenda && !esgotado && (
+          <span className="absolute left-3 top-3 bg-amber-500 px-2.5 py-1 font-mulish text-[10px] font-semibold uppercase tracking-wider text-white">
+            Pré-venda
+          </span>
+        )}
+        {!esgotado && !preVenda && hasDiscount && (
           <span className="absolute left-3 top-3 bg-mj-btn px-2.5 py-1 font-mulish text-[10px] font-semibold uppercase tracking-wider text-mj-btn-text">
             -{discountPct}%
           </span>
@@ -105,12 +111,10 @@ export function ProductCard({ product }: { product: ProductType }) {
 
       {/* CTA */}
       <div className="px-4 pb-4">
-        {hasSizes ? (
-          // Produto com tamanhos → leva para a PDP escolher
-          <span
-            className="block w-full bg-mj-btn py-3 text-center font-mulish text-xs uppercase tracking-[0.15em] text-mj-btn-text transition-all group-hover:bg-mj-btn-hover"
-          >
-            Escolher tamanho
+        {hasSizes || preVenda ? (
+          // Produto com tamanhos ou pré-venda → leva para a PDP
+          <span className="block w-full bg-mj-btn py-3 text-center font-mulish text-xs uppercase tracking-[0.15em] text-mj-btn-text transition-all group-hover:bg-mj-btn-hover">
+            {preVenda ? 'Ver e reservar' : 'Escolher tamanho'}
           </span>
         ) : (
           <button

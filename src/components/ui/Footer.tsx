@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { STORE } from '@/lib/config'
 
 export function Footer() {
   return (
@@ -43,7 +44,7 @@ export function Footer() {
               Contato
             </p>
             <a
-              href="https://wa.me/5554991379272"
+              href={STORE.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-mulish text-sm text-mj-text-muted transition-colors hover:text-mj-text-accent"
@@ -51,13 +52,13 @@ export function Footer() {
               WhatsApp
             </a>
             <a
-              href="mailto:mocellinjoias@gmail.com"
+              href={`mailto:${STORE.email}`}
               className="font-mulish text-sm text-mj-text-muted transition-colors hover:text-mj-text-accent"
             >
-              mocellinjoias@gmail.com
+              {STORE.email}
             </a>
             <a
-              href="https://instagram.com/mocellinjoias"
+              href={STORE.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-mulish text-sm text-mj-text-muted transition-colors hover:text-mj-text-accent"
@@ -69,7 +70,7 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-mj-border pt-8 sm:flex-row">
           <p className="font-mulish text-xs text-mj-text-muted">
-            © {new Date().getFullYear()} Mocellin Joias. Todos os direitos reservados.
+            © {new Date().getFullYear()} {STORE.name}. Todos os direitos reservados.
           </p>
           <Link
             href="/admin"

@@ -1,7 +1,9 @@
+import { STORE } from '@/lib/config'
+
 export function WhatsAppFloat() {
   return (
     <a
-      href="https://wa.me/5554991379272"
+      href={STORE.whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Fale conosco pelo WhatsApp"

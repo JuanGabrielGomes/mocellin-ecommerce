@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 interface FreteOption {
-  id: unknown
+  id: string | number
   name: string
   company: string
   price: number

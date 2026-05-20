@@ -37,7 +37,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
       : null
 
   const supabase = await createClient()
-  let query = supabase.from('products').select('*').eq('status', 'disponivel').order('created_at', { ascending: false })
+  let query = supabase.from('products').select('*').in('status', ['disponivel', 'pre_venda']).order('created_at', { ascending: false })
   if (activeCategory) query = query.eq('category', activeCategory)
   const { data: products, error } = await query
 

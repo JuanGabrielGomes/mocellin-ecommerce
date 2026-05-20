@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Julius_Sans_One, Mulish } from 'next/font/google'
+import { STORE } from '@/lib/config'
 import './globals.css'
 
 const julius = Julius_Sans_One({
@@ -15,8 +16,21 @@ const mulish = Mulish({
 })
 
 export const metadata: Metadata = {
-  title: 'Mocellin Joias',
-  description: 'Joias e semijoias com design atemporal.',
+  metadataBase: new URL(STORE.url),
+  title: {
+    template: '%s | Mocellin Joias',
+    default: 'Mocellin Joias — Joias e Semijoias',
+  },
+  description: STORE.description,
+  openGraph: {
+    siteName: STORE.name,
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({

@@ -192,20 +192,20 @@ export function ProductForm({ product, allProducts }: Props) {
 
   async function uploadFiles(files: File[], bucket: string): Promise<string[]> {
     const supabase = createClient()
-    const urls: string[] = []
-    for (const file of files) {
-      const ext = file.name.split('.').pop() ?? ''
-      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const { data, error } = await supabase.storage
-        .from(bucket)
-        .upload(path, file, { contentType: file.type })
-      if (error) throw new Error(`Erro ao enviar "${file.name}": ${error.message}`)
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from(bucket).getPublicUrl(data.path)
-      urls.push(publicUrl)
-    }
-    return urls
+    return Promise.all(
+      files.map(async (file) => {
+        const ext = file.name.split('.').pop() ?? ''
+        const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .upload(path, file, { contentType: file.type })
+        if (error) throw new Error(`Erro ao enviar "${file.name}": ${error.message}`)
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from(bucket).getPublicUrl(data.path)
+        return publicUrl
+      }),
+    )
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -216,11 +216,12 @@ export function ProductForm({ product, allProducts }: Props) {
     try {
       const supabase = createClient()
 
-      const newImageUrls = await uploadFiles(newImageFiles, 'product-images')
+      const [newImageUrls, newVideoUrls] = await Promise.all([
+        uploadFiles(newImageFiles, 'product-images'),
+        uploadFiles(newVideoFiles, 'product-videos'),
+      ])
       const images = [...existingImages, ...newImageUrls]
       const image_positions = [...existingPositions, ...newImagePositions]
-
-      const newVideoUrls = await uploadFiles(newVideoFiles, 'product-videos')
       const videos = [...existingVideos, ...newVideoUrls]
 
       const parsedCompare = parseFloat(compareAtPrice)
@@ -394,24 +395,31 @@ export function ProductForm({ product, allProducts }: Props) {
         </div>
 
         <Field label="Status">
-          <div className="flex gap-2">
-            {(['disponivel', 'esgotado'] as ProductStatus[]).map((s) => (
+          <div className="flex flex-wrap gap-2">
+            {([
+              { value: 'disponivel', label: 'Disponível',  activeClass: 'bg-emerald-500 text-white' },
+              { value: 'pre_venda',  label: 'Pré-venda',   activeClass: 'bg-amber-500 text-white'   },
+              { value: 'esgotado',   label: 'Esgotado',    activeClass: 'bg-red-500 text-white'     },
+            ] as { value: ProductStatus; label: string; activeClass: string }[]).map(({ value: s, label, activeClass }) => (
               <button
                 key={s}
                 type="button"
                 onClick={() => setStatus(s)}
                 className={`px-4 py-2 font-mulish text-sm font-medium transition-colors ${
                   status === s
-                    ? s === 'disponivel'
-                      ? 'bg-emerald-500 text-white'
-                      : 'bg-red-500 text-white'
+                    ? activeClass
                     : 'border border-mj-border text-mj-taupe hover:border-mj-black hover:text-mj-black'
                 }`}
               >
-                {s === 'disponivel' ? 'Disponível' : 'Esgotado'}
+                {label}
               </button>
             ))}
           </div>
+          {status === 'pre_venda' && (
+            <p className="mt-2 font-mulish text-xs text-amber-700">
+              O produto aparece no catálogo com badge de pré-venda. O prazo de entrega é informado via WhatsApp.
+            </p>
+          )}
         </Field>
 
         <Field label="Destaque na home">

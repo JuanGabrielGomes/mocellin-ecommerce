@@ -16,8 +16,8 @@ export default async function NewProductPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="font-cormorant text-3xl font-semibold text-mocellin-dark">Novo produto</h1>
-        <p className="mt-1 font-dm-sans text-sm text-mocellin-dark/50">
+        <h1 className="font-julius text-2xl tracking-wider text-mj-text">NOVO PRODUTO</h1>
+        <p className="mt-1 font-mulish text-sm text-mj-text-muted">
           Preencha os dados e clique em Criar produto.
         </p>
       </div>

@@ -1,6 +1,5 @@
 import type { OrderPayloadType } from '@/types'
-
-const STORE_PHONE = '5554991379272'
+import { STORE } from '@/lib/config'
 
 export function buildWhatsAppUrl(order: OrderPayloadType): string {
   const lines: string[] = []
@@ -11,7 +10,14 @@ export function buildWhatsAppUrl(order: OrderPayloadType): string {
   for (const item of order.items) {
     const subtotal = (item.product.price * item.quantity).toFixed(2)
     const sizeLabel = item.size ? ` (Tam. ${item.size})` : ''
-    lines.push(`• ${item.product.name}${sizeLabel} x${item.quantity} — R$ ${subtotal}`)
+    const preVendaLabel = item.product.status === 'pre_venda' ? ' ⏳ *[PRÉ-VENDA]*' : ''
+    lines.push(`• ${item.product.name}${sizeLabel} x${item.quantity} — R$ ${subtotal}${preVendaLabel}`)
+  }
+
+  const preVendaItems = order.items.filter((i) => i.product.status === 'pre_venda')
+  if (preVendaItems.length > 0) {
+    lines.push(`\n⚠️ *Atenção — Pré-venda:*`)
+    lines.push(`${preVendaItems.map((i) => i.product.name).join(', ')} ${preVendaItems.length === 1 ? 'é um item' : 'são itens'} em pré-venda. O prazo de entrega especial será combinado diretamente por aqui.`)
   }
 
   lines.push(`\n*Subtotal:* R$ ${order.subtotal.toFixed(2)}`)
@@ -38,7 +44,7 @@ export function buildWhatsAppUrl(order: OrderPayloadType): string {
   }
 
   const message = encodeURIComponent(lines.join('\n'))
-  return `https://wa.me/${STORE_PHONE}?text=${message}`
+  return `https://wa.me/${STORE.phone}?text=${message}`
 }
 
 function formatPayment(method: OrderPayloadType['form']['payment']): string {

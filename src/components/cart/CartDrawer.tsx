@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { useCartStore } from '@/lib/cart/store'
@@ -46,7 +47,13 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
               {items.map(({ product, quantity, size }) => (
                 <li key={product.id + (size ?? '')} className="flex gap-4 py-5">
                   {product.images[0] ? (
-                    <img src={product.images[0]} alt={product.name} className="h-20 w-20 shrink-0 bg-mj-cream object-cover" />
+                    <Image
+                      src={product.images[0]}
+                      alt={product.name}
+                      width={80}
+                      height={80}
+                      className="shrink-0 bg-mj-cream object-cover"
+                    />
                   ) : (
                     <div className="h-20 w-20 shrink-0 bg-mj-beige/30" />
                   )}
