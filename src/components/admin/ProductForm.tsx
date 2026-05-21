@@ -16,6 +16,7 @@ const CATEGORIES: { value: ProductCategory; label: string }[] = [
   { value: 'pulseiras', label: 'Pulseiras e Braceletes' },
   { value: 'berloques', label: 'Berloques' },
   { value: 'conjuntos', label: 'Conjuntos' },
+  { value: 'pingentes', label: 'Pingentes' },
 ]
 
 export interface RelatedOption {

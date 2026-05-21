@@ -13,6 +13,7 @@ const categoryLabel: Record<ProductType['category'], string> = {
   colares: 'Colares', oculos: 'Óculos', masculino: 'Masculino',
   pulseiras: 'Pulseiras e Braceletes', berloques: 'Berloques',
   conjuntos: 'Conjuntos',
+  pingentes: 'Pingentes',
 }
 
 export function ProductCard({ product }: { product: ProductType }) {

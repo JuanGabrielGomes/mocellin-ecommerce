@@ -58,6 +58,11 @@ const CATEGORIES = [
     label: 'Conjuntos',
     image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&fit=crop&q=80',
   },
+  {
+    value: 'pingentes',
+    label: 'Pingentes',
+    image: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=600&fit=crop&q=80',
+  },
 ]
 
 export default async function HomePage() {
