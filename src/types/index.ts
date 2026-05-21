@@ -18,6 +18,7 @@ export interface ProductType {
   videos: string[] | null
   details: string | null
   related_ids: string[] | null
+  letter_option: boolean
   created_at: string
   updated_at: string
 }
@@ -39,11 +40,12 @@ export interface CampaignType {
   updated_at: string
 }
 
-// O que fica no carrinho — produto resolvido + quantidade + tamanho (opcional)
+// O que fica no carrinho — produto resolvido + quantidade + tamanho + letra (opcionais)
 export interface CartItemType {
   product: ProductType
   quantity: number
   size?: string
+  letter?: string
 }
 
 // Dados do comprador coletados no checkout

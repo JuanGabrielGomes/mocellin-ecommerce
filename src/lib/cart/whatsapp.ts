@@ -9,9 +9,10 @@ export function buildWhatsAppUrl(order: OrderPayloadType): string {
   lines.push('*Itens:*')
   for (const item of order.items) {
     const subtotal = (item.product.price * item.quantity).toFixed(2)
-    const sizeLabel = item.size ? ` (Tam. ${item.size})` : ''
+    const sizeLabel   = item.size   ? ` (Tam. ${item.size})`   : ''
+    const letterLabel = item.letter ? ` (Letra: ${item.letter})` : ''
     const preVendaLabel = item.product.status === 'pre_venda' ? ' ⏳ *[PRÉ-VENDA]*' : ''
-    lines.push(`• ${item.product.name}${sizeLabel} x${item.quantity} — R$ ${subtotal}${preVendaLabel}`)
+    lines.push(`• ${item.product.name}${sizeLabel}${letterLabel} x${item.quantity} — R$ ${subtotal}${preVendaLabel}`)
   }
 
   const preVendaItems = order.items.filter((i) => i.product.status === 'pre_venda')

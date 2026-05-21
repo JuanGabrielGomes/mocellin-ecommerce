@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { ProductType, ProductCategory, ProductStatus } from '@/types'
-import { X, Upload, Play, CheckCircle2, Loader2, Search, Star } from 'lucide-react'
+import { X, Upload, Play, CheckCircle2, Loader2, Search, Star, Type } from 'lucide-react'
 
 const CATEGORIES: { value: ProductCategory; label: string }[] = [
   { value: 'brincos',   label: 'Brincos' },
@@ -122,7 +122,8 @@ export function ProductForm({ product, allProducts }: Props) {
   )
   const [category, setCategory] = useState<ProductCategory>(product?.category ?? 'brincos')
   const [status, setStatus] = useState<ProductStatus>(product?.status ?? 'disponivel')
-  const [featured, setFeatured] = useState<boolean>(product?.featured ?? false)
+  const [featured,      setFeatured]      = useState<boolean>(product?.featured      ?? false)
+  const [letterOption,  setLetterOption]  = useState<boolean>(product?.letter_option ?? false)
 
   const [existingImages, setExistingImages] = useState<string[]>(product?.images ?? [])
   const [existingPositions, setExistingPositions] = useState<string[]>(
@@ -240,6 +241,7 @@ export function ProductForm({ product, allProducts }: Props) {
         category,
         status,
         featured,
+        letter_option: letterOption,
         images,
         image_positions: image_positions.length > 0 ? image_positions : null,
         videos: videos.length > 0 ? videos : null,
@@ -437,6 +439,26 @@ export function ProductForm({ product, allProducts }: Props) {
             <Star size={14} fill={featured ? 'currentColor' : 'none'} />
             {featured ? 'Em destaque' : 'Não destacado'}
           </button>
+        </Field>
+
+        <Field label="Seleção de letra (A–Z)">
+          <button
+            type="button"
+            onClick={() => setLetterOption((v) => !v)}
+            className={`flex items-center gap-2 px-4 py-2 font-mulish text-sm font-medium transition-colors ${
+              letterOption
+                ? 'bg-mj-brown text-white'
+                : 'border border-mj-border text-mj-taupe hover:border-mj-black hover:text-mj-black'
+            }`}
+          >
+            <Type size={14} />
+            {letterOption ? 'Com escolha de letra' : 'Sem escolha de letra'}
+          </button>
+          {letterOption && (
+            <p className="mt-2 font-mulish text-xs text-mj-taupe">
+              O cliente poderá escolher uma letra (A–Z + Ç) ao adicionar ao carrinho.
+            </p>
+          )}
         </Field>
       </Section>
 
