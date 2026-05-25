@@ -14,6 +14,7 @@ const categoryLabel: Record<ProductType['category'], string> = {
   pulseiras: 'Pulseiras e Braceletes', berloques: 'Berloques',
   conjuntos: 'Conjuntos',
   pingentes: 'Pingentes',
+  piercing:  'Piercing',
 }
 
 export function ProductCard({ product }: { product: ProductType }) {

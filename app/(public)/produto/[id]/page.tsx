@@ -23,6 +23,7 @@ const categoryLabel: Record<ProductCategory, string> = {
   berloques: 'Berloques',
   conjuntos: 'Conjuntos',
   pingentes: 'Pingentes',
+  piercing:  'Piercing',
 }
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })

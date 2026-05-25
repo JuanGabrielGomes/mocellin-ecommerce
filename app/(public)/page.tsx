@@ -63,6 +63,11 @@ const CATEGORIES = [
     label: 'Pingentes',
     image: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=600&fit=crop&q=80',
   },
+  {
+    value: 'piercing',
+    label: 'Piercing',
+    image: 'https://images.unsplash.com/photo-1670939988596-00f1e6d9c9e4?w=600&fit=crop&q=80',
+  },
 ]
 
 export default async function HomePage() {
