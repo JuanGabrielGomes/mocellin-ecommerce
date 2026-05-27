@@ -90,7 +90,7 @@ export function CategoryCarousel({ categories, intervalMs = 2800 }: Props) {
                 alt={cat.label}
                 fill
                 sizes="(max-width: 640px) 33vw, 25vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-mj-black/0 transition-colors duration-300 group-hover:bg-mj-black/10" />
             </div>

@@ -261,7 +261,12 @@ export function ProductForm({ product, allProducts }: Props) {
 
       setSuccess(true)
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Erro ao salvar produto.'
+      let msg = 'Erro ao salvar produto.'
+      if (err instanceof Error) {
+        msg = err.message
+      } else if (err && typeof err === 'object' && 'message' in err) {
+        msg = String((err as { message: unknown }).message)
+      }
       setErrors({ _global: msg })
       setLoading(false)
     }

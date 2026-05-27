@@ -16,22 +16,22 @@ const CATEGORIES = [
   {
     value: 'brincos',
     label: 'Brincos',
-    image: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?w=600&fit=crop&q=80',
+    image: '/img/brincos.jpeg',
   },
   {
     value: 'aneis',
     label: 'Anéis',
-    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&fit=crop&q=80',
+    image: '/img/aneis.jpeg',
   },
   {
     value: 'colares',
     label: 'Colares',
-    image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600&fit=crop&q=80',
+    image: '/img/colar.jpeg',
   },
   {
     value: 'relogios',
     label: 'Relógios',
-    image: 'https://images.unsplash.com/photo-1600003014755-ba31aa59c4b6?w=600&fit=crop&q=80',
+    image: '/img/relogio.jpeg',
   },
   {
     value: 'oculos',
@@ -51,7 +51,7 @@ const CATEGORIES = [
   {
     value: 'berloques',
     label: 'Berloques',
-    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&fit=crop&q=80',
+    image: '/img/berloques.jpeg',
   },
   {
     value: 'conjuntos',
