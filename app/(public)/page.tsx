@@ -46,7 +46,7 @@ const CATEGORIES = [
   {
     value: 'pulseiras',
     label: 'Pulseiras',
-    image: '/img/pulseiras.jpg',
+    image: '/img/pulseiras2.jpg',
   },
   {
     value: 'berloques',
