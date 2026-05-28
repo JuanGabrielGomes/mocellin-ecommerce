@@ -21,7 +21,7 @@ const CATEGORIES = [
   {
     value: 'aneis',
     label: 'Anéis',
-    image: '/img/aneis.jpeg',
+    image: '/img/aneis.jpg',
   },
   {
     value: 'colares',
@@ -36,17 +36,17 @@ const CATEGORIES = [
   {
     value: 'oculos',
     label: 'Óculos',
-    image: 'https://images.unsplash.com/photo-1577803645773-f96470509666?w=600&fit=crop&q=80',
+    image: '/img/oculos.jpg',
   },
   {
     value: 'masculino',
     label: 'Masculino',
-    image: 'https://images.unsplash.com/photo-1625055671570-e5de97e4897d?w=600&fit=crop&q=80',
+    image: '/img/masculino.jpg',
   },
   {
     value: 'pulseiras',
     label: 'Pulseiras',
-    image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&fit=crop&q=80',
+    image: '/img/pulseiras.jpg',
   },
   {
     value: 'berloques',
@@ -56,7 +56,7 @@ const CATEGORIES = [
   {
     value: 'conjuntos',
     label: 'Conjuntos',
-    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&fit=crop&q=80',
+    image: '/img/conjuntos.jpeg',
   },
   {
     value: 'pingentes',
@@ -66,7 +66,7 @@ const CATEGORIES = [
   {
     value: 'piercing',
     label: 'Piercing',
-    image: 'https://images.unsplash.com/photo-1670939988596-00f1e6d9c9e4?w=600&fit=crop&q=80',
+    image: '/img/piercing.jpg',
   },
 ]
 
