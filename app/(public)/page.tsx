@@ -61,7 +61,7 @@ const CATEGORIES = [
   {
     value: 'pingentes',
     label: 'Pingentes',
-    image: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=600&fit=crop&q=80',
+    image: '/img/pingentes.jpeg',
   },
   {
     value: 'piercing',
