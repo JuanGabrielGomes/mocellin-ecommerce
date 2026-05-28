@@ -2,9 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Cache cada transformação por 30 dias — reduz drasticamente o contador mensal
+    // Desabilita otimização Vercel — quota free (5k/mês) esgotada
+    // Reverter para false após renovação do ciclo + monitorar consumo com TTL 30d
+    unoptimized: true,
     minimumCacheTTL: 2_592_000,
-    // 3 breakpoints ao invés dos 8 padrão — 62% menos transformações por imagem
     deviceSizes: [640, 1080, 1920],
     remotePatterns: [
       {
