@@ -2,9 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Desabilita otimização Vercel — quota free (5k/mês) esgotada
-    // Reverter para false após renovação do ciclo + monitorar consumo com TTL 30d
-    unoptimized: true,
+    // TTL 30 dias: cada imagem é transformada 1x/mês pela Vercel e cacheada no CDN
+    // → reduz transformações Vercel E egress Supabase simultaneamente
     minimumCacheTTL: 2_592_000,
     deviceSizes: [640, 1080, 1920],
     remotePatterns: [
