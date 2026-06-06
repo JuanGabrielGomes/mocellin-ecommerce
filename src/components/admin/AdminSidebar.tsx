@@ -12,6 +12,43 @@ const NAV_LINKS = [
   { href: '/admin/campanhas', label: 'Campanhas', icon: Megaphone },
 ]
 
+function NavLinks({ pathname, onClick }: { pathname: string; onClick?: () => void }) {
+  return (
+    <nav className="flex flex-col gap-1">
+      {NAV_LINKS.map(({ href, label, icon: Icon }) => {
+        const active = href === '/admin' ? pathname === href : pathname.startsWith(href)
+        return (
+          <Link
+            key={href}
+            href={href}
+            onClick={onClick}
+            className={`flex items-center gap-3 px-3 py-2.5 font-mulish text-sm transition-colors ${
+              active
+                ? 'bg-mj-black text-white'
+                : 'text-mj-taupe hover:bg-mj-border hover:text-mj-black'
+            }`}
+          >
+            <Icon size={16} />
+            {label}
+          </Link>
+        )
+      })}
+    </nav>
+  )
+}
+
+function SignOutButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex w-full items-center gap-3 px-3 py-2.5 font-mulish text-sm text-mj-taupe transition-colors hover:bg-mj-border hover:text-mj-black"
+    >
+      <LogOut size={16} />
+      Sair
+    </button>
+  )
+}
+
 export function AdminSidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const router = useRouter()
@@ -20,43 +57,8 @@ export function AdminSidebar() {
   async function handleSignOut() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    window.location.href = '/admin/login'
+    router.push('/admin/login')
   }
-
-  function NavLinks({ onClick }: { onClick?: () => void }) {
-    return (
-      <nav className="flex flex-col gap-1">
-        {NAV_LINKS.map(({ href, label, icon: Icon }) => {
-          const active = href === '/admin' ? pathname === href : pathname.startsWith(href)
-          return (
-            <Link
-              key={href}
-              href={href}
-              onClick={onClick}
-              className={`flex items-center gap-3 px-3 py-2.5 font-mulish text-sm transition-colors ${
-                active
-                  ? 'bg-mj-black text-white'
-                  : 'text-mj-taupe hover:bg-mj-border hover:text-mj-black'
-              }`}
-            >
-              <Icon size={16} />
-              {label}
-            </Link>
-          )
-        })}
-      </nav>
-    )
-  }
-
-  const SignOutButton = ({ onClick }: { onClick?: () => void }) => (
-    <button
-      onClick={() => { onClick?.(); handleSignOut() }}
-      className="flex w-full items-center gap-3 px-3 py-2.5 font-mulish text-sm text-mj-taupe transition-colors hover:bg-mj-border hover:text-mj-black"
-    >
-      <LogOut size={16} />
-      Sair
-    </button>
-  )
 
   return (
     <>
@@ -69,10 +71,10 @@ export function AdminSidebar() {
           </p>
         </div>
 
-        <NavLinks />
+        <NavLinks pathname={pathname} />
 
         <div className="mt-auto">
-          <SignOutButton />
+          <SignOutButton onClick={handleSignOut} />
         </div>
       </aside>
 
@@ -91,9 +93,9 @@ export function AdminSidebar() {
       {/* Mobile dropdown menu */}
       {mobileOpen && (
         <div className="md:hidden fixed inset-x-0 top-[49px] z-30 border-b border-mj-border bg-mj-white px-4 py-4 shadow-md">
-          <NavLinks onClick={() => setMobileOpen(false)} />
+          <NavLinks pathname={pathname} onClick={() => setMobileOpen(false)} />
           <div className="mt-4 border-t border-mj-border pt-4">
-            <SignOutButton onClick={() => setMobileOpen(false)} />
+            <SignOutButton onClick={() => { setMobileOpen(false); void handleSignOut() }} />
           </div>
         </div>
       )}

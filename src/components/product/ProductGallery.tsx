@@ -114,7 +114,7 @@ export function ProductGallery({ images, videos, imagePositions }: ProductGaller
     const delta = e.changedTouches[0].clientX - touchStartX.current
     touchStartX.current = null
     if (Math.abs(delta) < 50) return
-    delta > 0 ? prev() : next()
+    if (delta > 0) { prev() } else { next() }
   }
 
   if (images.length === 0 && videos.length === 0) {

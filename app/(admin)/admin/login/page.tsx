@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
 export default function AdminLoginPage() {
@@ -86,12 +87,12 @@ export default function AdminLoginPage() {
         </form>
 
         <div className="mt-6 text-center">
-          <a
+          <Link
             href="/"
             className="font-mulish text-xs uppercase tracking-[0.15em] text-mj-taupe underline-offset-4 hover:underline hover:text-mj-black transition-colors"
           >
             ← Voltar à loja
-          </a>
+          </Link>
         </div>
       </div>
     </main>

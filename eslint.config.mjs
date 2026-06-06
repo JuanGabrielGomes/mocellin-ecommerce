@@ -13,6 +13,12 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Legítimo: hydration checks, sync de dados externos, resets em deps
+      'react-hooks/set-state-in-effect': 'off',
+    },
+  },
 ]);
 
 export default eslintConfig;
