@@ -194,15 +194,38 @@ export function ProductForm({ product, allProducts }: Props) {
     e.target.value = ''
   }
 
+  async function compressImage(file: File, maxPx = 1200, quality = 0.85): Promise<File> {
+    return new Promise((resolve) => {
+      const img = new window.Image()
+      const url = URL.createObjectURL(file)
+      img.onload = () => {
+        URL.revokeObjectURL(url)
+        const { naturalWidth: w, naturalHeight: h } = img
+        const scale = Math.min(1, maxPx / Math.max(w, h))
+        const canvas = document.createElement('canvas')
+        canvas.width  = Math.round(w * scale)
+        canvas.height = Math.round(h * scale)
+        canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height)
+        canvas.toBlob(
+          (blob) => resolve(blob ? new File([blob], file.name, { type: 'image/jpeg' }) : file),
+          'image/jpeg',
+          quality,
+        )
+      }
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(file) }
+      img.src = url
+    })
+  }
+
   async function uploadFiles(files: File[], bucket: string): Promise<string[]> {
     const supabase = createClient()
     return Promise.all(
       files.map(async (file) => {
-        const ext = file.name.split('.').pop() ?? ''
-        const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+        const toUpload = bucket === 'product-images' ? await compressImage(file) : file
+        const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
         const { data, error } = await supabase.storage
           .from(bucket)
-          .upload(path, file, { contentType: file.type })
+          .upload(path, toUpload, { contentType: 'image/jpeg' })
         if (error) throw new Error(`Erro ao enviar "${file.name}": ${error.message}`)
         const {
           data: { publicUrl },
