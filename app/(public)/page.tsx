@@ -68,6 +68,11 @@ const CATEGORIES = [
     label: 'Piercing',
     image: '/img/piercing.jpg',
   },
+  {
+    value: 'cashmere',
+    label: 'Cashmere',
+    image: 'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=600&fit=crop&q=80',
+  },
 ]
 
 export default async function HomePage() {

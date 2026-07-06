@@ -24,6 +24,7 @@ const categoryLabel: Record<ProductCategory, string> = {
   conjuntos: 'Conjuntos',
   pingentes: 'Pingentes',
   piercing:  'Piercing',
+  cashmere:  'Cashmere',
 }
 
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })

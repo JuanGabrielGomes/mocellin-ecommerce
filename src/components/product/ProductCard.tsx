@@ -15,6 +15,7 @@ const categoryLabel: Record<ProductType['category'], string> = {
   conjuntos: 'Conjuntos',
   pingentes: 'Pingentes',
   piercing:  'Piercing',
+  cashmere:  'Cashmere',
 }
 
 export function ProductCard({ product }: { product: ProductType }) {
